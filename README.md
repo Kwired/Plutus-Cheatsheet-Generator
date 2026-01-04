@@ -30,3 +30,11 @@ git clone https://github.com/kwired/Plutus-Cheatsheet-Generator.git
 cd Plutus-Cheatsheet-Generator
 npm install
 npm run dev
+```
+---
+### Detailed Documentation
+
+Additional documentation for running Plutus snippets on Cardano testnet
+using community templates is available here:
+
+- [Running Plutus Snippets on Cardano Testnet](./docs/running-plutus-snippets.md)
