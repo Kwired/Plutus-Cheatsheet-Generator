@@ -38,3 +38,6 @@ Additional documentation for running Plutus snippets on Cardano testnet
 using community templates is available here:
 
 - [Running Plutus Snippets on Cardano Testnet](./docs/running-plutus-snippets.md)
+
+-User interface usage and export instructions are documented in
+[`docs/ui-user-guide.md`](./docs/ui-user-guide.md).
