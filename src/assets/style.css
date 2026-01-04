@@ -1,0 +1,100 @@
+/* base card styling like GitBook screenshot */
+.code-card {
+  border-radius: 10px;
+  background: #fbfbfb; /* soft off-white */
+  border: 1px solid #ececec;
+  box-shadow: 0 1px 0 rgba(9, 30, 66, 0.03);
+  padding: 12px;
+  margin: 12px 0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Courier New", monospace;
+  font-size: 14px;
+  line-height: 1.6;
+  position: relative;
+  overflow: auto;
+}
+
+/* header with language and copy button */
+.code-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  gap: 8px;
+}
+.code-card__lang {
+  display: inline-block;
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: #ffffff;
+  border: 1px solid #e6e6e6;
+  color: #333;
+  box-shadow: 0 1px 0 rgba(9,30,66,0.02);
+}
+.code-card__copy {
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  background: transparent;
+  cursor: pointer;
+}
+.code-card__copy:hover {
+  background: rgba(0,0,0,0.02);
+}
+
+/* adjust pre/code spacing so Prism's themes don't clash */
+.code-card pre {
+  background: transparent !important; /* override Prism theme bg */
+  padding: 10px;
+  overflow: auto;
+  border-radius: 6px;
+}
+
+/* tweak token colors to match screenshot's feel */
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+  color: #9e9e9e; /* muted comments */
+  font-style: italic;
+}
+
+.token.keyword,
+.token.selector,
+.token.important,
+.token.rule {
+  color: #c62828; /* red-ish keywords like screenshot */
+}
+
+.token.function,
+.token.class-name {
+  color: #2b5ea8; /* bluish for functions/types */
+}
+
+.token.string,
+.token.char {
+  color: #2e7d32; /* green strings like screenshot */
+}
+
+.token.punctuation,
+.token.operator {
+  color: #424242;
+}
+
+/* line numbers small tweak */
+pre.line-numbers {
+  padding-left: 16px;
+}
+
+/* make inline code badges in body (optional) */
+.inline-code-badge {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Courier New", monospace;
+  background: #f5f7f9;
+  border: 1px solid #e8ebee;
+  padding: 2px 6px;
+  border-radius: 6px;
+  font-size: 12px;
+  color: #374151;
+}
+

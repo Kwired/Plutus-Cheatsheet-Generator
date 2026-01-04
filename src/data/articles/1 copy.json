@@ -1,0 +1,14 @@
+{
+  "id": "1",
+  "title": "Plutus HelloWorld",
+  "subtitle": "Basic script intro",
+  "date": "2024-11-01T10:00:00.000Z",
+  "readTime": "4 min read",
+  "tags": ["plutus", "basics"],
+  "author": {
+    "name": "Aman Kumar",
+    "avatar": "https://i.pravatar.cc/48?img=2"
+  },
+  "contentHtml": "<h2 id=\"intro\">Introduction</h2><p>This is a hello world plutus script example.</p><pre class=\"bg-slate-50 p-4 rounded-md overflow-x-auto\"><code class=\"block font-mono whitespace-pre\">main = \"hello world\"</code></pre>"
+
+}

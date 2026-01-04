@@ -1,0 +1,25 @@
+[
+  {
+    "id": "1",
+    "hsFile": "examples/bigValidator.hs",
+    "title": "Plutus Big Validator Example",
+    "subtitle": "Large example with datum, redeemer, deadlines and checks",
+    "date": "2024-11-01T10:00:00.000Z",
+    "readTime": "8 min read",
+    "tags": ["plutus","validator","example"],
+    "author": { "name": "Aman Kumar", "avatar": "https://i.pravatar.cc/48?img=2" },
+    "language": "haskell"
+  },
+  {
+    "id": "2",
+    "hsFile": "examples/escrow.hs",
+    "title": "Time-locked Escrow",
+    "subtitle": "Escrow with deadline",
+    "date": "2024-11-02T10:00:00.000Z",
+    "readTime": "5 min read",
+    "tags": ["plutus","escrow"],
+    "author": { "name": "Aman Kumar" },
+    "language": "haskell"
+  }
+
+]
