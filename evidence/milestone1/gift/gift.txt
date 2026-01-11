@@ -1,0 +1,38 @@
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week02/assets$ cardano-cli conway address build \
+  --payment-script-file gift.plutus \
+  --testnet-magic 2 \
+  --out-file gift.addr
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week02/assets$ cardano-cli query utxo \
+  --address addr_test1vpxhkpyw4whhwkdfylwa3mlmg3m9xgn5fn8cmae024vnw6qntajca \
+  --testnet-magic 2
+                           TxHash                                 TxIx        Amount
+--------------------------------------------------------------------------------------
+348d5983f84b2ba8ecab58eefbfab76107c4f0e439ee6c666f06730a0d3ae6e4     1        9984486953 lovelace + TxOutDatumNone
+a8fce103991a63b25e1dae90346c3441d96b570815532a0341a3d50845852a2f     0        1202733 lovelace + TxOutDatumNone
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week02/assets$ 
+
+
+cardano-cli conway transaction build \
+  --tx-in 348d5983f84b2ba8ecab58eefbfab76107c4f0e439ee6c666f06730a0d3ae6e4#1 \
+  --tx-out $(cat gift.addr)+5000000 \
+  --tx-out-inline-datum-value '{}' \
+  --change-address addr_test1vpxhkpyw4whhwkdfylwa3mlmg3m9xgn5fn8cmae024vnw6qntajca \
+  --testnet-magic 2 \
+  --out-file tx-gift-lock.raw
+
+
+cardano-cli conway transaction sign \
+  --tx-body-file tx-gift-lock.raw \
+  --signing-key-file ../../../keys/payment.skey \
+  --testnet-magic 2 \
+  --out-file tx-gift-lock.signed
+cardano-cli conway transaction submit \
+  --tx-file tx-gift-lock.signed
+
+cardano-cli query utxo \
+  --address $(cat gift.addr) \
+  --testnet-magic 2
+
+
+
+

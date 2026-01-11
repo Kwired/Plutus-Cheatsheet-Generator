@@ -1,0 +1,122 @@
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week02/assets$ cardano-cli conway address build \
+  --payment-script-file AlwaysFails.plutus \
+  --testnet-magic 2 \
+  --out-file AlwaysFails.addr
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week02/assets$ cardano-cli query utxo   --address addr_test1vpxhkpyw4whhwkdfylwa3mlmg3m9xgn5fn8cmae024vnw6qntajca   --testnet-magic 2
+                           TxHash                                 TxIx        Amount
+--------------------------------------------------------------------------------------
+a8fce103991a63b25e1dae90346c3441d96b570815532a0341a3d50845852a2f     0        1202733 lovelace + TxOutDatumNone
+e3086ac18daec3a91af7c48bbb74dc854fd200a4c9fecf7d5837a3aed47edb6f     0        4824479 lovelace + TxOutDatumNone
+f9798a4d8e8f408790eb1e3e3d4c5519ca01b0d95007b4f85b0330f984001d37     1        9974145655 lovelace + TxOutDatumNone
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week02/assets$ cardano-cli conway transaction build \
+  --tx-in f9798a4d8e8f408790eb1e3e3d4c5519ca01b0d95007b4f85b0330f984001d37#1 \
+  --tx-out $(cat AlwaysFails.addr)+5000000 \
+  --tx-out-inline-datum-value '{}' \
+  --change-address addr_test1vpxhkpyw4whhwkdfylwa3mlmg3m9xgn5fn8cmae024vnw6qntajca \
+  --testnet-magic 2 \
+  --out-file tx-AlwaysFails-lock.raw
+Estimated transaction fee: 170649 Lovelace
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week02/assets$ cardano-cli conway transaction sign \
+  --tx-body-file tx-AlwaysFails-lock.raw \
+  --signing-key-file payment.skey \
+  --testnet-magic 2 \
+  --out-file tx-AlwaysFails-lock.signed
+Command failed: transaction sign  Error: Error reading signing key: Error file not found at: payment.skey
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week02/assets$ cardano-cli conway transaction sign   --tx-body-file tx-AlwaysFails-lock.raw   --signing-key-file ../../../keys/payment.skey   --testnet-magic 2   --out-file tx-AlwaysFails-lock.signed
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week02/assets$ cardano-cli conway transaction submit \
+  --tx-file tx-AlwaysFails-lock.signed
+Transaction successfully submitted.
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week02/assets$ cardano-cli query utxo   --address addr_test1vpxhkpyw4whhwkdfylwa3mlmg3m9xgn5fn8cmae024vnw6qntajca   --testnet-magic 2
+                           TxHash                                 TxIx        Amount
+--------------------------------------------------------------------------------------
+a8fce103991a63b25e1dae90346c3441d96b570815532a0341a3d50845852a2f     0        1202733 lovelace + TxOutDatumNone
+c0fabd2847d0d69b8265ca0b5e8f6118afbec8bd12554019d919da2b64fdf98a     1        9968975006 lovelace + TxOutDatumNone
+e3086ac18daec3a91af7c48bbb74dc854fd200a4c9fecf7d5837a3aed47edb6f     0        4824479 lovelace + TxOutDatumNone
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week02/assets$ cardano-cli query utxo   --address addr_test1vpxhkpyw4whhwkdfylwa3mlmg3m9xgn5fn8cmae024vnw6qntajca   --testnet-magic 2
+                           TxHash                                 TxIx        Amount
+--------------------------------------------------------------------------------------
+a8fce103991a63b25e1dae90346c3441d96b570815532a0341a3d50845852a2f     0        1202733 lovelace + TxOutDatumNone
+c0fabd2847d0d69b8265ca0b5e8f6118afbec8bd12554019d919da2b64fdf98a     1        9968975006 lovelace + TxOutDatumNone
+e3086ac18daec3a91af7c48bbb74dc854fd200a4c9fecf7d5837a3aed47edb6f     0        4824479 lovelace + TxOutDatumNone
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week02/assets$ cardano-cli query utxo   --address addr_test1wpu4nj5n0y4vxqjcy0msd6d396pqrkzphwt2akt6vtdk92qswzrqj   --testnet-magic 2
+                           TxHash                                 TxIx        Amount
+--------------------------------------------------------------------------------------
+009a2b4fb72a3dde624cbd2c8eac5f9a958ef6be5eac40b1f848e46571e1dfaf     0        1017160 lovelace + 1 d96eabb4d79a753dd86bc3305086880320e629407b780b63e9cd4474 + TxOutDatumNone
+0217ed6c77c7946ba0e1982224aa1ec0466a0cc231efbe034dff7deb0f6efaca     0        13313590 lovelace + TxOutDatumInline BabbageEraOnwardsConway (HashableScriptData "\216y\128" (ScriptDataConstructor 0 []))
+185f81e8797da92847a1cb59903551e4b206153f1b3068432d761e5becb4e4a0     0        13300000 lovelace + TxOutDatumInline BabbageEraOnwardsConway (HashableScriptData "\216y\128" (ScriptDataConstructor 0 []))
+18c1dd44f3575bcbd5845c56f2e882280f28b897cfc0a8eb336c7148d653d623     0        13296350 lovelace + TxOutDatumInline BabbageEraOnwardsConway (HashableScriptData "\216y\128" (ScriptDataConstructor 0 []))
+1982f50f786fff3d14d85cebd8fd0bfa1b5289abe065953dbff336706484f929     0        13296350 lovelace + TxOutDatumInline BabbageEraOnwardsConway (HashableScriptData "\216y\128" (ScriptDataConstructor 0 []))
+1a999c7aafcd1b96615216308a9c2038c53c8d652789e2cf229aac3a2c9df46e     0        13296350 lovelace + TxOutDatumInline BabbageEraOnwardsConway (HashableScriptData "\216y\128" (ScriptDataConstructor 0 []))
+1c37b3a7890d05dbcdee69dd0e084da4d0a07f3ee1e508d0b33cbfde5df367e8     0        30000000 lovelace + TxOutDatumInline BabbageEraOnwardsConway (HashableScriptData "\216y\128" (ScriptDataConstructor 0 []))
+21bd6e05722d2bce1239938d96bdf67124f0602e5e68431251bc82fb32195f10     0        13296350 lovelace + TxOutDatumInline BabbageEraOnwardsConway (HashableScriptData "\216y\128" (ScriptDataConstructor 0 []))
+234efc20ed67cda7b16bbd15671c654eb4cb5a8fd49b6819f166e0f79f021510     0        2222222 lovelace + TxOutDatumInline BabbageEraOnwardsConway (HashableScriptData "\216y\128" (ScriptDataConstructor 0 []))
+261e9c9373af99dde8a51f77d55739e9091f3406c15c18b8b6f9dd25d33baad9     0        974060 lovelace + TxOutDatumInline BabbageEraOnwardsConway (HashableScriptData "\216y\128" (ScriptDataConstructor 0 []))
+29373d226dc51616e2e0a6d6bf4e7d281bdebd611caa1e5ed47b3d8fd689722c     0        1051640 lovelace + 1 0ee8c865e340262164549b3cd64ca2fdb6ce9f9ffdebf1d87a8c4fe5.54657374204e4654 + TxOutDatumNone
+2c398141f9b2611ad17208d1de9ef1d171bae44f9851bf0f2ff509c63cbb299e     0        1051640 lovelace + 1 6fc63fbc32ed4fbdedbd1a46e0c30ee37c1ba316413d0b2a9d5c95e6.426f72726f776572 + TxOutDatumNone
+30a2716f170157339e5188f9e9c4595d250e5bbbb86ead5c7654cabb3e6f9114     0        13296350 lovelace + TxOutDatumInline BabbageEraOnwardsConway (HashableScriptData "\216y\128" (ScriptDataConstructor 0 []))
+3da1c135f199bf7e3a6ef01392f978302c71820d2801b4cc38077d2823906d14     0        13248940 lovelace + TxOutDatumInline BabbageEraOnwardsConway (HashableScriptData "\216y\128" (ScriptDataConstructor 0 []))
+4571111bf20b96e7d44a0c6d7cc77da6968ac584ed051d54fdd0cf4fd499804b     0        18567480 lovelace + TxOutDatumInline BabbageEraOnwardsConway (HashableScriptData "\216y\128" (ScriptDataConstructor 0 []))
+466cc92f74cf345c2836497ffbb31660c759e0f5c6d3169963d90de12fda65c0     0        13296350 lovelace + TxOutDatumInline BabbageEraOnwardsConway (HashableScriptData "\216y\128" (ScriptDataConstructor 0 []))
+46a849148c8ec52d30dc760975d2f30c6b6e84288fbf53747ddcd2a4bc447d31     0        13296350 lovelace + TxOutDatumInline BabbageEraOnwardsConway (HashableScriptData "\216y\128" (ScriptDataConstructor 0 []))
+4a8b23ae28f9f660f3162bb698bbab28fed470ecf496feeed50e84e21988e5df     0        13296350 lovelace + TxOutDatumInline BabbageEraOnwardsConway (HashableScriptData "\216y\128" (ScriptDataConstructor 0 []))
+4cf0ecef3dffdfc0049a5fae1a728767da23dca27785b0ee88f7b14cd6b1cfbd     0        2000000 lovelace + TxOutDatumInline BabbageEraOnwardsConway (HashableScriptData "\216y\128" (ScriptDataConstructor 0 []))
+4fb7d3f0619139ae55a058edc8896a6e2d887227aa7976b7ed68f46eef7828b2     0        13296350 lovelace + TxOutDatumInline BabbageEraOnwardsConway (HashableScriptData "\216y\128" (ScriptDataConstructor 0 []))
+55387196222ded4fe8ccc8f8bc91a33517b6525dd7aeabd3710bfb4149fb395d     0        13296350 lovelace + TxOutDatumInline BabbageEraOnwardsConway (HashableScriptData "\216y\128" (ScriptDataConstructor 0 []))
+557b8851707def9df75d7f8e47b8bee7c22b50edfc971b95887b160dd170b138     0        1185250 lovelace + TxOutDatumInline BabbageEraOnwardsConway (HashableScriptData "\216y\128" (ScriptDataConstructor 0 []))
+55d43892c614fc68fb5fce288edd8ef7bea7e97c218725c9d7aa694532ba61de     0        18567480 lovelace + TxOutDatumInline BabbageEraOnwardsConway (HashableScriptData "\216y\128" (ScriptDataConstructor 0 []))
+59a146a88f6aeb9e416a817d98221e1e005804c47cf5aaebe3123a7cf26c80b1     0        13313590 lovelace + TxOutDatumInline BabbageEraOnwardsConway (HashableScriptData "\216y\128" (ScriptDataConstructor 0 []))
+6a1d739160d7d6d77e2ebb1397343fa484bff7b81e7e192597fdc14feb356645     0        13300660 lovelace + TxOutDatumInline BabbageEraOnwardsConway (HashableScriptData "\216y\128" (ScriptDataConstructor 0 []))
+6a21f5e4f77343edff9e6ad8e93d2ba415f9ad8ec24714b434148d46edb4c6b8     0        13296350 lovelace + TxOutDatumInline BabbageEraOnwardsConway (HashableScriptData "\216y\128" (ScriptDataConstructor 0 []))
+7314a3037012553b58885aab2ebd36af432a846af3a89bafc3c6f378fc3d29ac     0        13248940 lovelace + TxOutDatumNone
+768f12d21de8f6c71ad11c362b973e4ba361ffb1743f8447d3a663760ec18340     0        974060 lovelace + TxOutDatumInline BabbageEraOnwardsConway (HashableScriptData "\216y\128" (ScriptDataConstructor 0 []))
+7f7848774ecafc334a4c222f630c2562579209a4daafd47b87dfae6bf1b430fe     0        13296350 lovelace + TxOutDatumInline BabbageEraOnwardsConway (HashableScriptData "\216y\128" (ScriptDataConstructor 0 []))
+8451f9e6b4dd0417de04d1697c17285483d92fee514f0224bf605fbd0b69193c     0        13287730 lovelace + TxOutDatumInline BabbageEraOnwardsConway (HashableScriptData "\216y\128" (ScriptDataConstructor 0 []))
+8d9610a928edc03e0113e4d92bdd8747e57461d17102e75550d22e8642b08f44     0        2883390 lovelace + 1 1288b7a6efb150f8612852a02278302e0d4ff6dae1af94af2a481584.414c4245525450554e4b30303037 + 1 430418f701eb8eb6b68062299f79ddc607ff590aaaa41a971aa6f7b8.414c4245525450554e4b30303035 + 1 5ed4cad35794c9d9d6378254daa96be48fe040216d49a7d3531bfc47.414c4245525450554e4b30303031 + 1 648f6bc3a9d04f822f282378185a6dad10334334588bc94969958ec9.414c4245525450554e4b30303033 + 1 7d6f1cb9138fd6354419d421d98c8c383a05719f4affea006c8d07ef.414c4245525450554e4b30303034 + 1 9133968f1ea64cb6924a99eebe509f10acf1795a9a1129de23ca803e.414c4245525450554e4b30303035 + 1 b663ec8584e048d570d983e9217c8c4c2b58d4230fedbe637da7c1f3.414c4245525450554e4b30303038 + 1 ba1ab7eb15915a4e3b33ae458eaa94003340cebd83cb0fccbfeb84fb.414c4245525450554e4b30303038 + 1 ceb74f3bad8f508e8a9e95d8971fdeed582ce0b8bb8ac45cb7af24af.414c4245525450554e4b30303036 + 1 f3e9b058ed25cd962bda99d637f8eb9b05957be8778b133eb3a78bcb.414c4245525450554e4b30303032 + TxOutDatumNone
+902aba5b2b72df2423ee33d4af294e21e0903c31e34917a4de8570b3e8d08c7b     0        13296350 lovelace + TxOutDatumInline BabbageEraOnwardsConway (HashableScriptData "\216y\128" (ScriptDataConstructor 0 []))
+9113696002b16ad93ff1da2ff03ed05c46e3e7bbc875d6411d2cfaaf9f561eb1     0        13296350 lovelace + TxOutDatumInline BabbageEraOnwardsConway (HashableScriptData "\216y\128" (ScriptDataConstructor 0 []))
+95d02f8ea9424bd7b11c08e37f3c599e0135f5cf79d85ab3224d8da7db62f63f     0        1017160 lovelace + 1 c029c89bdc063c5313b5d4ce561890e9a86386932646da87b30fad7d + TxOutDatumNone
+991480193fb0830fceb978d8b0a06fecffac2d073da91f5c20845f5e66ef8831     0        13296350 lovelace + TxOutDatumInline BabbageEraOnwardsConway (HashableScriptData "\216y\128" (ScriptDataConstructor 0 []))
+99b5e559968bf038d45201ad2f6845e6c6f9acaff541cd2a2777aee127b8e568     0        33596450 lovelace + TxOutDatumInline BabbageEraOnwardsConway (HashableScriptData "\216y\128" (ScriptDataConstructor 0 []))
+9a9b09c79666e5ce11ab256b490cecff4db161dc3f3ce8e829e4de0bfc4f972e     0        1043020 lovelace + 4 79dc2cb93b706af32fe1ef3b3fb014b98ef83be6b5c1a0c6e9aa8f83.466f6f426172 + TxOutDatumNone
+9b3b185aa725ddf1fed92af9e172dc6d9f1a7cc1a75bd6c1384143e249f8c884     0        13296350 lovelace + TxOutDatumInline BabbageEraOnwardsConway (HashableScriptData "\216y\128" (ScriptDataConstructor 0 []))
+a3541ae961b0b93fa1851c59a8d34af5c806f3110b87893c96fc1600bb78b12a     0        13296350 lovelace + TxOutDatumInline BabbageEraOnwardsConway (HashableScriptData "\216y\128" (ScriptDataConstructor 0 []))
+a5c01af92052cdc868847d9bc7034794bd6603033ad96e0d5db40408d8a0226d     0        13309280 lovelace + TxOutDatumInline BabbageEraOnwardsConway (HashableScriptData "\216y\128" (ScriptDataConstructor 0 []))
+a5e5849067374ba45c24bd315aa8d2be35aac3baef96cc72328aec7785c5bc54     0        1004230 lovelace + TxOutDatumHash AlonzoEraOnwardsConway "923918e403bf43c34b4ef6b48eb2ee04babed17320d8d1b9ff9ad086e86f44ec"
+a825ca062fea87b01dc1e1ec7b5435cce310b897cc286ff352478c792aab4f04     0        1234000 lovelace + TxOutDatumInline BabbageEraOnwardsConway (HashableScriptData "\EM\a\232" (ScriptDataNumber 2024))
+adaa4af49df4c3e79bbe268a74cd37a3d793fadbe959a9a72cdf285dc0d7d4a3     0        22222222 lovelace + TxOutDatumInline BabbageEraOnwardsConway (HashableScriptData "\216y\128" (ScriptDataConstructor 0 []))
+b9f81ca994f6ac40ec4dda1ff4e8f1689002981d89ab03918e7396d6c411d7ac     0        5000000000 lovelace + TxOutDatumNone
+bf7feeac4574d4ad7750074afbe16bc7bff4746821da0b00c04c7dfa8142b7fc     0        13296350 lovelace + TxOutDatumInline BabbageEraOnwardsConway (HashableScriptData "\216y\128" (ScriptDataConstructor 0 []))
+c0fabd2847d0d69b8265ca0b5e8f6118afbec8bd12554019d919da2b64fdf98a     0        5000000 lovelace + TxOutDatumInline BabbageEraOnwardsConway (HashableScriptData "\160" (ScriptDataMap []))
+c1d426e14cf92af949c674e41607dc1d02d692a11b27b3a1e47a14fbf9733b8e     0        1000000 lovelace + TxOutDatumInline BabbageEraOnwardsConway (HashableScriptData "\216y\128" (ScriptDataConstructor 0 []))
+c64033ec36088a063588235bbc011c6122f773073b36920a6b545bbb2f5f4c6c     0        20000000 lovelace + TxOutDatumInline BabbageEraOnwardsConway (HashableScriptData "\216y\128" (ScriptDataConstructor 0 []))
+cf854207bf3acaae51db0251e3e8d6c56f3e89740e126dca80d5ddb55ebac607     0        6700000 lovelace + TxOutDatumInline BabbageEraOnwardsConway (HashableScriptData "\216y\128" (ScriptDataConstructor 0 []))
+dacfd6db8a48b024b6891f01218f426fa6d648dd9799ee9c155258186cfc4862     0        13296350 lovelace + TxOutDatumInline BabbageEraOnwardsConway (HashableScriptData "\216y\128" (ScriptDataConstructor 0 []))
+e42e2a0734b70de52f0a269d91e29ad502f054a588fce0959c04532f646b4a0b     0        3000000 lovelace + TxOutDatumInline BabbageEraOnwardsConway (HashableScriptData "\216y\128" (ScriptDataConstructor 0 []))
+e4d22b7536629c3660b250e664b8e15ccbe09149ab6b62d54363f1d06c7a079e     0        13296350 lovelace + TxOutDatumInline BabbageEraOnwardsConway (HashableScriptData "\216y\128" (ScriptDataConstructor 0 []))
+e5279689726e491c3ca07735f522f741985dcbf95ad94f02e9617d7439e930ca     0        1017160 lovelace + 1 8cdea224c2e3e12a7d9623ee8ddb58b528978b5134f3d262ab86b000 + TxOutDatumNone
+ea42cbee2f0deac4296300dab90472c1e3f6bfc6d50d76b123ef8f0ef6c9d7fd     0        13296350 lovelace + TxOutDatumInline BabbageEraOnwardsConway (HashableScriptData "\216y\128" (ScriptDataConstructor 0 []))
+eb357d6756603defc6a4a7505231b6239aacc8c2ae097fe1793167f381c3f55b     0        13248940 lovelace + TxOutDatumInline BabbageEraOnwardsConway (HashableScriptData "\216y\128" (ScriptDataConstructor 0 []))
+ecddb39e726a0b4d718de3190e3e7e02ac7901ee4eb1ff8c2e77bc6d38864909     0        13296350 lovelace + TxOutDatumInline BabbageEraOnwardsConway (HashableScriptData "\216y\128" (ScriptDataConstructor 0 []))
+fbdbcb3a250248251062c4b8ed7c1d74d6ba4f0dbf7ff8820edf8348929d9c27     0        12977410 lovelace + TxOutDatumInline BabbageEraOnwardsConway (HashableScriptData "\216y\128" (ScriptDataConstructor 0 []))
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week02/assets$ cardano-cli query utxo   --address addr_test1vpxhkpyw4whhwkdfylwa3mlmg3m9xgn5fn8cmae024vnw6qntajca   --testnet-magic 2
+                           TxHash                                 TxIx        Amount
+--------------------------------------------------------------------------------------
+a8fce103991a63b25e1dae90346c3441d96b570815532a0341a3d50845852a2f     0        1202733 lovelace + TxOutDatumNone
+c0fabd2847d0d69b8265ca0b5e8f6118afbec8bd12554019d919da2b64fdf98a     1        9968975006 lovelace + TxOutDatumNone
+e3086ac18daec3a91af7c48bbb74dc854fd200a4c9fecf7d5837a3aed47edb6f     0        4824479 lovelace + TxOutDatumNone
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week02/assets$ cardano-cli conway transaction build \
+  --tx-in c0fabd2847d0d69b8265ca0b5e8f6118afbec8bd12554019d919da2b64fdf98a#0 \
+  --tx-in-script-file AlwaysFails.plutus \
+  --tx-in-inline-datum-present \
+  --tx-in-redeemer-value '{}' \
+  --tx-in-collateral c0fabd2847d0d69b8265ca0b5e8f6118afbec8bd12554019d919da2b64fdf98a#1 \
+  --change-address addr_test1vpxhkpyw4whhwkdfylwa3mlmg3m9xgn5fn8cmae024vnw6qntajca \
+  --testnet-magic 2 \
+  --out-file tx-AlwaysFails-spend.raw
+Command failed: transaction build  Error: The following scripts have execution failures:
+the script for transaction input 0 (in ascending order of the TxIds) failed with: 
+The Plutus script evaluation failed: An error has occurred:
+The machine terminated because of an error, either from a built-in function or from an explicit use of 'error'.
+Script debugging logs: it burns!!!
+
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week02/assets$ 

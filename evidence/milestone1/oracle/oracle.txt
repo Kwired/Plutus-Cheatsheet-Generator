@@ -1,0 +1,47 @@
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week09/assets$ cardano-cli conway address build \
+  --payment-script-file oracle.plutus \
+  --testnet-magic 2 \
+  --out-file oracle.addr
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week09/assets$ cat > oracle-datum.json <<EOF
+{
+  "int": 2500000
+}
+EOF
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week09/assets$ cardano-cli query utxo \
+  --address addr_test1vpxhkpyw4whhwkdfylwa3mlmg3m9xgn5fn8cmae024vnw6qntajca \
+  --testnet-magic 2
+                           TxHash                                 TxIx        Amount
+--------------------------------------------------------------------------------------
+4f7519e36bc8c46ffe1d0702f65d1281402e5d4c986c2b0df501b2b01a23be6e     0        1406287 lovelace + 1 a9b9d196bb9628851e4736b4906bb984da653b530fc5902c7fab80bc.46524545 + TxOutDatumNone
+a8fce103991a63b25e1dae90346c3441d96b570815532a0341a3d50845852a2f     0        1202733 lovelace + TxOutDatumNone
+ee0e0c41816f482611546754c79c82ccb12ba0e2917a270ffe50258934df6a06     0        9951853928 lovelace + 1 79dc2cb93b706af32fe1ef3b3fb014b98ef83be6b5c1a0c6e9aa8f83.46524545 + 1 a9b9d196bb9628851e4736b4906bb984da653b530fc5902c7fab80bc.42414431 + 3 a9b9d196bb9628851e4736b4906bb984da653b530fc5902c7fab80bc.46524545 + 1 a9b9d196bb9628851e4736b4906bb984da653b530fc5902c7fab80bc.4e465431 + 1 f0d624fb0e1e34f91911e5a182f5ae0282518cbfac823b667ef50b97.434f4c4c + TxOutDatumNone
+f5b4345ea271c03fe241f1914eacbd76e39f1f110eec8072c3d482dadf22d768     1        2652510 lovelace + TxOutDatumNone
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week09/assets$ export TXIN_ORACLE=ee0e0c41816f482611546754c79c82ccb12ba0e2917a270ffe50258934df6a06#0
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week09/assets$ cardano-cli conway transaction build \
+  --tx-in $TXIN_ORACLE \
+  --tx-out "$(cat oracle.addr)+3000000" \
+  --tx-out-inline-datum-file oracle-datum.json \
+  --change-address addr_test1vpxhkpyw4whhwkdfylwa3mlmg3m9xgn5fn8cmae024vnw6qntajca \
+  --testnet-magic 2 \
+  --out-file oracle-lock.tx
+Estimated transaction fee: 176325 Lovelace
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week09/assets$ cardano-cli conway transaction sign \
+  --tx-body-file oracle-lock.tx \
+  --signing-key-file ../../../keys/payment.skey \
+  --testnet-magic 2 \
+  --out-file oracle-lock.signed
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week09/assets$ cardano-cli conway transaction submit \
+  --tx-file oracle-lock.signed \
+  --testnet-magic 2
+Transaction successfully submitted.
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week09/assets$ cardano-cli query utxo   --address addr_test1vpxhkpyw4whhwkdfylwa3mlmg3m9xgn5fn8cmae024vnw6qntajca   --testnet-magic 2
+                           TxHash                                 TxIx        Amount
+--------------------------------------------------------------------------------------
+4f7519e36bc8c46ffe1d0702f65d1281402e5d4c986c2b0df501b2b01a23be6e     0        1406287 lovelace + 1 a9b9d196bb9628851e4736b4906bb984da653b530fc5902c7fab80bc.46524545 + TxOutDatumNone
+75e3f20b50059670e47f2c0c08a78ddb0a22afc0a37ae5a7d226603321286619     1        9948677603 lovelace + 1 79dc2cb93b706af32fe1ef3b3fb014b98ef83be6b5c1a0c6e9aa8f83.46524545 + 1 a9b9d196bb9628851e4736b4906bb984da653b530fc5902c7fab80bc.42414431 + 3 a9b9d196bb9628851e4736b4906bb984da653b530fc5902c7fab80bc.46524545 + 1 a9b9d196bb9628851e4736b4906bb984da653b530fc5902c7fab80bc.4e465431 + 1 f0d624fb0e1e34f91911e5a182f5ae0282518cbfac823b667ef50b97.434f4c4c + TxOutDatumNone
+a8fce103991a63b25e1dae90346c3441d96b570815532a0341a3d50845852a2f     0        1202733 lovelace + TxOutDatumNone
+f5b4345ea271c03fe241f1914eacbd76e39f1f110eec8072c3d482dadf22d768     1        2652510 lovelace + TxOutDatumNone
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week09/assets$ 
+
+
+

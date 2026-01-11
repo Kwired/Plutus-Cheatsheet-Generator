@@ -1,0 +1,43 @@
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week09/assets$ cardano-cli conway transaction policyid   --script-file collateral.plutus
+f0d624fb0e1e34f91911e5a182f5ae0282518cbfac823b667ef50b97
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week09/assets$ cardano-cli query utxo   --address addr_test1vpxhkpyw4whhwkdfylwa3mlmg3m9xgn5fn8cmae024vnw6qntajca   --testnet-magic 2
+                           TxHash                                 TxIx        Amount
+--------------------------------------------------------------------------------------
+4f7519e36bc8c46ffe1d0702f65d1281402e5d4c986c2b0df501b2b01a23be6e     0        1406287 lovelace + 1 a9b9d196bb9628851e4736b4906bb984da653b530fc5902c7fab80bc.46524545 + TxOutDatumNone
+a8fce103991a63b25e1dae90346c3441d96b570815532a0341a3d50845852a2f     0        1202733 lovelace + TxOutDatumNone
+f5b4345ea271c03fe241f1914eacbd76e39f1f110eec8072c3d482dadf22d768     1        2652510 lovelace + TxOutDatumNone
+fbd4eb7e2a04516da411ac5bd86ff5e1675005157d835f85a03afca0ff6f40de     0        9952148589 lovelace + 1 79dc2cb93b706af32fe1ef3b3fb014b98ef83be6b5c1a0c6e9aa8f83.46524545 + 1 a9b9d196bb9628851e4736b4906bb984da653b530fc5902c7fab80bc.42414431 + 3 a9b9d196bb9628851e4736b4906bb984da653b530fc5902c7fab80bc.46524545 + 1 a9b9d196bb9628851e4736b4906bb984da653b530fc5902c7fab80bc.4e465431 + TxOutDatumNone
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week09/assets$ export COLL_POLICY=f0d624fb0e1e34f91911e5a182f5ae0282518cbfac823b667ef50b97
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week09/assets$ export TXIN=fbd4eb7e2a04516da411ac5bd86ff5e1675005157d835f85a03afca0ff6f40de#0
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week09/assets$ cardano-cli conway transaction build \
+  --tx-in $TXIN \
+  --mint "1 ${COLL_POLICY}.434f4c4c" \
+  --mint-script-file collateral.plutus \
+  --mint-redeemer-file redeemer.json \
+  --change-address addr_test1vpxhkpyw4whhwkdfylwa3mlmg3m9xgn5fn8cmae024vnw6qntajca \
+  --testnet-magic 2 \
+  --out-file collateral-fail.tx
+Estimated transaction fee: 286301 Lovelace
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week09/assets$ cardano-cli conway transaction sign \
+  --tx-body-file collateral-fail.tx \
+  --signing-key-file ../../../keys/payment.skey \
+  --testnet-magic 2 \
+  --out-file collateral-fail.signed
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week09/assets$ cardano-cli conway transaction submit \
+  --tx-file collateral-fail.signed \
+  --testnet-magic 2
+Command failed: transaction submit  Error: Error while submitting tx: ShelleyTxValidationError ShelleyBasedEraConway (ApplyTxError (ConwayUtxowFailure (UtxoFailure (InsufficientCollateral (DeltaCoin 0) (Coin 429452))) :| [ConwayUtxowFailure (UtxoFailure NoCollateralInputs)]))
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week09/assets$ 
+
+
+
+
+
+
+
+
+
+
+
+
+

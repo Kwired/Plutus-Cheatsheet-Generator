@@ -1,0 +1,34 @@
+$ cardano-cli conway address build --payment-script-file fortytwotyped.plutus --testnet-magic 2 --out-file fortytwotyped.addr
+
+$ cardano-cli query utxo --address addr_test1vpxhkpyw4whhwkdfylwa3mlmg3m9xgn5fn8cmae024vnw6qntajca --testnet-magic 2
+                           TxHash                                 TxIx        Amount
+--------------------------------------------------------------------------------------
+37cf26cdff0eb65eded0a449af73f025dd82dc3ebec84fe95ef799398a42716a     1        9994828251 lovelace + TxOutDatumNone
+
+$ cardano-cli conway transaction build \
+  --tx-in 37cf26cdff0eb65eded0a449af73f025dd82dc3ebec84fe95ef799398a42716a#1 \
+  --tx-out addr_test1wzqvkn6myu8ay080wdsju4s4mzuzgwwv9rxsz2xuc8ycaus9zk46q+5000000 \
+  --tx-out-inline-datum-value '{}' \
+  --change-address addr_test1vpxhkpyw4whhwkdfylwa3mlmg3m9xgn5fn8cmae024vnw6qntajca \
+  --testnet-magic 2 \
+  --out-file tx-lock.raw
+Estimated transaction fee: 170649 Lovelace
+$ 
+$ cardano-cli conway transaction sign \
+  --tx-body-file tx-lock.raw \
+  --signing-key-file ../../keys/payment.skey \
+  --testnet-magic 2 \
+  --out-file tx-lock.signed
+$ 
+$ cardano-cli conway transaction submit \
+  --tx-file tx-lock.signed
+Transaction successfully submitted.
+$ 
+$ cardano-cli query utxo --address addr_test1vpxhkpyw4whhwkdfylwa3mlmg3m9xgn5fn8cmae024vnw6qntajca --testnet-magic 2
+                           TxHash                                 TxIx        Amount
+--------------------------------------------------------------------------------------
+4671f2e00f5cd8ecec8a916f06fd666cdf78c27224ec113f641932e556ead453     1        9989657602 lovelace + TxOutDatumNone
+
+
+
+https://preview.cardanoscan.io/transaction/4671f2e00f5cd8ecec8a916f06fd666cdf78c27224ec113f641932e556ead453?tab=utxo

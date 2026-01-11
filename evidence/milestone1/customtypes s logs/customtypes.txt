@@ -1,0 +1,58 @@
+ $ cardano-cli conway address build --payment-script-file customtypes.plutus --testnet-magic 2 --out-file customtypes.addr
+ $ cardano-cli query utxo --address addr_test1vpxhkpyw4whhwkdfylwa3mlmg3m9xgn5fn8cmae024vnw6qntajca --testnet-magic 2
+                           TxHash                                 TxIx        Amount
+--------------------------------------------------------------------------------------
+4671f2e00f5cd8ecec8a916f06fd666cdf78c27224ec113f641932e556ead453     1        9989657602 lovelace + TxOutDatumNone
+ $ cardano-cli conway transaction build \
+  --tx-in 4671f2e00f5cd8ecec8a916f06fd666cdf78c27224ec113f641932e556ead453#1 \
+  --tx-out addr_test1wr2negcqkh2hsyjzdggjrx7798pam8fz3pcuvfatc5j4czq3vg0tq+5000000 \
+  --tx-out-inline-datum-value '{}' \
+  --change-address addr_test1vpxhkpyw4whhwkdfylwa3mlmg3m9xgn5fn8cmae024vnw6qntajca \
+  --testnet-magic 2 \
+  --out-file tx-customtuped-lock.raw
+Estimated transaction fee: 170649 Lovelace
+ $   cardano-cli conway transaction sign \
+  --tx-body-file tx-customtuped-lock.raw \
+  --signing-key-file ../../keys/payment.skey \
+  --testnet-magic 2 \
+  --out-file tx-customtuped-lock.signed
+Command failed: transaction sign  Error: Error reading signing key: Error file not found at: ../../keys/payment.skey
+ $ cardano-cli conway transaction sign \
+  --tx-body-file tx-customtuped-lock.raw \
+  --signing-key-file ../../../keys/payment.skey \
+  --testnet-magic 2 \
+  --out-file tx-customtuped-lock.signed
+ $ cardano-cli conway transaction submit \
+  --tx-file tx-customtuped-lock.signed
+Transaction successfully submitted.
+ $ cardano-cli query utxo --address addr_test1vpxhkpyw4whhwkdfylwa3mlmg3m9xgn5fn8cmae024vnw6qntajca --testnet-magic 2
+                           TxHash                                 TxIx        Amount
+--------------------------------------------------------------------------------------
+4671f2e00f5cd8ecec8a916f06fd666cdf78c27224ec113f641932e556ead453     1        9989657602 lovelace + TxOutDatumNone
+ $ 
+
+
+
+
+
+
+
+
+cardano-cli conway transaction build \
+  --tx-in 2fd8396dd6a88873bdf815594307bdf60351c70db1658798591753b547f5a134#0 \
+  --tx-in-script-file customtypes.plutus \
+  --tx-in-inline-datum-present \
+  --tx-in-redeemer-file redeemer.json \
+  --tx-in-collateral 348d5983f84b2ba8ecab58eefbfab76107c4f0e439ee6c666f06730a0d3ae6e4#1 \
+  --change-address addr_test1vpxhkpyw4whhwkdfylwa3mlmg3m9xgn5fn8cmae024vnw6qntajca \
+  --testnet-magic 2 \
+  --out-file tx-customtyped-spend.raw
+cardano-cli conway transaction sign \
+  --tx-body-file tx-customtyped-spend.raw \
+  --signing-key-file ../../../keys/payment.skey \
+  --testnet-magic 2 \
+  --out-file tx-customtyped-spend.signed
+
+cardano-cli conway transaction submit \
+  --tx-file tx-customtyped-spend.signed
+

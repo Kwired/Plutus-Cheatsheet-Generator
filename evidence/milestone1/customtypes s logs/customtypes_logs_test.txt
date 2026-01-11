@@ -1,0 +1,101 @@
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week02/assets$ cardano-cli conway address build --payment-script-file customtypes.plutus --testnet-magic 2 --out-file customtypes.addr
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week02/assets$ cardano-cli query utxo --address addr_test1vpxhkpyw4whhwkdfylwa3mlmg3m9xgn5fn8cmae024vnw6qntajca --testnet-magic 2
+                           TxHash                                 TxIx        Amount
+--------------------------------------------------------------------------------------
+4671f2e00f5cd8ecec8a916f06fd666cdf78c27224ec113f641932e556ead453     1        9989657602 lovelace + TxOutDatumNone
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week02/assets$ cardano-cli conway transaction build \
+  --tx-in 4671f2e00f5cd8ecec8a916f06fd666cdf78c27224ec113f641932e556ead453#1 \
+  --tx-out addr_test1wr2negcqkh2hsyjzdggjrx7798pam8fz3pcuvfatc5j4czq3vg0tq+5000000 \
+  --tx-out-inline-datum-value '{}' \
+  --change-address addr_test1vpxhkpyw4whhwkdfylwa3mlmg3m9xgn5fn8cmae024vnw6qntajca \
+  --testnet-magic 2 \
+  --out-file tx-customtuped-lock.raw
+Estimated transaction fee: 170649 Lovelace
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week02/assets$   cardano-cli conway transaction sign \
+  --tx-body-file tx-customtuped-lock.raw \
+  --signing-key-file ../../keys/payment.skey \
+  --testnet-magic 2 \
+  --out-file tx-customtuped-lock.signed
+Command failed: transaction sign  Error: Error reading signing key: Error file not found at: ../../keys/payment.skey
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week02/assets$ cardano-cli conway transaction sign \
+  --tx-body-file tx-customtuped-lock.raw \
+  --signing-key-file ../../../keys/payment.skey \
+  --testnet-magic 2 \
+  --out-file tx-customtuped-lock.signed
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week02/assets$ cardano-cli conway transaction submit \
+  --tx-file tx-customtuped-lock.signed
+Transaction successfully submitted.
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week02/assets$ cardano-cli query utxo --address addr_test1vpxhkpyw4whhwkdfylwa3mlmg3m9xgn5fn8cmae024vnw6qntajca --testnet-magic 2
+                           TxHash                                 TxIx        Amount
+--------------------------------------------------------------------------------------
+4671f2e00f5cd8ecec8a916f06fd666cdf78c27224ec113f641932e556ead453     1        9989657602 lovelace + TxOutDatumNone
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week02/assets$ nano redeemer.json
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week02/assets$ cardano-cli query utxo --address $(cat customtypes.addr) --testnet-magic 2
+                           TxHash                                 TxIx        Amount
+--------------------------------------------------------------------------------------
+2fd8396dd6a88873bdf815594307bdf60351c70db1658798591753b547f5a134     0        1500000 lovelace + TxOutDatumInline BabbageEraOnwardsConway (HashableScriptData "\216y\128" (ScriptDataConstructor 0 []))
+348d5983f84b2ba8ecab58eefbfab76107c4f0e439ee6c666f06730a0d3ae6e4     0        5000000 lovelace + TxOutDatumInline BabbageEraOnwardsConway (HashableScriptData "\160" (ScriptDataMap []))
+4332a258fa2219f9b39876f549f7ec7f5c4e7bb3db84acf379b4a95a7f8afa92     0        8000000 lovelace + TxOutDatumInline BabbageEraOnwardsConway (HashableScriptData "\216y\128" (ScriptDataConstructor 0 []))
+bcd35e8b68423e4bf6ec877ed87b712a4166fe8c42572dc90bca8fed3f7febe7     0        3500000 lovelace + TxOutDatumInline BabbageEraOnwardsConway (HashableScriptData "\216y\128" (ScriptDataConstructor 0 []))
+f08e35966be19f1c937231d189cc2884755c5383d159d6b6d4390f8ab3ccd866     0        1000000 lovelace + TxOutDatumInline BabbageEraOnwardsConway (HashableScriptData "\216y\128" (ScriptDataConstructor 0 []))
+fa491e82de668652c2b0e5c6e2fddf332cd003341d600995615d8d50f0cf617d     0        2222222 lovelace + TxOutDatumInline BabbageEraOnwardsConway (HashableScriptData "\SOH" (ScriptDataNumber 1))
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week02/assets$ cardano-cli conway transaction build \
+  --tx-in 2fd8396dd6a88873bdf815594307bdf60351c70db1658798591753b547f5a134#0 \
+  --tx-in-script-file customtypes.plutus \
+  --tx-in-inline-datum-present \
+  --tx-in-redeemer-file redeemer.json \
+  --tx-in-collateral 4671f2e00f5cd8ecec8a916f06fd666cdf78c27224ec113f641932e556ead453#1 \
+  --change-address addr_test1vpxhkpyw4whhwkdfylwa3mlmg3m9xgn5fn8cmae024vnw6qntajca \
+  --testnet-magic 2 \
+  --out-file tx-customtyped-spend.raw
+Command failed: transaction build  Error: The following tx input(s) were not present in the UTxO: 
+4671f2e00f5cd8ecec8a916f06fd666cdf78c27224ec113f641932e556ead453#1
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week02/assets$ cardano-cli query utxo --address addr_test1vpxhkpyw4whhwkdfylwa3mlmg3m9xgn5fn8cmae024vnw6qntajca --testnet-magic 2
+                           TxHash                                 TxIx        Amount
+--------------------------------------------------------------------------------------
+348d5983f84b2ba8ecab58eefbfab76107c4f0e439ee6c666f06730a0d3ae6e4     1        9984486953 lovelace + TxOutDatumNone
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week02/assets$ cardano-cli conway transaction build \
+  --tx-in 2fd8396dd6a88873bdf815594307bdf60351c70db1658798591753b547f5a134#0 \
+  --tx-in-script-file customtypes.plutus \
+  --tx-in-inline-datum-present \
+  --tx-in-redeemer-file redeemer.json \
+  --tx-in-collateral 348d5983f84b2ba8ecab58eefbfab76107c4f0e439ee6c666f06730a0d3ae6e4#1 \
+  --change-address addr_test1vpxhkpyw4whhwkdfylwa3mlmg3m9xgn5fn8cmae024vnw6qntajca \
+  --testnet-magic 2 \
+  --out-file tx-customtyped-spend.raw
+Estimated transaction fee: 297267 Lovelace
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week02/assets$ cardano-cli conway transaction sign \
+  --tx-body-file tx-customtyped-spend.raw \
+  --signing-key-file ../../../keys/payment.skey \
+  --testnet-magic 2 \
+  --out-file tx-customtyped-spend.signed
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week02/assets$ cardano-cli conway transaction submit \
+  --tx-file tx-customtyped-spend.signed
+Transaction successfully submitted.
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week02/assets$ cardano-cli query utxo --address addr_test1vpxhkpyw4whhwkdfylwa3mlmg3m9xgn5fn8cmae024vnw6qntajca --testnet-magic 2
+                           TxHash                                 TxIx        Amount
+--------------------------------------------------------------------------------------
+348d5983f84b2ba8ecab58eefbfab76107c4f0e439ee6c666f06730a0d3ae6e4     1        9984486953 lovelace + TxOutDatumNone
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week02/assets$ cardano-cli query utxo --address $(cat customtypes.addr) --testnet-magic 2
+                           TxHash                                 TxIx        Amount
+--------------------------------------------------------------------------------------
+2fd8396dd6a88873bdf815594307bdf60351c70db1658798591753b547f5a134     0        1500000 lovelace + TxOutDatumInline BabbageEraOnwardsConway (HashableScriptData "\216y\128" (ScriptDataConstructor 0 []))
+348d5983f84b2ba8ecab58eefbfab76107c4f0e439ee6c666f06730a0d3ae6e4     0        5000000 lovelace + TxOutDatumInline BabbageEraOnwardsConway (HashableScriptData "\160" (ScriptDataMap []))
+4332a258fa2219f9b39876f549f7ec7f5c4e7bb3db84acf379b4a95a7f8afa92     0        8000000 lovelace + TxOutDatumInline BabbageEraOnwardsConway (HashableScriptData "\216y\128" (ScriptDataConstructor 0 []))
+bcd35e8b68423e4bf6ec877ed87b712a4166fe8c42572dc90bca8fed3f7febe7     0        3500000 lovelace + TxOutDatumInline BabbageEraOnwardsConway (HashableScriptData "\216y\128" (ScriptDataConstructor 0 []))
+f08e35966be19f1c937231d189cc2884755c5383d159d6b6d4390f8ab3ccd866     0        1000000 lovelace + TxOutDatumInline BabbageEraOnwardsConway (HashableScriptData "\216y\128" (ScriptDataConstructor 0 []))
+fa491e82de668652c2b0e5c6e2fddf332cd003341d600995615d8d50f0cf617d     0        2222222 lovelace + TxOutDatumInline BabbageEraOnwardsConway (HashableScriptData "\SOH" (ScriptDataNumber 1))
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week02/assets$ cardano-cli query utxo --address $(cat customtypes.addr) --testnet-magic 2
+                           TxHash                                 TxIx        Amount
+--------------------------------------------------------------------------------------
+348d5983f84b2ba8ecab58eefbfab76107c4f0e439ee6c666f06730a0d3ae6e4     0        5000000 lovelace + TxOutDatumInline BabbageEraOnwardsConway (HashableScriptData "\160" (ScriptDataMap []))
+4332a258fa2219f9b39876f549f7ec7f5c4e7bb3db84acf379b4a95a7f8afa92     0        8000000 lovelace + TxOutDatumInline BabbageEraOnwardsConway (HashableScriptData "\216y\128" (ScriptDataConstructor 0 []))
+bcd35e8b68423e4bf6ec877ed87b712a4166fe8c42572dc90bca8fed3f7febe7     0        3500000 lovelace + TxOutDatumInline BabbageEraOnwardsConway (HashableScriptData "\216y\128" (ScriptDataConstructor 0 []))
+f08e35966be19f1c937231d189cc2884755c5383d159d6b6d4390f8ab3ccd866     0        1000000 lovelace + TxOutDatumInline BabbageEraOnwardsConway (HashableScriptData "\216y\128" (ScriptDataConstructor 0 []))
+fa491e82de668652c2b0e5c6e2fddf332cd003341d600995615d8d50f0cf617d     0        2222222 lovelace + TxOutDatumInline BabbageEraOnwardsConway (HashableScriptData "\SOH" (ScriptDataNumber 1))
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week02/assets$ cardano-cli query utxo --address addr_test1vpxhkpyw4whhwkdfylwa3mlmg3m9xgn5fn8cmae024vnw6qntajca --testnet-magic 2
+                           TxHash                                 TxIx        Amount
+--------------------------------------------------------------------------------------
+348d5983f84b2ba8ecab58eefbfab76107c4f0e439ee6c666f06730a0d3ae6e4     1        9984486953 lovelace + TxOutDatumNone
+a8fce103991a63b25e1dae90346c3441d96b570815532a0341a3d50845852a2f     0        1202733 lovelace + TxOutDatumNone
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week02/assets$ 

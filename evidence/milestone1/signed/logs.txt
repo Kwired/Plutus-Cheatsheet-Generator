@@ -1,0 +1,89 @@
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week05/assets$ cardano-cli conway address build \
+  --payment-script-file signed.plutus \
+  --testnet-magic 2 \
+  --out-file signed.addr
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week05/assets$ cardano-cli address key-hash \
+  --payment-verification-key-file ../../../keys/payment.vkey
+4d7b048eabaf7759a927ddd8effb44765322744ccf8df72f55593768
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week05/assets$ cat > datum.json <<EOF
+{
+  "constructor": 0,
+  "fields": [
+    { "bytes": "4d7b048eabaf7759a927ddd8effb44765322744ccf8df72f55593768" }
+  ]
+}
+EOF
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week05/assets$ cardano-cli query utxo \
+  --address addr_test1vpxhkpyw4whhwkdfylwa3mlmg3m9xgn5fn8cmae024vnw6qntajca \
+  --testnet-magic 2
+                           TxHash                                 TxIx        Amount
+--------------------------------------------------------------------------------------
+0a182c368843e514ff8671b0d0f016fd11cab2ecf80b1685eb31366df6508987     0        9957933407 lovelace + 1 79dc2cb93b706af32fe1ef3b3fb014b98ef83be6b5c1a0c6e9aa8f83.46524545 + TxOutDatumNone
+a8fce103991a63b25e1dae90346c3441d96b570815532a0341a3d50845852a2f     0        1202733 lovelace + TxOutDatumNone
+e3086ac18daec3a91af7c48bbb74dc854fd200a4c9fecf7d5837a3aed47edb6f     0        4824479 lovelace + TxOutDatumNone
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week05/assets$ cardano-cli conway transaction build \
+  --tx-in e3086ac18daec3a91af7c48bbb74dc854fd200a4c9fecf7d5837a3aed47edb6f#0 \
+  --tx-out "$(cat signed.addr)+2000000" \
+  --tx-out-inline-datum-file datum.json \
+  --change-address addr_test1vpxhkpyw4whhwkdfylwa3mlmg3m9xgn5fn8cmae024vnw6qntajca \
+  --testnet-magic 2 \
+  --out-file signed-lock.tx
+Estimated transaction fee: 171969 Lovelace
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week05/assets$ cardano-cli conway transaction sign \
+  --tx-body-file signed-lock.tx \
+  --signing-key-file ../../../keys/payment.skey \
+  --testnet-magic 2 \
+  --out-file signed-lock.signed
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week05/assets$ cardano-cli conway transaction submit \
+  --tx-file signed-lock.signed \
+  --testnet-magic 2
+Transaction successfully submitted.
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week05/assets$ cardano-cli query utxo \
+  --address $(cat signed.addr) \
+  --testnet-magic 2
+                           TxHash                                 TxIx        Amount
+--------------------------------------------------------------------------------------
+f5b4345ea271c03fe241f1914eacbd76e39f1f110eec8072c3d482dadf22d768     0        2000000 lovelace + TxOutDatumInline BabbageEraOnwardsConway (HashableScriptData "X\FSM{\EOT\142\171\175wY\169'\221\216\239\251DvS\"tL\207\141\247/UY7h" (ScriptDataBytes "M{\EOT\142\171\175wY\169'\221\216\239\251DvS\"tL\207\141\247/UY7h"))
+fa4ef830713f7004dafda47c64fde7d1ef371ee7e0d50bba8e9e6618f5b6d9b0     0        2000000 lovelace + TxOutDatumInline BabbageEraOnwardsConway (HashableScriptData "\216y\159X\FSM{\EOT\142\171\175wY\169'\221\216\239\251DvS\"tL\207\141\247/UY7h\255" (ScriptDataConstructor 0 [ScriptDataBytes "M{\EOT\142\171\175wY\169'\221\216\239\251DvS\"tL\207\141\247/UY7h"]))
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week05/assets$ cardano-cli conway transaction build \
+  --tx-in f5b4345ea271c03fe241f1914eacbd76e39f1f110eec8072c3d482dadf22d768#0 \
+  --tx-in-script-file signed.plutus \
+  --tx-in-inline-datum-present \
+  --tx-in-redeemer-file redeemer.json \
+  --required-signer ../../../keys/payment.skey \
+  --tx-in-collateral e3086ac18daec3a91af7c48bbb74dc854fd200a4c9fecf7d5837a3aed47edb6f#0 \
+  --change-address addr_test1vpxhkpyw4whhwkdfylwa3mlmg3m9xgn5fn8cmae024vnw6qntajca \
+  --testnet-magic 2 \
+  --out-file signed-pass.tx
+Command failed: transaction build  Error: The following tx input(s) were not present in the UTxO: 
+e3086ac18daec3a91af7c48bbb74dc854fd200a4c9fecf7d5837a3aed47edb6f#0
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week05/assets$ cardano-cli query utxo \
+  --address addr_test1vpxhkpyw4whhwkdfylwa3mlmg3m9xgn5fn8cmae024vnw6qntajca \
+  --testnet-magic 2
+                           TxHash                                 TxIx        Amount
+--------------------------------------------------------------------------------------
+a8fce103991a63b25e1dae90346c3441d96b570815532a0341a3d50845852a2f     0        1202733 lovelace + TxOutDatumNone
+f5b4345ea271c03fe241f1914eacbd76e39f1f110eec8072c3d482dadf22d768     1        2652510 lovelace + TxOutDatumNone
+fa4ef830713f7004dafda47c64fde7d1ef371ee7e0d50bba8e9e6618f5b6d9b0     1        9955759546 lovelace + 1 79dc2cb93b706af32fe1ef3b3fb014b98ef83be6b5c1a0c6e9aa8f83.46524545 + TxOutDatumNone
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week05/assets$ cardano-cli conway transaction build \
+  --tx-in f5b4345ea271c03fe241f1914eacbd76e39f1f110eec8072c3d482dadf22d768#0 \
+  --tx-in-script-file signed.plutus \
+  --tx-in-inline-datum-present \
+  --tx-in-redeemer-file redeemer.json \
+  --required-signer ../../../keys/payment.skey \
+  --tx-in-collateral f5b4345ea271c03fe241f1914eacbd76e39f1f110eec8072c3d482dadf22d768#1 \
+  --change-address addr_test1vpxhkpyw4whhwkdfylwa3mlmg3m9xgn5fn8cmae024vnw6qntajca \
+  --testnet-magic 2 \
+  --out-file signed-pass.tx
+Estimated transaction fee: 308045 Lovelace
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week05/assets$ cardano-cli conway transaction sign \
+  --tx-body-file signed-pass.tx \
+  --signing-key-file ../../../keys/payment.skey \
+  --testnet-magic 2 \
+  --out-file signed-pass.signed
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week05/assets$ cardano-cli conway transaction submit \
+  --tx-file signed-pass.signed \
+  --testnet-magic 2
+Transaction successfully submitted.
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week05/assets$ 
+

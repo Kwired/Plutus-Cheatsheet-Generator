@@ -1,0 +1,44 @@
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week02$ cardano-cli address build --payment-script-file ./assets/fortytwo.plutus --out-file ./assets/fortytwo.addr --testnet-magic 2
+
+
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week02$ cardano-cli conway transaction build \
+  --tx-in 32ffe9846f6f54b619e71db43742cd14e709dfcffc6ab54fa2d4000b250d1da0#0 \
+  --tx-out addr_test1wpqlfqjt8czqmd6dqxrxvdr8tp8gt4a8xg40d6jzs9wx7fg93pm8a+5000000 \
+  --tx-out-datum-hash-value 42 \
+  --change-address addr_test1vpxhkpyw4whhwkdfylwa3mlmg3m9xgn5fn8cmae024vnw6qntajca \
+  --testnet-magic 2 \
+  --out-file ./assets/tx-lock.raw
+Estimated transaction fee: 171749 Lovelace
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week02$ 
+
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week02$ cardano-cli conway transaction sign   --tx-body-file ./assets/tx-lock.raw   --signing-key-file ../../keys/payment.skey   --testnet-magic 2   --out-file tx.signed
+
+
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week02$ cardano-cli conway transaction submit --tx-file tx.signed
+Transaction successfully submitted.
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week02$ 
+
+
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week02$ cardano-cli query utxo --address $(cat assets/fortytwo.addr) --testnet-magic 2
+                           TxHash                                 TxIx        Amount
+--------------------------------------------------------------------------------------
+054c125ccdfb3b3ebc37b07bfbac9929f4ecec587873397f6f13751c7fe0d5ce     0        1000007 lovelace + TxOutDatumHash AlonzoEraOnwardsConway "d692ab9839cc98b46b3fb3df12777086162758a5c805e4b67030e3360cc5a55c"
+185f65f96865b006d098cc1140ab279c37e6ed375e8d5a83e1bc12351c85f21e     0        1230294 lovelace + TxOutDatumHash AlonzoEraOnwardsConway "8c254bf4fea35cfd1470b994f341a65398c03c1b584dc7de84a50da72d9ac787"
+2a4edffabe8349b9764c08dce79d3074e34e9b2b994a8f6f72a9b270e30cd629     0        6789000000 lovelace + TxOutDatumNone
+37cf26cdff0eb65eded0a449af73f025dd82dc3ebec84fe95ef799398a42716a     0        5000000 lovelace + TxOutDatumHash AlonzoEraOnwardsConway "9e1199a988ba72ffd6e9c269cadb3b53b5f360ff99f112d9b2ee30c4d74ad88b"
+503f6633792b7bd70b2ec5fe956d6eb0fede05273191427a21e5d3296f5a908f     0        1230293 lovelace + TxOutDatumHash AlonzoEraOnwardsConway "8c254bf4fea35cfd1470b994f341a65398c03c1b584dc7de84a50da72d9ac787"
+8f0d9f759a92b65e0f10ff4b1bfa895ce60dde614e83b57776baacfccdb36693     0        1448167 lovelace + TxOutDatumInline BabbageEraOnwardsConway (HashableScriptData "\216y\159\SOHX\CAN\SOH#Eg\137\171\205\239\SOH#Eg\137\171\205\239\SOH#Eg\137\171\205\239X\CAN\254\220\186\152vT2\DLE\254\220\186\152vT2\DLE\254\220\186\152vT2\DLEX\CAN\DC24Vx\154\188\222\240\DC24Vx\154\188\222\240\DC24Vx\154\188\222\240O\192\255\238\192\255\238\192\255\238\192\255\238\192\255\238X\CAN\DC24Vx\154\188\222\240\DC24Vx\154\188\222\240\DC24Vx\154\188\222\240\SUB\NUL\SIB@\255" (ScriptDataConstructor 0 [ScriptDataNumber 1,ScriptDataBytes "\SOH#Eg\137\171\205\239\SOH#Eg\137\171\205\239\SOH#Eg\137\171\205\239",ScriptDataBytes "\254\220\186\152vT2\DLE\254\220\186\152vT2\DLE\254\220\186\152vT2\DLE",ScriptDataBytes "\DC24Vx\154\188\222\240\DC24Vx\154\188\222\240\DC24Vx\154\188\222\240",ScriptDataBytes "\192\255\238\192\255\238\192\255\238\192\255\238\192\255\238",ScriptDataBytes "\DC24Vx\154\188\222\240\DC24Vx\154\188\222\240\DC24Vx\154\188\222\240",ScriptDataNumber 1000000]))
+99b9381bb2a63b04efbb55d533fa2d8824e880cfb16b8c2e58b0dc634ff9b150     0        5000000 lovelace + TxOutDatumNone
+a994d4ab07163853a8bc85dbf0f88d4eba40e40f1a68c8a8c0ad6fd826ce2da7     0        10000111 lovelace + TxOutDatumHash AlonzoEraOnwardsConway "5a54e86cfac1499570df3d8f3ac42a2f0ec0affa5e7342a0e17611fbb54839c8"
+c7a6ac37c0086832de33e13286b58b13bfae67c4ef19a46fb06bc03ef949360a     0        7000000 lovelace + TxOutDatumInline BabbageEraOnwardsConway (HashableScriptData "\216y\128" (ScriptDataConstructor 0 []))
+c852fa029469146ec26a75b0bf90febb76eef26e657bb14b3d6a9e5bd86cd544     0        10000222 lovelace + TxOutDatumHash AlonzoEraOnwardsConway "5a54e86cfac1499570df3d8f3ac42a2f0ec0affa5e7342a0e17611fbb54839c8"
+ca25c73412ef3ddfd3e25ad33bf76d83d88b157cbea25277abc8032efd84bdeb     0        1230293 lovelace + TxOutDatumHash AlonzoEraOnwardsConway "8c254bf4fea35cfd1470b994f341a65398c03c1b584dc7de84a50da72d9ac787"
+cb7b9ecf711bbd951354bce0436e9b263595ec2d19aaa55971cbf92df34a8e3a     0        1230293 lovelace + TxOutDatumInline BabbageEraOnwardsConway (HashableScriptData "\216z\128" (ScriptDataConstructor 1 []))
+cbb22128dbd228cdacc67b4e7907a61ea08535e367aa80cdb6b238824dbbb939     0        896480 lovelace + TxOutDatumInline BabbageEraOnwardsConway (HashableScriptData "\216y\128" (ScriptDataConstructor 0 []))
+de1c89fde3951d739a49df9ceff82fef09bbc49ce944d5f3529506cb48af3915     0        909410 lovelace + TxOutDatumInline BabbageEraOnwardsConway (HashableScriptData "\216y\159\CAN^\255" (ScriptDataConstructor 0 [ScriptDataNumber 94]))
+eb2150f0fce5cfa403a6d4fa6c10bc7573b58810a95fbc8dbb5d95e2fa2202af     0        7000000 lovelace + TxOutDatumNone
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week02$ cardano-cli query utxo --address addr_test1vpxhkpyw4whhwkdfylwa3mlmg3m9xgn5fn8cmae024vnw6qntajca --testnet-magic 2
+                           TxHash                                 TxIx        Amount
+--------------------------------------------------------------------------------------
+37cf26cdff0eb65eded0a449af73f025dd82dc3ebec84fe95ef799398a42716a     1        9994828251 lovelace + TxOutDatumNone
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week02$ 

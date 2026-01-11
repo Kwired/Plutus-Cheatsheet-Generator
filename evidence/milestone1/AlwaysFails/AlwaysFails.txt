@@ -1,0 +1,44 @@
+cardano-cli conway address build \
+  --payment-script-file AlwaysFails.plutus \
+  --testnet-magic 2 \
+  --out-file AlwaysFails.addr
+  
+cardano-cli conway transaction build \
+  --tx-in f9798a4d8e8f408790eb1e3e3d4c5519ca01b0d95007b4f85b0330f984001d37#1 \
+  --tx-out $(cat AlwaysFails.addr)+5000000 \
+  --tx-out-inline-datum-value '{}' \
+  --change-address addr_test1vpxhkpyw4whhwkdfylwa3mlmg3m9xgn5fn8cmae024vnw6qntajca \
+  --testnet-magic 2 \
+  --out-file tx-AlwaysFails-lock.raw
+  
+cardano-cli conway transaction sign \
+  --tx-body-file tx-AlwaysFails-lock.raw \
+  --signing-key-file payment.skey \
+  --testnet-magic 2 \
+  --out-file tx-AlwaysFails-lock.signed
+
+cardano-cli conway transaction submit \
+  --tx-file tx-AlwaysFails-lock.signed
+
+
+cardano-cli conway transaction build \
+  --tx-in <BURN_UTXO>#0 \
+  --tx-in-script-file AlwaysFails.plutus \
+  --tx-in-inline-datum-present \
+  --tx-in-redeemer-value '{}' \
+  --tx-in-collateral c0fabd2847d0d69b8265ca0b5e8f6118afbec8bd12554019d919da2b64fdf98a#1 \
+  --change-address addr_test1vpxhkpyw4whhwkdfylwa3mlmg3m9xgn5fn8cmae024vnw6qntajca \
+  --testnet-magic 2 \
+  --out-file tx-AlwaysFails-spend.raw
+
+
+cardano-cli conway transaction build \
+  --tx-in c0fabd2847d0d69b8265ca0b5e8f6118afbec8bd12554019d919da2b64fdf98a#0 \
+  --tx-in-script-file AlwaysFails.plutus \
+  --tx-in-inline-datum-present \
+  --tx-in-redeemer-value '{}' \
+  --tx-in-collateral c0fabd2847d0d69b8265ca0b5e8f6118afbec8bd12554019d919da2b64fdf98a#1 \
+  --change-address addr_test1vpxhkpyw4whhwkdfylwa3mlmg3m9xgn5fn8cmae024vnw6qntajca \
+  --testnet-magic 2 \
+  --out-file tx-AlwaysFails-spend.raw
+

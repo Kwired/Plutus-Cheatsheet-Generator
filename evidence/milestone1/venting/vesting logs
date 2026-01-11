@@ -1,0 +1,77 @@
+$ cardano-cli address key-hash   --payment-verification-key-file ../../../keys/payment.vkey
+4d7b048eabaf7759a927ddd8effb44765322744ccf8df72f55593768
+
+cardano-cli conway address build \
+  --payment-script-file vesting.plutus \
+  --testnet-magic 2 \
+  --out-file vesting.addr
+  
+  
+  $ cardano-cli query utxo --address addr_test1vpxhkpyw4whhwkdfylwa3mlmg3m9xgn5fn8cmae024vnw6qntajca --testnet-magic 2
+                           TxHash                                 TxIx        Amount
+--------------------------------------------------------------------------------------
+a8fce103991a63b25e1dae90346c3441d96b570815532a0341a3d50845852a2f     0        1202733 lovelace + TxOutDatumNone
+c0fabd2847d0d69b8265ca0b5e8f6118afbec8bd12554019d919da2b64fdf98a     1        9968975006 lovelace + TxOutDatumNone
+e3086ac18daec3a91af7c48bbb74dc854fd200a4c9fecf7d5837a3aed47edb6f     0        4824479 lovelace + TxOutDatumNone
+  
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week03/assets$ cardano-cli conway transaction build \
+  --tx-in af095ff7febdf51a4f8868b0e7ee40321df6aea0c083d5761ddf8c401fd4f9f7#1 \
+  --tx-out "$(cat vesting.addr)+2000000" \
+  --tx-out-inline-datum-file datum.json \
+  --change-address addr_test1vpxhkpyw4whhwkdfylwa3mlmg3m9xgn5fn8cmae024vnw6qntajca \
+  --testnet-magic 2 \
+  --out-file vesting-lock.tx
+Estimated transaction fee: 172365 Lovelace
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week03/assets$ cardano-cli conway transaction sign \
+  --tx-body-file vesting-lock.tx \
+  --signing-key-file ../../../keys/payment.skey \
+  --testnet-magic 2 \
+  --out-file vesting-lock.signed
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week03/assets$ cardano-cli conway transaction submit \
+  --tx-file vesting-lock.signed \
+  --testnet-magic 2
+Transaction successfully submitted.
+
+
+cardano-cli conway transaction build \
+  --tx-in aaa38024bd84a7af93cadb1f9f14e9698740f96a70f37299912220d807617285#0 \
+  --tx-in-script-file vesting.plutus \
+  --tx-in-inline-datum-present \
+  --tx-in-redeemer-file redeemer.json \
+  --required-signer ../../../keys/payment.skey \
+  --change-address addr_test1vpxhkpyw4whhwkdfylwa3mlmg3m9xgn5fn8cmae024vnw6qntajca \
+  --testnet-magic 2 \
+  --out-file vesting-spend.tx
+
+
+
+
+abc@freezing-category-8xpvao-0:~/workspace/repo/code/Week03/assets$ cardano-cli conway transaction build \
+  --tx-in aaa38024bd84a7af93cadb1f9f14e9698740f96a70f37299912220d807617285#0 \
+  --tx-in-script-file vesting.plutus \
+  --tx-in-inline-datum-present \
+  --tx-in-redeemer-file redeemer.json \
+  --required-signer ../../../keys/payment.skey \
+  --change-address addr_test1vpxhkpyw4whhwkdfylwa3mlmg3m9xgn5fn8cmae024vnw6qntajca \
+  --testnet-magic 2 \
+  --out-file vesting-spend.tx
+Command failed: transaction build  Error: The following scripts have execution failures:
+the script for transaction input 0 (in ascending order of the TxIds) failed with: 
+The Plutus script evaluation failed: An error has occurred:
+The machine terminated because of an error, either from a built-in function or from an explicit use of 'error'.
+Script debugging logs: deadline not reached
+PT5
+
+
+
+cardano-cli conway transaction sign \
+  --tx-body-file vesting-spend.tx \
+  --signing-key-file ../../../keys/payment.skey \
+  --testnet-magic 2 \
+  --out-file vesting-spend.signed
+
+
+cardano-cli conway transaction submit \
+  --tx-file vesting-spend.signed \
+  --testnet-magic 2
+
