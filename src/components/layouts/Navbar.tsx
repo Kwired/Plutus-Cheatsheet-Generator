@@ -16,8 +16,8 @@ import {
 function Navbar() {
   const navLinks = [
     // { name: 'Home', path: '/' },
-    { name: "Docs", path: "/docs" },
-    { name: "Contribute", path: "/contribute" },
+    { name: "Docs", path: "https://github.com/kwired/Plutus-Cheatsheet-Generator/tree/release/v1.0.0/docs" },
+    { name: "Contribute", path: "https://github.com/kwired/Plutus-Cheatsheet-Generator/blob/release/v1.0.0/CONTRIBUTING.md" },
     // { name: 'Daily Revision', path: '/daily-revision' },
     // { name: 'Bookmarks', path: '/bookmarks' },
     // { name: 'Progress', path: '/progress' },
