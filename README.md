@@ -16,6 +16,8 @@ The project is fully open-source and licensed under the MIT License.
 - Simple, fast React-based web interface
 
 ---
+## [video demo](https://youtu.be/zhrQRF5fVn0)
+## [live demo site](https://plutus-cheatsheet.vercel.app/)
 
 ## Platform Setup
 
