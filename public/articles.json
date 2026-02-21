@@ -1,0 +1,458 @@
+[
+  {
+    "id": "always-fails",
+    "url": "https://plutus-cheatsheet.vercel.app/article/always-fails",
+    "title": "Always Fails (Burn Validator)",
+    "subtitle": "A Plutus validator that permanently locks funds by always failing",
+    "plutusVersion": "V2",
+    "complexity": "Beginner",
+    "tags": [
+      "plutus",
+      "cardano",
+      "validator",
+      "burn",
+      "always-fails"
+    ]
+  },
+  {
+    "id": "always-succeeds",
+    "url": "https://plutus-cheatsheet.vercel.app/article/always-succeeds",
+    "title": "Always Succeeds",
+    "subtitle": "A Plutus validator that accepts every transaction",
+    "plutusVersion": "V2",
+    "complexity": "Beginner",
+    "tags": [
+      "plutus",
+      "cardano",
+      "validator",
+      "basics",
+      "always-succeeds"
+    ]
+  },
+  {
+    "id": "burn-only-policy",
+    "url": "https://plutus-cheatsheet.vercel.app/article/burn-only-policy",
+    "title": "Burn Only Policy",
+    "subtitle": "A Minting Policy that strictly prohibits minting and only allows burning",
+    "plutusVersion": "V2",
+    "complexity": "Beginner",
+    "tags": [
+      "plutus",
+      "cardano",
+      "minting",
+      "tokens",
+      "basics"
+    ]
+  },
+  {
+    "id": "collateral-validator",
+    "url": "https://plutus-cheatsheet.vercel.app/article/collateral-validator",
+    "title": "Collateral Validator",
+    "subtitle": "Locking and redeeming collateral with stablecoin burn checks",
+    "plutusVersion": "V2",
+    "complexity": "Advanced",
+    "tags": [
+      "plutus",
+      "cardano",
+      "collateral",
+      "stablecoin",
+      "validator"
+    ]
+  },
+  {
+    "id": "custom-types-validator",
+    "url": "https://plutus-cheatsheet.vercel.app/article/custom-types-validator",
+    "title": "Custom Types Validator",
+    "subtitle": "Using a typed redeemer with custom data in Plutus",
+    "plutusVersion": "V2",
+    "complexity": "Beginner",
+    "tags": [
+      "plutus",
+      "cardano",
+      "validator",
+      "typed",
+      "custom-types"
+    ]
+  },
+  {
+    "id": "deadline-validator",
+    "url": "https://plutus-cheatsheet.vercel.app/article/deadline-validator",
+    "title": "Deadline Validator",
+    "subtitle": "Time-lock funds so they can only be spent AFTER a certain time",
+    "plutusVersion": "V2",
+    "complexity": "Advanced",
+    "tags": [
+      "plutus",
+      "cardano",
+      "validator",
+      "time",
+      "basics"
+    ]
+  },
+  {
+    "id": "escrow-validator",
+    "url": "https://plutus-cheatsheet.vercel.app/article/escrow-validator",
+    "title": "Trustless Escrow",
+    "subtitle": "A two-party smart contract enforcing a secure item-for-ADA exchange",
+    "plutusVersion": "V2",
+    "complexity": "Advanced",
+    "tags": [
+      "plutus",
+      "cardano",
+      "defi",
+      "escrow",
+      "advanced"
+    ]
+  },
+  {
+    "id": "expiration-validator",
+    "url": "https://plutus-cheatsheet.vercel.app/article/expiration-validator",
+    "title": "Expiration Validator",
+    "subtitle": "A contract that expires and locks funds permanently after a deadline",
+    "plutusVersion": "V2",
+    "complexity": "Advanced",
+    "tags": [
+      "plutus",
+      "cardano",
+      "validator",
+      "time",
+      "basics"
+    ]
+  },
+  {
+    "id": "exploitable-swap",
+    "url": "https://plutus-cheatsheet.vercel.app/article/exploitable-swap",
+    "title": "Exploitable Swap",
+    "subtitle": "A naive ADA-for-token swap validator with a critical flaw",
+    "plutusVersion": "V2",
+    "complexity": "Beginner",
+    "tags": [
+      "plutus",
+      "cardano",
+      "validator",
+      "security",
+      "exploits"
+    ]
+  },
+  {
+    "id": "forty-two",
+    "url": "https://plutus-cheatsheet.vercel.app/article/forty-two",
+    "title": "Forty Two",
+    "subtitle": "Validator succeeds when redeemer is 42",
+    "plutusVersion": "V2",
+    "complexity": "Beginner",
+    "tags": [
+      "plutus",
+      "cardano",
+      "validator",
+      "examples",
+      "42"
+    ]
+  },
+  {
+    "id": "forty-two-typed",
+    "url": "https://plutus-cheatsheet.vercel.app/article/forty-two-typed",
+    "title": "Forty Two (Typed)",
+    "subtitle": "Typed Plutus validator that succeeds when redeemer is 42",
+    "plutusVersion": "V2",
+    "complexity": "Beginner",
+    "tags": [
+      "plutus",
+      "cardano",
+      "validator",
+      "typed",
+      "examples",
+      "42"
+    ]
+  },
+  {
+    "id": "free-mint-policy",
+    "url": "https://plutus-cheatsheet.vercel.app/article/free-mint-policy",
+    "title": "Free Minting Policy",
+    "subtitle": "An always-succeeds Plutus minting policy",
+    "plutusVersion": "V2",
+    "complexity": "Beginner",
+    "tags": [
+      "plutus",
+      "cardano",
+      "minting-policy",
+      "tokens",
+      "free-mint"
+    ]
+  },
+  {
+    "id": "hello-world-validator",
+    "url": "https://plutus-cheatsheet.vercel.app/article/hello-world-validator",
+    "title": "Hello World Validator",
+    "subtitle": "A Plutus script that only unlocks when greeted correctly",
+    "plutusVersion": "V2",
+    "complexity": "Beginner",
+    "tags": [
+      "plutus",
+      "cardano",
+      "validator",
+      "basics",
+      "hello-world"
+    ]
+  },
+  {
+    "id": "math-puzzle-validator",
+    "url": "https://plutus-cheatsheet.vercel.app/article/math-puzzle-validator",
+    "title": "Math Puzzle Validator",
+    "subtitle": "Users must solve a mathematical equation to unlock the ADA",
+    "plutusVersion": "V2",
+    "complexity": "Advanced",
+    "tags": [
+      "plutus",
+      "cardano",
+      "validator",
+      "basics",
+      "fun"
+    ]
+  },
+  {
+    "id": "multisig-validator",
+    "url": "https://plutus-cheatsheet.vercel.app/article/multisig-validator",
+    "title": "Multi-Sig (M of N) Validator",
+    "subtitle": "Require signatures from at least M out of N specified PubKeyHashes",
+    "plutusVersion": "V2",
+    "complexity": "Advanced",
+    "tags": [
+      "plutus",
+      "cardano",
+      "validator",
+      "security",
+      "multi-sig"
+    ]
+  },
+  {
+    "id": "nft-mint-utxo",
+    "url": "https://plutus-cheatsheet.vercel.app/article/nft-mint-utxo",
+    "title": "NFT Minting with UTxO Consumption",
+    "subtitle": "Guaranteeing uniqueness using a one-time UTxO-based minting policy",
+    "plutusVersion": "V2",
+    "complexity": "Advanced",
+    "tags": [
+      "plutus",
+      "cardano",
+      "nft",
+      "minting-policy",
+      "utxo",
+      "uniqueness"
+    ]
+  },
+  {
+    "id": "nft-mint-again-fails",
+    "url": "https://plutus-cheatsheet.vercel.app/article/nft-mint-again-fails",
+    "title": "NFT Mint Again — Why It Fails",
+    "subtitle": "UTxO-based uniqueness enforcement",
+    "plutusVersion": "V2",
+    "complexity": "Advanced",
+    "tags": [
+      "plutus",
+      "nft",
+      "utxo",
+      "failure"
+    ]
+  },
+  {
+    "id": "nft-mint-bad-redeemer",
+    "url": "https://plutus-cheatsheet.vercel.app/article/nft-mint-bad-redeemer",
+    "title": "NFT Mint With Bad Redeemer",
+    "subtitle": "Why the redeemer does not matter here",
+    "plutusVersion": "V2",
+    "complexity": "Advanced",
+    "tags": [
+      "plutus",
+      "nft",
+      "redeemer",
+      "minting"
+    ]
+  },
+  {
+    "id": "nft-mint-first-time",
+    "url": "https://plutus-cheatsheet.vercel.app/article/nft-mint-first-time",
+    "title": "NFT Mint — First Time",
+    "subtitle": "Minting an NFT by consuming a specific UTxO",
+    "plutusVersion": "V2",
+    "complexity": "Intermediate",
+    "tags": [
+      "plutus",
+      "nft",
+      "utxo",
+      "minting"
+    ]
+  },
+  {
+    "id": "negative-redeemer-timed",
+    "url": "https://plutus-cheatsheet.vercel.app/article/negative-redeemer-timed",
+    "title": "Negative Redeemer Timed Validator",
+    "subtitle": "Spend allowed only after deadline with a negative redeemer",
+    "plutusVersion": "V2",
+    "complexity": "Advanced",
+    "tags": [
+      "plutus",
+      "cardano",
+      "time",
+      "posix",
+      "validator"
+    ]
+  },
+  {
+    "id": "one-shot-minting-policy",
+    "url": "https://plutus-cheatsheet.vercel.app/article/one-shot-minting-policy",
+    "title": "One-Shot Minting Policy",
+    "subtitle": "Mint exactly once using a specific UTxO reference",
+    "plutusVersion": "V1",
+    "complexity": "Beginner",
+    "tags": []
+  },
+  {
+    "id": "oracle-validator",
+    "url": "https://plutus-cheatsheet.vercel.app/article/oracle-validator",
+    "title": "Oracle Validator",
+    "subtitle": "On-chain price oracle secured by NFT and operator signature",
+    "plutusVersion": "V2",
+    "complexity": "Beginner",
+    "tags": [
+      "plutus",
+      "cardano",
+      "oracle",
+      "defi",
+      "nft"
+    ]
+  },
+  {
+    "id": "password-validator",
+    "url": "https://plutus-cheatsheet.vercel.app/article/password-validator",
+    "title": "Password Protected Validator",
+    "subtitle": "Secure funds on-chain using a cryptographic hash and a cleartext password",
+    "plutusVersion": "V2",
+    "complexity": "Advanced",
+    "tags": [
+      "plutus",
+      "cardano",
+      "validator",
+      "security",
+      "cryptography"
+    ]
+  },
+  {
+    "id": "plutus-big-validator",
+    "url": "https://plutus-cheatsheet.vercel.app/article/plutus-big-validator",
+    "title": "Plutus BigValidator Example",
+    "subtitle": "Complete Validator Script with Multiple Redeemers",
+    "plutusVersion": "V2",
+    "complexity": "Beginner",
+    "tags": [
+      "plutus",
+      "cardano",
+      "validator",
+      "smart-contracts"
+    ]
+  },
+  {
+    "id": "plutus-data-types",
+    "url": "https://plutus-cheatsheet.vercel.app/article/plutus-data-types",
+    "title": "Plutus Data Types",
+    "subtitle": "Understanding Plutus data types and their usage",
+    "plutusVersion": "V2",
+    "complexity": "Beginner",
+    "tags": [
+      "plutus",
+      "haskell",
+      "data-types"
+    ]
+  },
+  {
+    "id": "signed-mint-policy",
+    "url": "https://plutus-cheatsheet.vercel.app/article/signed-mint-policy",
+    "title": "Signed Minting Policy",
+    "subtitle": "Minting tokens only with an authorized signature",
+    "plutusVersion": "V2",
+    "complexity": "Beginner",
+    "tags": [
+      "plutus",
+      "cardano",
+      "minting-policy",
+      "signature",
+      "security"
+    ]
+  },
+  {
+    "id": "signed-mint-failure-full",
+    "url": "https://plutus-cheatsheet.vercel.app/article/signed-mint-failure-full",
+    "title": "Signed Minting Policy — Complete Failure",
+    "subtitle": "Tracing the full command flow and understanding the missing signature error",
+    "plutusVersion": "V2",
+    "complexity": "Advanced",
+    "tags": [
+      "plutus",
+      "cardano",
+      "minting-policy",
+      "signature",
+      "failure",
+      "debugging"
+    ]
+  },
+  {
+    "id": "single-asset-minting",
+    "url": "https://plutus-cheatsheet.vercel.app/article/single-asset-minting",
+    "title": "Single Asset Minting",
+    "subtitle": "A Minting Policy that enforces only a specific, hardcoded Token Name can be minted",
+    "plutusVersion": "V2",
+    "complexity": "Advanced",
+    "tags": [
+      "plutus",
+      "cardano",
+      "minting",
+      "tokens",
+      "intermediate"
+    ]
+  },
+  {
+    "id": "staking-validator",
+    "url": "https://plutus-cheatsheet.vercel.app/article/staking-validator",
+    "title": "Staking Validator",
+    "subtitle": "Reward distribution enforced at the staking layer",
+    "plutusVersion": "V2",
+    "complexity": "Beginner",
+    "tags": [
+      "plutus",
+      "cardano",
+      "staking",
+      "stake-validator",
+      "rewards"
+    ]
+  },
+  {
+    "id": "state-machine-counter",
+    "url": "https://plutus-cheatsheet.vercel.app/article/state-machine-counter",
+    "title": "State Machine (Simple Counter)",
+    "subtitle": "A stateful Plutus contract enforcing sequential counter increments",
+    "plutusVersion": "V2",
+    "complexity": "Advanced",
+    "tags": [
+      "plutus",
+      "cardano",
+      "validator",
+      "state-machine",
+      "advanced"
+    ]
+  },
+  {
+    "id": "vesting-validator",
+    "url": "https://plutus-cheatsheet.vercel.app/article/vesting-validator",
+    "title": "Vesting Validator",
+    "subtitle": "Time-locked and signature-restricted funds on Cardano",
+    "plutusVersion": "V2",
+    "complexity": "Beginner",
+    "tags": [
+      "plutus",
+      "cardano",
+      "vesting",
+      "time-lock",
+      "validator"
+    ]
+  }
+]
