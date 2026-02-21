@@ -37,33 +37,45 @@ export default async function handler(req, res) {
             return res.status(500).json({ error: "Channel not found" });
         }
 
-        // Feature snippets added within the last 24 hours (or today's date)
-        const today = new Date();
-        const oneDayAgo = new Date(today.getTime() - (24 * 60 * 60 * 1000));
+        // We will read the last 100 messages in the channel to figure out what was already posted
+        // This makes the bot stateful without needing a database!
+        const maxMessages = 100; // Change to fetch more if your channel gets very busy
+        let postedUrls = new Set();
+        try {
+            const messages = await targetChannel.messages.fetch({ limit: maxMessages });
+            messages.forEach(msg => {
+                if (msg.author.id === client.user.id) {
+                    msg.embeds.forEach(embed => {
+                        if (embed.url) {
+                            postedUrls.add(embed.url);
+                        }
+                    });
+                }
+            });
+        } catch (err) {
+            console.error("Could not fetch messages:", err);
+        }
 
-        const recentArticles = articles.filter(article => {
-            const articleDate = new Date(article.date);
-            return articleDate >= oneDayAgo;
-        });
+        // Find the first article from our JSON that has NEVER been posted in the channel
+        const unpostedArticle = articles.find(article => !postedUrls.has(article.url));
 
-        if (recentArticles.length === 0) {
-            return res.status(200).json({ success: true, message: "No new articles today to broadcast." });
+        if (!unpostedArticle) {
+            client.destroy();
+            return res.status(200).json({ success: true, message: "All articles have already been posted. Waiting for new ones." });
         }
 
         const embed = new EmbedBuilder()
-            .setColor(0xF0A000)
-            .setTitle('🚀 New Plutus Snippets Added!')
-            .setURL('https://plutus-cheatsheet.vercel.app/')
-            .setDescription('We just merged new community contributions into the Plutus Cheatsheet Generator!')
+            .setColor(0x1F80E0) // Blue color for general snippet posts
+            .setTitle(`📌 Plutus Snippet: ${unpostedArticle.title}`)
+            .setURL(unpostedArticle.url)
+            .setDescription(unpostedArticle.subtitle || 'A snippet from the Plutus Cheatsheet collection.')
+            .addFields(
+                { name: 'Version', value: unpostedArticle.plutusVersion || 'N/A', inline: true },
+                { name: 'Complexity', value: unpostedArticle.complexity || 'N/A', inline: true },
+                { name: 'Tags', value: unpostedArticle.tags?.join(', ') || 'None', inline: true }
+            )
             .setTimestamp()
-            .setFooter({ text: 'Plutus Cheatsheet Team', iconURL: 'https://cdn.discordapp.com/embed/avatars/0.png' });
-
-        recentArticles.forEach(article => {
-            embed.addFields({
-                name: `📌 ${article.title}`,
-                value: `[View Snippet](${article.url}) | **Complexity:** ${article.complexity}`
-            });
-        });
+            .setFooter({ text: 'Plutus Cheatsheet Bot', iconURL: 'https://cdn.discordapp.com/embed/avatars/0.png' });
 
         await targetChannel.send({ embeds: [embed] });
 
