@@ -20,9 +20,49 @@ import SignedMintFailArticle, { articleMeta as SignedMintFailMeta } from "./Sign
 import StakingValidatorArticle, { articleMeta as StakingValidatorMeta } from "./StakingValidatorArticle";
 import VestingArticle, { articleMeta as VestingMeta } from "./Vesting";
 import HelloWorldArticle, { articleMeta as HelloWorldMeta } from "./HelloWorld";
+import PasswordValidatorArticle, { articleMeta as PasswordValidatorMeta } from "./PasswordValidator";
 import StateMachineCounterArticle, { articleMeta as StateMachineCounterMeta } from "./StateMachineCounter";
+import DeadlineValidatorArticle, { articleMeta as DeadlineValidatorMeta } from "./DeadlineValidator";
+import ExpirationValidatorArticle, { articleMeta as ExpirationValidatorMeta } from "./ExpirationValidator";
+import MathPuzzleValidatorArticle, { articleMeta as MathPuzzleValidatorMeta } from "./MathPuzzleValidator";
+import MultiSigValidatorArticle, { articleMeta as MultiSigValidatorMeta } from "./MultiSigValidator";
+import BurnOnlyPolicyArticle, { articleMeta as BurnOnlyPolicyMeta } from "./BurnOnlyPolicy";
+import SingleAssetMintingArticle, { articleMeta as SingleAssetMintingMeta } from "./SingleAssetMinting";
+import EscrowValidatorArticle, { articleMeta as EscrowValidatorMeta } from "./EscrowValidator";
 
 export const articles = [
+  {
+    component: EscrowValidatorArticle,
+    meta: EscrowValidatorMeta
+  },
+  {
+    component: SingleAssetMintingArticle,
+    meta: SingleAssetMintingMeta
+  },
+  {
+    component: BurnOnlyPolicyArticle,
+    meta: BurnOnlyPolicyMeta
+  },
+  {
+    component: MultiSigValidatorArticle,
+    meta: MultiSigValidatorMeta
+  },
+  {
+    component: MathPuzzleValidatorArticle,
+    meta: MathPuzzleValidatorMeta
+  },
+  {
+    component: ExpirationValidatorArticle,
+    meta: ExpirationValidatorMeta
+  },
+  {
+    component: DeadlineValidatorArticle,
+    meta: DeadlineValidatorMeta
+  },
+  {
+    component: PasswordValidatorArticle,
+    meta: PasswordValidatorMeta
+  },
   {
     component: StateMachineCounterArticle,
     meta: StateMachineCounterMeta
