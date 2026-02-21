@@ -153,17 +153,38 @@ export const articles = [
   },
 ];
 
+export type ArticleMeta = {
+  id: string;
+  title: string;
+  subtitle: string;
+  date: string;
+  readTime: string;
+  tags: string[];
+  author: {
+    name: string;
+    avatar: string;
+  };
+  plutusVersion: "V1" | "V2" | "V3";
+  complexity: "Beginner" | "Intermediate" | "Advanced" | "Expert";
+  useCase: string;
+};
+
+export type Article = {
+  component: React.ComponentType<unknown>;
+  meta: ArticleMeta;
+};
+
 // Helper function to get article by ID
 export function getArticleById(id: string) {
-  return articles.find(article => article.meta.id === id);
+  return (articles as unknown as Article[]).find(article => article.meta.id === id);
 }
 
 // For listing all articles on homepage
-export function getAllArticles() {
-  return articles.map(article => article.meta);
+export function getAllArticles(): ArticleMeta[] {
+  return (articles as unknown as Article[]).map(article => article.meta);
 }
 export function getArticleIndex(id: string) {
-  return articles.findIndex(article => article.meta.id === id);
+  return (articles as unknown as Article[]).findIndex(article => article.meta.id === id);
 }
 
 export function getNextArticle(id: string) {

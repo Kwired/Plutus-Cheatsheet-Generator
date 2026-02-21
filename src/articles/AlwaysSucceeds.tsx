@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import CodeBlock from "@/components/layouts/CodeBlock";
 // import React from "react";
 
@@ -11,8 +12,11 @@ export const articleMeta = {
   tags: ["plutus", "cardano", "validator", "basics", "always-succeeds"],
   author: {
     name: "Aman Kumar",
-    avatar: "https://i.pravatar.cc/48?img=3",
+    avatar: "https://i.pravatar.cc/48?img=3"
   },
+  plutusVersion: "V2",
+  complexity: "Beginner",
+  useCase: "NFTs"
 };
 
 export default function AlwaysSucceedsArticle() {
@@ -121,7 +125,7 @@ Transaction successfully submitted.
         language="haskell"
         filename="AlwaysSucceeds.hs"
       />
-<br />
+      <br />
       <h2 id="h2id">Explanation</h2>
 
       <h3>Validator Logic</h3>
@@ -151,7 +155,7 @@ Transaction successfully submitted.
         is extremely useful for learning and testing.
       </p>
 
-<br />
+      <br />
       <h2 id="h2id">Execution</h2>
 
       <p className="pexplaination">
@@ -180,7 +184,7 @@ Transaction successfully submitted.
       <h2 id="mental-model">Mental Model</h2>
 
       <pre className="bg-gray-900 text-gray-100 p-4 rounded-md text-sm overflow-x-auto">
-{`Wallet UTxO
+        {`Wallet UTxO
    │
    ├── lock tx
    ▼
@@ -191,7 +195,7 @@ Script Address (AlwaysSucceeds)
 Wallet (minus fees)
 `}
       </pre>
-<br />
+      <br />
       <h2 id="h2id">Summary</h2>
 
       <p>
@@ -206,7 +210,7 @@ Wallet (minus fees)
         business rules.
       </p>
       <br />
-          <p className="pexplaination">
+      <p className="pexplaination">
         You can verify the transaction and UTxO details on{" "}
         <a
           href="https://preview.cardanoscan.io/transaction/e3086ac18daec3a91af7c48bbb74dc854fd200a4c9fecf7d5837a3aed47edb6f?tab=contracts"
@@ -217,7 +221,7 @@ Wallet (minus fees)
           <span className="text-red-800 hover:text-blue-500">Cardanoscan (Preview Testnet)</span>
         </a>.
       </p>
-      
+
     </div>
   );
 }

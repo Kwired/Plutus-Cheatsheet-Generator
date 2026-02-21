@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import CodeBlock from "@/components/layouts/CodeBlock";
 
 export const articleMeta = {
@@ -9,8 +10,10 @@ export const articleMeta = {
     tags: ["plutus", "cardano", "defi", "escrow", "advanced"],
     author: {
         name: "Aman Kumar",
-        avatar: "https://i.pravatar.cc/48?img=12",
-    },
+        avatar: "https://i.pravatar.cc/48?img=12"},
+  plutusVersion: "V2",
+  complexity: "Advanced",
+  useCase: "NFTs"
 };
 
 export default function EscrowValidatorArticle() {

@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import CodeBlock from "@/components/layouts/CodeBlock";
 
 export const articleMeta = {
@@ -9,8 +10,11 @@ export const articleMeta = {
     tags: ["plutus", "cardano", "minting", "tokens", "basics"],
     author: {
         name: "Aman Kumar",
-        avatar: "https://i.pravatar.cc/48?img=10",
+        avatar: "https://i.pravatar.cc/48?img=10"
     },
+    plutusVersion: "V2",
+    complexity: "Beginner",
+    useCase: "NFTs"
 };
 
 export default function BurnOnlyPolicyArticle() {
@@ -46,7 +50,7 @@ mkBurnOnlyPolicy () ctx =
     -- We must verify that for *every single token* associated with this policy's 
     -- CurrencySymbol in the transaction, the quantity being "minted" is less than 0.
     isBurning :: Bool
-    isBurning = all (\(_, _, amt) -> amt < 0) (flattenValue (PlutusV2.txInfoMint info))
+    isBurning = all (\\\\(_, _, amt) -> amt < 0) (flattenValue (PlutusV2.txInfoMint info))
 
 {-# INLINABLE wrappedPolicy #-}
 wrappedPolicy :: BuiltinData -> BuiltinData -> ()

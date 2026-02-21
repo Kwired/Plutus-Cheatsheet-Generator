@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import CodeBlock from "@/components/layouts/CodeBlock";
 // import React from "react";
 
@@ -11,8 +12,10 @@ export const articleMeta = {
   tags: ["plutus", "cardano", "oracle", "defi", "nft"],
   author: {
     name: "Aman Kumar",
-    avatar: "https://i.pravatar.cc/48?img=3",
-  },
+    avatar: "https://i.pravatar.cc/48?img=3"},
+  plutusVersion: "V2",
+  complexity: "Beginner",
+  useCase: "NFTs"
 };
 
 // Article component
