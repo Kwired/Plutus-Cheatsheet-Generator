@@ -30,6 +30,7 @@ try {
                 // Extract basic metadata for the Discord Bot
                 const titleMatch = content.match(/title:\s*["'](.*?)["']/);
                 const subtitleMatch = content.match(/subtitle:\s*["'](.*?)["']/);
+                const dateMatch = content.match(/date:\s*["']([^"']+)["']/);
                 const versionMatch = content.match(/plutusVersion:\s*["']([^"']+)["']/);
                 const complexityMatch = content.match(/complexity:\s*["']([^"']+)["']/);
                 const tagsMatch = content.match(/tags:\s*\[(.*?)\]/);
@@ -44,6 +45,7 @@ try {
                     url: `${DOMAIN}/article/${id}`,
                     title: titleMatch ? titleMatch[1] : id,
                     subtitle: subtitleMatch ? subtitleMatch[1] : "",
+                    date: dateMatch ? dateMatch[1] : new Date().toISOString().split('T')[0],
                     plutusVersion: versionMatch ? versionMatch[1] : "V2",
                     complexity: complexityMatch ? complexityMatch[1] : "Intermediate",
                     tags

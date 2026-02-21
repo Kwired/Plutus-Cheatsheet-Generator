@@ -37,8 +37,18 @@ export default async function handler(req, res) {
             return res.status(500).json({ error: "Channel not found" });
         }
 
-        // Feature the 3 most recent absolute snippets
-        const recentArticles = articles.slice(-3).reverse();
+        // Feature snippets added within the last 24 hours (or today's date)
+        const today = new Date();
+        const oneDayAgo = new Date(today.getTime() - (24 * 60 * 60 * 1000));
+
+        const recentArticles = articles.filter(article => {
+            const articleDate = new Date(article.date);
+            return articleDate >= oneDayAgo;
+        });
+
+        if (recentArticles.length === 0) {
+            return res.status(200).json({ success: true, message: "No new articles today to broadcast." });
+        }
 
         const embed = new EmbedBuilder()
             .setColor(0xF0A000)
