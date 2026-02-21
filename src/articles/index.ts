@@ -1,28 +1,36 @@
 // src/articles/index.ts
-import AlwaysFailsArticle, { articleMeta as AlwaysFailsMeta} from "./AlwaysFails";
-import AlwaysSucceedsArticle, {articleMeta as AlwaysSucceedsMeta} from "./AlwaysSucceeds";
+import AlwaysFailsArticle, { articleMeta as AlwaysFailsMeta } from "./AlwaysFails";
+import AlwaysSucceedsArticle, { articleMeta as AlwaysSucceedsMeta } from "./AlwaysSucceeds";
 import CollateralArticle, { articleMeta as CollateralMeta } from "./CollateralArticle";
-import CustomTypesArticle, { articleMeta as CustomTypesMeta} from "./CustomTypes";
+import CustomTypesArticle, { articleMeta as CustomTypesMeta } from "./CustomTypes";
 import ExploitableSwapArticle, { articleMeta as ExploitableSwapMeta } from "./ExploitableSwapArticle";
-import FortyTwoArticle, {  articleMeta as FortyTwoMeta } from "./FortyTwo";
-import FortyTwoTypedArticle , {  articleMeta as FortytwoTypedMeta } from "./FortyTwoTyped";
-import FreeMintArticle , {  articleMeta as FreeMintMeta } from "./FreeMint";
+import FortyTwoArticle, { articleMeta as FortyTwoMeta } from "./FortyTwo";
+import FortyTwoTypedArticle, { articleMeta as FortytwoTypedMeta } from "./FortyTwoTyped";
+import FreeMintArticle, { articleMeta as FreeMintMeta } from "./FreeMint";
 import NegativeRTimedArticle, { articleMeta as NegativeRTimedMeta } from "./NegativeRTimedArticle";
 import NFTMintArticle, { articleMeta as NFTMintMeta } from "./NFTMint";
 import NFTMintAgainFails, { articleMeta as NFTMintAgainFailsMeta } from "./NFTMintAgainFails";
 import NFTMintBadRedeemer, { articleMeta as NFTMintBadRedeemerMeta } from "./NFTMintBadRedeemer";
 import NFTMintFirstTime, { articleMeta as NFTMintFirstTimeMeta } from "./NFTMintFirstTime";
-import OneShotMintingPolicyArticle, { articleMeta as OneShotMintingPolicyMeta} from "./OneShotMintingPolicyArticle";
+import OneShotMintingPolicyArticle, { articleMeta as OneShotMintingPolicyMeta } from "./OneShotMintingPolicyArticle";
 import OracleArticle, { articleMeta as OracleMeta } from "./OracleArticle";
 import PlutusBigValidatorArticle, { articleMeta as BigValidatorMeta } from './PlutusBigValidator';
-import SignedMintArticle, {articleMeta as SignedMintMeta}  from "./SignedMint";
-import SignedMintFailArticle , {articleMeta as SignedMintFailMeta}  from "./SignedMintFail";
+import SignedMintArticle, { articleMeta as SignedMintMeta } from "./SignedMint";
+import SignedMintFailArticle, { articleMeta as SignedMintFailMeta } from "./SignedMintFail";
 import StakingValidatorArticle, { articleMeta as StakingValidatorMeta } from "./StakingValidatorArticle";
-import VestingArticle, {articleMeta as VestingMeta} from "./Vesting";
+import VestingArticle, { articleMeta as VestingMeta } from "./Vesting";
+import HelloWorldArticle, { articleMeta as HelloWorldMeta } from "./HelloWorld";
+import StateMachineCounterArticle, { articleMeta as StateMachineCounterMeta } from "./StateMachineCounter";
 
-
-// For now, just export one article until you create more
 export const articles = [
+  {
+    component: StateMachineCounterArticle,
+    meta: StateMachineCounterMeta
+  },
+  {
+    component: HelloWorldArticle,
+    meta: HelloWorldMeta
+  },
   {
     component: OneShotMintingPolicyArticle,
     meta: OneShotMintingPolicyMeta
