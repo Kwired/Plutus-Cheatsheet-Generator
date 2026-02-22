@@ -4,6 +4,7 @@
     "url": "https://plutus-cheatsheet.vercel.app/article/always-fails",
     "title": "Always Fails (Burn Validator)",
     "subtitle": "A Plutus validator that permanently locks funds by always failing",
+    "date": "2025-01-01T10:00:00.000Z",
     "plutusVersion": "V2",
     "complexity": "Beginner",
     "tags": [
@@ -19,6 +20,7 @@
     "url": "https://plutus-cheatsheet.vercel.app/article/always-succeeds",
     "title": "Always Succeeds",
     "subtitle": "A Plutus validator that accepts every transaction",
+    "date": "2025-01-01T10:00:00.000Z",
     "plutusVersion": "V2",
     "complexity": "Beginner",
     "tags": [
@@ -34,6 +36,7 @@
     "url": "https://plutus-cheatsheet.vercel.app/article/burn-only-policy",
     "title": "Burn Only Policy",
     "subtitle": "A Minting Policy that strictly prohibits minting and only allows burning",
+    "date": "2025-02-20T10:00:00.000Z",
     "plutusVersion": "V2",
     "complexity": "Beginner",
     "tags": [
@@ -49,6 +52,7 @@
     "url": "https://plutus-cheatsheet.vercel.app/article/collateral-validator",
     "title": "Collateral Validator",
     "subtitle": "Locking and redeeming collateral with stablecoin burn checks",
+    "date": "2025-01-01T10:00:00.000Z",
     "plutusVersion": "V2",
     "complexity": "Advanced",
     "tags": [
@@ -64,6 +68,7 @@
     "url": "https://plutus-cheatsheet.vercel.app/article/custom-types-validator",
     "title": "Custom Types Validator",
     "subtitle": "Using a typed redeemer with custom data in Plutus",
+    "date": "2025-01-01T10:00:00.000Z",
     "plutusVersion": "V2",
     "complexity": "Beginner",
     "tags": [
@@ -79,6 +84,7 @@
     "url": "https://plutus-cheatsheet.vercel.app/article/deadline-validator",
     "title": "Deadline Validator",
     "subtitle": "Time-lock funds so they can only be spent AFTER a certain time",
+    "date": "2025-02-16T10:00:00.000Z",
     "plutusVersion": "V2",
     "complexity": "Advanced",
     "tags": [
@@ -94,6 +100,7 @@
     "url": "https://plutus-cheatsheet.vercel.app/article/escrow-validator",
     "title": "Trustless Escrow",
     "subtitle": "A two-party smart contract enforcing a secure item-for-ADA exchange",
+    "date": "2025-02-22T10:00:00.000Z",
     "plutusVersion": "V2",
     "complexity": "Advanced",
     "tags": [
@@ -109,6 +116,7 @@
     "url": "https://plutus-cheatsheet.vercel.app/article/expiration-validator",
     "title": "Expiration Validator",
     "subtitle": "A contract that expires and locks funds permanently after a deadline",
+    "date": "2025-02-17T10:00:00.000Z",
     "plutusVersion": "V2",
     "complexity": "Advanced",
     "tags": [
@@ -124,6 +132,7 @@
     "url": "https://plutus-cheatsheet.vercel.app/article/exploitable-swap",
     "title": "Exploitable Swap",
     "subtitle": "A naive ADA-for-token swap validator with a critical flaw",
+    "date": "2025-01-01T10:00:00.000Z",
     "plutusVersion": "V2",
     "complexity": "Beginner",
     "tags": [
@@ -139,6 +148,7 @@
     "url": "https://plutus-cheatsheet.vercel.app/article/forty-two",
     "title": "Forty Two",
     "subtitle": "Validator succeeds when redeemer is 42",
+    "date": "2025-01-01T10:00:00.000Z",
     "plutusVersion": "V2",
     "complexity": "Beginner",
     "tags": [
@@ -154,6 +164,7 @@
     "url": "https://plutus-cheatsheet.vercel.app/article/forty-two-typed",
     "title": "Forty Two (Typed)",
     "subtitle": "Typed Plutus validator that succeeds when redeemer is 42",
+    "date": "2025-01-01T10:00:00.000Z",
     "plutusVersion": "V2",
     "complexity": "Beginner",
     "tags": [
@@ -170,6 +181,7 @@
     "url": "https://plutus-cheatsheet.vercel.app/article/free-mint-policy",
     "title": "Free Minting Policy",
     "subtitle": "An always-succeeds Plutus minting policy",
+    "date": "2025-01-05T10:00:00.000Z",
     "plutusVersion": "V2",
     "complexity": "Beginner",
     "tags": [
@@ -185,6 +197,7 @@
     "url": "https://plutus-cheatsheet.vercel.app/article/hello-world-validator",
     "title": "Hello World Validator",
     "subtitle": "A Plutus script that only unlocks when greeted correctly",
+    "date": "2025-01-20T10:00:00.000Z",
     "plutusVersion": "V2",
     "complexity": "Beginner",
     "tags": [
@@ -200,6 +213,7 @@
     "url": "https://plutus-cheatsheet.vercel.app/article/math-puzzle-validator",
     "title": "Math Puzzle Validator",
     "subtitle": "Users must solve a mathematical equation to unlock the ADA",
+    "date": "2025-02-18T10:00:00.000Z",
     "plutusVersion": "V2",
     "complexity": "Advanced",
     "tags": [
@@ -215,6 +229,7 @@
     "url": "https://plutus-cheatsheet.vercel.app/article/multisig-validator",
     "title": "Multi-Sig (M of N) Validator",
     "subtitle": "Require signatures from at least M out of N specified PubKeyHashes",
+    "date": "2025-02-19T10:00:00.000Z",
     "plutusVersion": "V2",
     "complexity": "Advanced",
     "tags": [
@@ -230,6 +245,7 @@
     "url": "https://plutus-cheatsheet.vercel.app/article/nft-mint-utxo",
     "title": "NFT Minting with UTxO Consumption",
     "subtitle": "Guaranteeing uniqueness using a one-time UTxO-based minting policy",
+    "date": "2025-01-15T10:00:00.000Z",
     "plutusVersion": "V2",
     "complexity": "Advanced",
     "tags": [
@@ -246,6 +262,7 @@
     "url": "https://plutus-cheatsheet.vercel.app/article/nft-mint-again-fails",
     "title": "NFT Mint Again — Why It Fails",
     "subtitle": "UTxO-based uniqueness enforcement",
+    "date": "2025-12-15T10:00:00.000Z",
     "plutusVersion": "V2",
     "complexity": "Advanced",
     "tags": [
@@ -260,6 +277,7 @@
     "url": "https://plutus-cheatsheet.vercel.app/article/nft-mint-bad-redeemer",
     "title": "NFT Mint With Bad Redeemer",
     "subtitle": "Why the redeemer does not matter here",
+    "date": "2025-12-15T10:00:00.000Z",
     "plutusVersion": "V2",
     "complexity": "Advanced",
     "tags": [
@@ -274,6 +292,7 @@
     "url": "https://plutus-cheatsheet.vercel.app/article/nft-mint-first-time",
     "title": "NFT Mint — First Time",
     "subtitle": "Minting an NFT by consuming a specific UTxO",
+    "date": "2025-12-15T10:00:00.000Z",
     "plutusVersion": "V2",
     "complexity": "Intermediate",
     "tags": [
@@ -288,6 +307,7 @@
     "url": "https://plutus-cheatsheet.vercel.app/article/negative-redeemer-timed",
     "title": "Negative Redeemer Timed Validator",
     "subtitle": "Spend allowed only after deadline with a negative redeemer",
+    "date": "2025-01-01T10:00:00.000Z",
     "plutusVersion": "V2",
     "complexity": "Advanced",
     "tags": [
@@ -303,6 +323,7 @@
     "url": "https://plutus-cheatsheet.vercel.app/article/one-shot-minting-policy",
     "title": "One-Shot Minting Policy",
     "subtitle": "Mint exactly once using a specific UTxO reference",
+    "date": "2025-01-01T10:00:00.000Z",
     "plutusVersion": "V1",
     "complexity": "Beginner",
     "tags": []
@@ -312,6 +333,7 @@
     "url": "https://plutus-cheatsheet.vercel.app/article/oracle-validator",
     "title": "Oracle Validator",
     "subtitle": "On-chain price oracle secured by NFT and operator signature",
+    "date": "2025-01-01T10:00:00.000Z",
     "plutusVersion": "V2",
     "complexity": "Beginner",
     "tags": [
@@ -327,6 +349,7 @@
     "url": "https://plutus-cheatsheet.vercel.app/article/password-validator",
     "title": "Password Protected Validator",
     "subtitle": "Secure funds on-chain using a cryptographic hash and a cleartext password",
+    "date": "2025-02-15T10:00:00.000Z",
     "plutusVersion": "V2",
     "complexity": "Advanced",
     "tags": [
@@ -342,6 +365,7 @@
     "url": "https://plutus-cheatsheet.vercel.app/article/plutus-big-validator",
     "title": "Plutus BigValidator Example",
     "subtitle": "Complete Validator Script with Multiple Redeemers",
+    "date": "2024-11-01T10:00:00.000Z",
     "plutusVersion": "V2",
     "complexity": "Beginner",
     "tags": [
@@ -356,6 +380,7 @@
     "url": "https://plutus-cheatsheet.vercel.app/article/plutus-data-types",
     "title": "Plutus Data Types",
     "subtitle": "Understanding Plutus data types and their usage",
+    "date": "2024-11-02T10:00:00.000Z",
     "plutusVersion": "V2",
     "complexity": "Beginner",
     "tags": [
@@ -369,6 +394,7 @@
     "url": "https://plutus-cheatsheet.vercel.app/article/signed-mint-policy",
     "title": "Signed Minting Policy",
     "subtitle": "Minting tokens only with an authorized signature",
+    "date": "2025-01-07T10:00:00.000Z",
     "plutusVersion": "V2",
     "complexity": "Beginner",
     "tags": [
@@ -384,6 +410,7 @@
     "url": "https://plutus-cheatsheet.vercel.app/article/signed-mint-failure-full",
     "title": "Signed Minting Policy — Complete Failure",
     "subtitle": "Tracing the full command flow and understanding the missing signature error",
+    "date": "2025-01-12T10:00:00.000Z",
     "plutusVersion": "V2",
     "complexity": "Advanced",
     "tags": [
@@ -400,6 +427,7 @@
     "url": "https://plutus-cheatsheet.vercel.app/article/single-asset-minting",
     "title": "Single Asset Minting",
     "subtitle": "A Minting Policy that enforces only a specific, hardcoded Token Name can be minted",
+    "date": "2025-02-21T10:00:00.000Z",
     "plutusVersion": "V2",
     "complexity": "Advanced",
     "tags": [
@@ -415,6 +443,7 @@
     "url": "https://plutus-cheatsheet.vercel.app/article/staking-validator",
     "title": "Staking Validator",
     "subtitle": "Reward distribution enforced at the staking layer",
+    "date": "2025-01-01T10:00:00.000Z",
     "plutusVersion": "V2",
     "complexity": "Beginner",
     "tags": [
@@ -430,6 +459,7 @@
     "url": "https://plutus-cheatsheet.vercel.app/article/state-machine-counter",
     "title": "State Machine (Simple Counter)",
     "subtitle": "A stateful Plutus contract enforcing sequential counter increments",
+    "date": "2025-01-22T10:00:00.000Z",
     "plutusVersion": "V2",
     "complexity": "Advanced",
     "tags": [
@@ -445,6 +475,7 @@
     "url": "https://plutus-cheatsheet.vercel.app/article/vesting-validator",
     "title": "Vesting Validator",
     "subtitle": "Time-locked and signature-restricted funds on Cardano",
+    "date": "2025-01-03T10:00:00.000Z",
     "plutusVersion": "V2",
     "complexity": "Beginner",
     "tags": [
