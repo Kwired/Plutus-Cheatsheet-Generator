@@ -46,8 +46,33 @@ import DutchAuctionArticle, { articleMeta as DutchAuctionMeta } from "./DutchAuc
 import VestingLinearArticle, { articleMeta as VestingLinearMeta } from "./VestingLinear";
 import LiquidityPoolArticle, { articleMeta as LiquidityPoolMeta } from "./LiquidityPool";
 import FlashLoanArticle, { articleMeta as FlashLoanMeta } from "./FlashLoan";
+import ReplayAttackArticle, { articleMeta as ReplayAttackMeta } from "./ReplayAttack";
+import DoubleSatisfactionArticle, { articleMeta as DoubleSatisfactionMeta } from "./DoubleSatisfaction";
+import DatumMismatchArticle, { articleMeta as DatumMismatchMeta } from "./DatumMismatch";
+import RefInputMisuseArticle, { articleMeta as RefInputMisuseMeta } from "./RefInputMisuse";
+import MissingSignaturesArticle, { articleMeta as MissingSignaturesMeta } from "./MissingSignatures";
 
 export const articles = [
+  {
+    component: MissingSignaturesArticle,
+    meta: MissingSignaturesMeta
+  },
+  {
+    component: RefInputMisuseArticle,
+    meta: RefInputMisuseMeta
+  },
+  {
+    component: DatumMismatchArticle,
+    meta: DatumMismatchMeta
+  },
+  {
+    component: DoubleSatisfactionArticle,
+    meta: DoubleSatisfactionMeta
+  },
+  {
+    component: ReplayAttackArticle,
+    meta: ReplayAttackMeta
+  },
   {
     component: FlashLoanArticle,
     meta: FlashLoanMeta
