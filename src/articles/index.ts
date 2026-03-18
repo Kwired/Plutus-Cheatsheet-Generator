@@ -41,8 +41,33 @@ import TokenSaleArticle, { articleMeta as TokenSaleMeta } from "./TokenSale";
 import TimeLockedSavingsArticle, { articleMeta as TimeLockedSavingsMeta } from "./TimeLockedSavings";
 import CollateralLoanArticle, { articleMeta as CollateralLoanMeta } from "./CollateralLoan";
 import EnglishAuctionArticle, { articleMeta as EnglishAuctionMeta } from "./EnglishAuction";
+import ArbitratorEscrowArticle, { articleMeta as ArbitratorEscrowMeta } from "./ArbitratorEscrow";
+import DutchAuctionArticle, { articleMeta as DutchAuctionMeta } from "./DutchAuction";
+import VestingLinearArticle, { articleMeta as VestingLinearMeta } from "./VestingLinear";
+import LiquidityPoolArticle, { articleMeta as LiquidityPoolMeta } from "./LiquidityPool";
+import FlashLoanArticle, { articleMeta as FlashLoanMeta } from "./FlashLoan";
 
 export const articles = [
+  {
+    component: FlashLoanArticle,
+    meta: FlashLoanMeta
+  },
+  {
+    component: LiquidityPoolArticle,
+    meta: LiquidityPoolMeta
+  },
+  {
+    component: VestingLinearArticle,
+    meta: VestingLinearMeta
+  },
+  {
+    component: DutchAuctionArticle,
+    meta: DutchAuctionMeta
+  },
+  {
+    component: ArbitratorEscrowArticle,
+    meta: ArbitratorEscrowMeta
+  },
   {
     component: EnglishAuctionArticle,
     meta: EnglishAuctionMeta
