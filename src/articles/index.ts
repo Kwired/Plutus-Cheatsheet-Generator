@@ -29,8 +29,43 @@ import MultiSigValidatorArticle, { articleMeta as MultiSigValidatorMeta } from "
 import BurnOnlyPolicyArticle, { articleMeta as BurnOnlyPolicyMeta } from "./BurnOnlyPolicy";
 import SingleAssetMintingArticle, { articleMeta as SingleAssetMintingMeta } from "./SingleAssetMinting";
 import EscrowValidatorArticle, { articleMeta as EscrowValidatorMeta } from "./EscrowValidator";
+import StatefulNFTArticle, { articleMeta as StatefulNFTMeta } from "./StatefulNFT";
+import BreedingContractArticle, { articleMeta as BreedingContractMeta } from "./BreedingContract";
+import LootboxContractArticle, { articleMeta as LootboxContractMeta } from "./LootboxContract";
+import TicTacToeArticle, { articleMeta as TicTacToeMeta } from "./TicTacToe";
+import GamingMatchmakerArticle, { articleMeta as GamingMatchmakerMeta } from "./GamingMatchmaker";
+import AirdropDistributorArticle, { articleMeta as AirdropDistributorMeta } from "./AirdropDistributor";
+import RoyaltyEnforcerArticle, { articleMeta as RoyaltyEnforcerMeta } from "./RoyaltyEnforcer";
 
 export const articles = [
+  {
+    component: RoyaltyEnforcerArticle,
+    meta: RoyaltyEnforcerMeta
+  },
+  {
+    component: AirdropDistributorArticle,
+    meta: AirdropDistributorMeta
+  },
+  {
+    component: GamingMatchmakerArticle,
+    meta: GamingMatchmakerMeta
+  },
+  {
+    component: TicTacToeArticle,
+    meta: TicTacToeMeta
+  },
+  {
+    component: LootboxContractArticle,
+    meta: LootboxContractMeta
+  },
+  {
+    component: BreedingContractArticle,
+    meta: BreedingContractMeta
+  },
+  {
+    component: StatefulNFTArticle,
+    meta: StatefulNFTMeta
+  },
   {
     component: EscrowValidatorArticle,
     meta: EscrowValidatorMeta
