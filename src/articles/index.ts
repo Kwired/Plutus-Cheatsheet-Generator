@@ -36,8 +36,33 @@ import TicTacToeArticle, { articleMeta as TicTacToeMeta } from "./TicTacToe";
 import GamingMatchmakerArticle, { articleMeta as GamingMatchmakerMeta } from "./GamingMatchmaker";
 import AirdropDistributorArticle, { articleMeta as AirdropDistributorMeta } from "./AirdropDistributor";
 import RoyaltyEnforcerArticle, { articleMeta as RoyaltyEnforcerMeta } from "./RoyaltyEnforcer";
+import CrowdfundingArticle, { articleMeta as CrowdfundingMeta } from "./Crowdfunding";
+import TokenSaleArticle, { articleMeta as TokenSaleMeta } from "./TokenSale";
+import TimeLockedSavingsArticle, { articleMeta as TimeLockedSavingsMeta } from "./TimeLockedSavings";
+import CollateralLoanArticle, { articleMeta as CollateralLoanMeta } from "./CollateralLoan";
+import EnglishAuctionArticle, { articleMeta as EnglishAuctionMeta } from "./EnglishAuction";
 
 export const articles = [
+  {
+    component: EnglishAuctionArticle,
+    meta: EnglishAuctionMeta
+  },
+  {
+    component: CollateralLoanArticle,
+    meta: CollateralLoanMeta
+  },
+  {
+    component: TimeLockedSavingsArticle,
+    meta: TimeLockedSavingsMeta
+  },
+  {
+    component: TokenSaleArticle,
+    meta: TokenSaleMeta
+  },
+  {
+    component: CrowdfundingArticle,
+    meta: CrowdfundingMeta
+  },
   {
     component: RoyaltyEnforcerArticle,
     meta: RoyaltyEnforcerMeta
