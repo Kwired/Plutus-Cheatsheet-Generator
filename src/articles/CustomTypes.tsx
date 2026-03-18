@@ -17,6 +17,7 @@ export const articleMeta = {
   plutusVersion: "V2",
   complexity: "Beginner",
   useCase: "Security"
+
 };
 
 export default function CustomTypesArticle() {

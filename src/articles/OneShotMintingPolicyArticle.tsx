@@ -24,6 +24,7 @@ export const articleMeta = {
   plutusVersion: "V1",
   complexity: "Beginner",
   useCase: "NFTs"
+
 };
 
 export default function OneShotMintingPolicyArticle() {

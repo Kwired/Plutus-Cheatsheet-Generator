@@ -14,6 +14,7 @@ export const articleMeta = {
   plutusVersion: "V2",
   complexity: "Advanced",
   useCase: "NFTs"
+
 };
 
 export default function ExpirationValidatorArticle() {
@@ -69,10 +70,10 @@ saveVal = writeValidatorToFile "./assets/expiration.plutus" validator
     const bashCommands = `# 1. Lock ADA at the contract address with the expiration stored in the datum.
 # Let's say our POSIX expiration is 1735689600000 (Jan 1, 2025).
 $ cardano-cli conway transaction build \\
-  --tx-in dummy_tx_hash_uuid_here_1111111111111111#0 \\
+  --tx-in 68a43677324f2efb54e8dd4e849c28aaca0fa09b99799a598c53ad0dd5885b79#0 \\
   --tx-out $(cat expiration.addr)+10000000 \\
   --tx-out-inline-datum-value '{"int": 1735689600000}' \\
-  --change-address addr_test1_dummy_address_here \\
+  --change-address addr_test18ttl864rr9t0364u9twgdps8f0969vsem83um6y73feanhzex6djy \\
   --testnet-magic 2 \\
   --out-file tx-lock.raw
 
@@ -94,14 +95,14 @@ $ cardano-cli conway transaction submit --tx-file tx-lock.signed
 # First, find a slot number representing exactly right now + 5 minutes.
 # Let's assume the expiration slot is 55000000 and we are at 50000000.
 $ cardano-cli conway transaction build \\
-  --tx-in dummy_tx_hash_uuid_here_2222222222222222#0 \\
+  --tx-in 4c298c9d19ec6915a76571bef256abc0e67eafd5facae1b03bc942720a1c3595#0 \\
   --tx-in-script-file expiration.plutus \\
   --tx-in-inline-datum-present \\
   --tx-in-redeemer-value '{"constructor": 0, "fields": []}' \\
-  --tx-out addr_test1_dummy_receiver_address_here+8000000 \\
+  --tx-out addr_test162jvdjjssrxfxfwx5qcajknvc5u3rw60pdpd88xyasxxqcse9gcc4+8000000 \\
   --invalid-hereafter 55000000 \\
-  --tx-in-collateral dummy_collateral_hash_uuid_here_33333333#0 \\
-  --change-address addr_test1_dummy_address_here \\
+  --tx-in-collateral 5f9f6d80edd1bae0d7f279146ac8d010802223e139f37a7326f700151caa2b2d#0 \\
+  --change-address addr_test17tf3gp3s3sam2v0my3x5pjd8ttmu4z5r9ffc29nh4luwamsv8jdx3 \\
   --testnet-magic 2 \\
   --out-file tx-spend.raw
 
@@ -137,7 +138,7 @@ $ cardano-cli conway transaction submit --tx-file tx-spend.signed
             />
             <br />
 
-            <h2 id="explanation">How It Really Works</h2>
+            <h2 id="explanation">Breaking It Down</h2>
 
             <h3>The Interval Check</h3>
 

@@ -17,6 +17,7 @@ export const articleMeta = {
   plutusVersion: "V2",
   complexity: "Advanced",
   useCase: "Security"
+
 };
 
 export default function NegativeRTimedArticle() {

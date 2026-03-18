@@ -11,6 +11,7 @@ export const articleMeta = {
   plutusVersion: "V2",
   complexity: "Intermediate",
   useCase: "NFTs"
+
 };
 
 export default function NFTMintFirstTime() {

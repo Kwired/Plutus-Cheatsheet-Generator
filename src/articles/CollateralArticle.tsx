@@ -16,6 +16,7 @@ export const articleMeta = {
   plutusVersion: "V2",
   complexity: "Advanced",
   useCase: "NFTs"
+
 };
 
 // Article component

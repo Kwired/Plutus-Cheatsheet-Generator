@@ -1,5 +1,21 @@
 [
   {
+    "id": "airdrop-distributor",
+    "url": "https://plutus-cheatsheet.vercel.app/article/airdrop-distributor",
+    "title": "Airdrop Distributor",
+    "subtitle": "Token claims verified by Merkle proofs instead of a centralized whitelist",
+    "date": "2025-02-22T17:00:00.000Z",
+    "plutusVersion": "V2",
+    "complexity": "Intermediate",
+    "tags": [
+      "plutus",
+      "cardano",
+      "tokens",
+      "merkle-tree",
+      "intermediate"
+    ]
+  },
+  {
     "id": "always-fails",
     "url": "https://plutus-cheatsheet.vercel.app/article/always-fails",
     "title": "Always Fails (Burn Validator)",
@@ -29,6 +45,22 @@
       "validator",
       "basics",
       "always-succeeds"
+    ]
+  },
+  {
+    "id": "breeding-contract",
+    "url": "https://plutus-cheatsheet.vercel.app/article/breeding-contract",
+    "title": "Breeding Contract",
+    "subtitle": "Combine two parent NFTs to produce a deterministic child token",
+    "date": "2025-02-19T14:30:00.000Z",
+    "plutusVersion": "V2",
+    "complexity": "Intermediate",
+    "tags": [
+      "plutus",
+      "cardano",
+      "nft",
+      "minting",
+      "intermediate"
     ]
   },
   {
@@ -193,6 +225,22 @@
     ]
   },
   {
+    "id": "gaming-matchmaker",
+    "url": "https://plutus-cheatsheet.vercel.app/article/gaming-matchmaker",
+    "title": "Gaming Matchmaker",
+    "subtitle": "A two-phase state machine for trustless player-vs-player wager matching",
+    "date": "2025-02-22T11:30:00.000Z",
+    "plutusVersion": "V2",
+    "complexity": "Intermediate",
+    "tags": [
+      "plutus",
+      "cardano",
+      "game",
+      "state-machine",
+      "intermediate"
+    ]
+  },
+  {
     "id": "hello-world-validator",
     "url": "https://plutus-cheatsheet.vercel.app/article/hello-world-validator",
     "title": "Hello World Validator",
@@ -206,6 +254,22 @@
       "validator",
       "basics",
       "hello-world"
+    ]
+  },
+  {
+    "id": "lootbox-contract",
+    "url": "https://plutus-cheatsheet.vercel.app/article/lootbox-contract",
+    "title": "Lootbox Contract",
+    "subtitle": "On-chain mystery box with transparent pseudo-random reward selection",
+    "date": "2025-02-20T16:00:00.000Z",
+    "plutusVersion": "V2",
+    "complexity": "Intermediate",
+    "tags": [
+      "plutus",
+      "cardano",
+      "nft",
+      "randomness",
+      "intermediate"
     ]
   },
   {
@@ -390,6 +454,22 @@
     ]
   },
   {
+    "id": "royalty-enforcer",
+    "url": "https://plutus-cheatsheet.vercel.app/article/royalty-enforcer",
+    "title": "Royalty Enforcer",
+    "subtitle": "Script-level royalty enforcement for NFT sales on Cardano",
+    "date": "2025-02-23T15:00:00.000Z",
+    "plutusVersion": "V2",
+    "complexity": "Intermediate",
+    "tags": [
+      "plutus",
+      "cardano",
+      "nft",
+      "royalties",
+      "intermediate"
+    ]
+  },
+  {
     "id": "signed-mint-policy",
     "url": "https://plutus-cheatsheet.vercel.app/article/signed-mint-policy",
     "title": "Signed Minting Policy",
@@ -468,6 +548,38 @@
       "validator",
       "state-machine",
       "advanced"
+    ]
+  },
+  {
+    "id": "stateful-nft",
+    "url": "https://plutus-cheatsheet.vercel.app/article/stateful-nft",
+    "title": "Stateful NFT",
+    "subtitle": "Building an NFT that levels up on-chain using Plutus datums",
+    "date": "2025-02-18T10:00:00.000Z",
+    "plutusVersion": "V2",
+    "complexity": "Intermediate",
+    "tags": [
+      "plutus",
+      "cardano",
+      "nft",
+      "state-machine",
+      "intermediate"
+    ]
+  },
+  {
+    "id": "tic-tac-toe",
+    "url": "https://plutus-cheatsheet.vercel.app/article/tic-tac-toe",
+    "title": "Tic-Tac-Toe Game State",
+    "subtitle": "Enforcing a complete game of Tic-Tac-Toe with a Plutus state machine",
+    "date": "2025-02-21T09:00:00.000Z",
+    "plutusVersion": "V2",
+    "complexity": "Intermediate",
+    "tags": [
+      "plutus",
+      "cardano",
+      "game",
+      "state-machine",
+      "intermediate"
     ]
   },
   {

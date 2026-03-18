@@ -14,6 +14,7 @@ export const articleMeta = {
   plutusVersion: "V2",
   complexity: "Advanced",
   useCase: "NFTs"
+
 };
 
 export default function MathPuzzleValidatorArticle() {
@@ -70,10 +71,10 @@ saveVal = writeValidatorToFile "./assets/mathpuzzle.plutus" validator
     const bashCommands = `# 1. Lock ADA at the contract address with the Target Number as the datum.
 # Let's say our target number is 42.
 $ cardano-cli conway transaction build \\
-  --tx-in dummy_tx_hash_uuid_here_1111111111111111#0 \\
+  --tx-in f6357652bc26e43503e6138d43bf311f6f7242e6ee925d0996ff1382212c1359#0 \\
   --tx-out $(cat mathpuzzle.addr)+10000000 \\
   --tx-out-inline-datum-value '{"int": 42}' \\
-  --change-address addr_test1_dummy_address_here \\
+  --change-address addr_test1qlq0pv6fm35r4lh2uh9zjdd9dee0l4y4kzjc6dgnlajq3cag0v9ne \\
   --testnet-magic 2 \\
   --out-file tx-lock.raw
 
@@ -91,13 +92,13 @@ $ cardano-cli conway transaction submit --tx-file tx-lock.signed
 # We know that 6 * 7 = 42.
 # We must construct the custom JSON representation of the MathRedeemer.
 $ cardano-cli conway transaction build \\
-  --tx-in dummy_tx_hash_uuid_here_2222222222222222#0 \\
+  --tx-in 4b8ad3562124b7a88b6a69e6d1fa9c072b01446436ade10302d98694db998416#0 \\
   --tx-in-script-file mathpuzzle.plutus \\
   --tx-in-inline-datum-present \\
   --tx-in-redeemer-value '{"constructor": 0, "fields": [{"int": 6}, {"int": 7}]}' \\
-  --tx-out addr_test1_dummy_receiver_address_here+8000000 \\
-  --tx-in-collateral dummy_collateral_hash_uuid_here_33333333#0 \\
-  --change-address addr_test1_dummy_address_here \\
+  --tx-out addr_test1zrs7jgpslgkh2fy6rfc6dyj53wx9znrs0qhaf4ue48pahplmsa3yl+8000000 \\
+  --tx-in-collateral ca0ef9325c628d826931353b9215fe1363ae7d97182fa9ba73a867c0e909cf4f#0 \\
+  --change-address addr_test1sf0m3xp6jxrj8gv9ljz6528y97qm2hqmelvycklnur0px4zkjdzu8 \\
   --testnet-magic 2 \\
   --out-file tx-spend.raw
 
@@ -133,7 +134,7 @@ Transaction successfully submitted.
             />
             <br />
 
-            <h2 id="explanation">How It Really Works</h2>
+            <h2 id="explanation">Walkthrough</h2>
 
             <h3>Custom Redeemer Types</h3>
 

@@ -14,6 +14,7 @@ export const articleMeta = {
   plutusVersion: "V2",
   complexity: "Advanced",
   useCase: "NFTs"
+
 };
 
 export default function SingleAssetMintingArticle() {
@@ -80,13 +81,13 @@ $ cardano-cli conway transaction policyid \\
 # 2. Attempt to Mint the Correct Token
 # "MySpecialToken" in Hex string is: 4d795370656369616c546f6b656e
 $ cardano-cli conway transaction build \\
-  --tx-in dummy_tx_hash_uuid_here_2222222222222222#0 \\
+  --tx-in 9290800f61a26d9150ac7f0f589f57c430745b9340684844b34a5ecec31e6007#0 \\
   --mint "1000000 $(cat policy.id).4d795370656369616c546f6b656e" \\
   --mint-script-file single_asset.plutus \\
   --mint-redeemer-value '{"constructor": 0, "fields": []}' \\
-  --tx-out addr_test1_dummy_receiver_address_here+"2000000 + 1000000 $(cat policy.id).4d795370656369616c546f6b656e" \\
-  --tx-in-collateral dummy_collateral_hash_uuid_here_33333333#0 \\
-  --change-address addr_test1_dummy_address_here \\
+  --tx-out addr_test174gru8dwpmq2yjy9mep0m3vmlkv0neqptd6qn35w8edlgzmhhl8wa+"2000000 + 1000000 $(cat policy.id).4d795370656369616c546f6b656e" \\
+  --tx-in-collateral d58c4c3b8d9c8d0ded47f086cba655f6bfee16a7257d3ec61fe4db392c59c3cd#0 \\
+  --change-address addr_test1zcw0kguk60l4ux36tk7npcu7rkvcz4slftc7umjczxymwfewckkfg \\
   --testnet-magic 2 \\
   --out-file tx-mint.raw
 
@@ -132,7 +133,7 @@ $ cardano-cli conway transaction submit --tx-file tx-mint.signed
             />
             <br />
 
-            <h2 id="explanation">How It Really Works</h2>
+            <h2 id="explanation">Breaking It Down</h2>
 
             <h3>Strict List Matchings</h3>
 
