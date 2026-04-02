@@ -205,7 +205,7 @@ $ cardano-cli conway transaction submit --tx-file tx-declare-winner.signed
             />
             <br />
 
-            <h2 id="explanation">What's Going On</h2>
+            <h2 id="explanation">How It Works</h2>
 
             <h3>State × Action pattern matching</h3>
 

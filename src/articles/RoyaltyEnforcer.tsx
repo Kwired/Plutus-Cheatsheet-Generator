@@ -160,16 +160,17 @@ $ cardano-cli conway transaction submit --tx-file tx-sell-nft.signed
             <h2 id="introduction">Introduction</h2>
 
             <p>
-                Royalties on most NFT platforms (OpenSea, etc.) are enforced by the
-                marketplace, not the chain. Sell the NFT on a platform that ignores
-                royalties and the creator gets nothing. On Cardano we can push royalty
-                enforcement down to the script level.
+                On platforms like OpenSea, royalties are enforced by the marketplace,
+                not the blockchain. If someone sells the NFT on a different platform
+                that doesn't respect royalties, the creator gets nothing.
             </p>
 
             <p>
-                This validator locks an NFT at a script address and requires a royalty
-                payment to the creator on every sale. The NFT never leaves the script — each
-                sale is really a datum update that swaps the <code>currentOwner</code> field.
+                On Cardano, the <strong>Royalty Enforcer</strong> locks
+                the NFT inside a validator that guarantees the
+                creator receives their cut on every sale. The NFT can't leave
+                the script without the royalty being paid — it's enforced at the
+                protocol level.
             </p>
 
             <CodeBlock
@@ -197,7 +198,7 @@ $ cardano-cli conway transaction submit --tx-file tx-sell-nft.signed
                 filename="Royalty Math"
             />
 
-            <h3>The NFT stays script-locked</h3>
+            <h3>The Lock Pattern</h3>
 
             <p className="pexplaination pt-2">
                 The NFT never touches a regular wallet. Every sale consumes the old UTxO

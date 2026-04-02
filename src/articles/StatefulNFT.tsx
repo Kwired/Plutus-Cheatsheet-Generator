@@ -178,15 +178,16 @@ $ cardano-cli conway transaction submit --tx-file tx-upgrade-nft.signed
             />
             <br />
 
-            <h2 id="explanation">Explanation</h2>
+            <h2 id="explanation">How It Works</h2>
 
             <h3>Why the token has to stay locked</h3>
 
             <p className="pexplaination">
-                There's a subtle thing here that's easy to miss. The validator doesn't just
-                check signatures and levels — it also verifies that the NFT token itself is
-                still present in the continuing output. Without this, someone could strip
-                the token out and leave behind an empty datum. The check is straightforward:
+                An important detail: the validator doesn't just check signatures
+                and levels. It also verifies that the actual NFT token stays locked at
+                the script address in the continuing output. Without this, an attacker
+                could strip the token out of the UTxO, leaving behind
+                an empty datum.
             </p>
 
             <CodeBlock
@@ -223,8 +224,9 @@ $ cardano-cli conway transaction submit --tx-file tx-upgrade-nft.signed
             />
 
             <p className="pexplaination">
-                This prevents someone from sneaking a stat boost into a transfer transaction.
-                Want to level up AND sell? You'll need two separate transactions.
+                This prevents an attack where someone transfers AND levels up in the same
+                transaction—trying to sneak in a stat boost during a sale. The validator
+                rejects it.
             </p>
 
             <br />

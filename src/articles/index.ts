@@ -36,8 +36,105 @@ import TicTacToeArticle, { articleMeta as TicTacToeMeta } from "./TicTacToe";
 import GamingMatchmakerArticle, { articleMeta as GamingMatchmakerMeta } from "./GamingMatchmaker";
 import AirdropDistributorArticle, { articleMeta as AirdropDistributorMeta } from "./AirdropDistributor";
 import RoyaltyEnforcerArticle, { articleMeta as RoyaltyEnforcerMeta } from "./RoyaltyEnforcer";
+import CrowdfundingArticle, { articleMeta as CrowdfundingMeta } from "./Crowdfunding";
+import TokenSaleArticle, { articleMeta as TokenSaleMeta } from "./TokenSale";
+import TimeLockedSavingsArticle, { articleMeta as TimeLockedSavingsMeta } from "./TimeLockedSavings";
+import CollateralLoanArticle, { articleMeta as CollateralLoanMeta } from "./CollateralLoan";
+import EnglishAuctionArticle, { articleMeta as EnglishAuctionMeta } from "./EnglishAuction";
+import ArbitratorEscrowArticle, { articleMeta as ArbitratorEscrowMeta } from "./ArbitratorEscrow";
+import DutchAuctionArticle, { articleMeta as DutchAuctionMeta } from "./DutchAuction";
+import VestingLinearArticle, { articleMeta as VestingLinearMeta } from "./VestingLinear";
+import LiquidityPoolArticle, { articleMeta as LiquidityPoolMeta } from "./LiquidityPool";
+import FlashLoanArticle, { articleMeta as FlashLoanMeta } from "./FlashLoan";
+import ReplayAttackArticle, { articleMeta as ReplayAttackMeta } from "./ReplayAttack";
+import DoubleSatisfactionArticle, { articleMeta as DoubleSatisfactionMeta } from "./DoubleSatisfaction";
+import DatumMismatchArticle, { articleMeta as DatumMismatchMeta } from "./DatumMismatch";
+import RefInputMisuseArticle, { articleMeta as RefInputMisuseMeta } from "./RefInputMisuse";
+import MissingSignaturesArticle, { articleMeta as MissingSignaturesMeta } from "./MissingSignatures";
+
+// NEW ARTICLES
+import SealedBidAuctionArticle, { articleMeta as SealedBidAuctionMeta } from "./SealedBidAuction";
+import LiquidationContractArticle, { articleMeta as LiquidationContractMeta } from "./LiquidationContract";
+import StatefulMarketplaceArticle, { articleMeta as StatefulMarketplaceMeta } from "./StatefulMarketplace";
+import BountyBoardArticle, { articleMeta as BountyBoardMeta } from "./BountyBoard";
 
 export const articles = [
+  {
+    component: SealedBidAuctionArticle,
+    meta: SealedBidAuctionMeta
+  },
+  {
+    component: LiquidationContractArticle,
+    meta: LiquidationContractMeta
+  },
+  {
+    component: StatefulMarketplaceArticle,
+    meta: StatefulMarketplaceMeta
+  },
+  {
+    component: BountyBoardArticle,
+    meta: BountyBoardMeta
+  },
+  {
+    component: MissingSignaturesArticle,
+    meta: MissingSignaturesMeta
+  },
+  {
+    component: RefInputMisuseArticle,
+    meta: RefInputMisuseMeta
+  },
+  {
+    component: DatumMismatchArticle,
+    meta: DatumMismatchMeta
+  },
+  {
+    component: DoubleSatisfactionArticle,
+    meta: DoubleSatisfactionMeta
+  },
+  {
+    component: ReplayAttackArticle,
+    meta: ReplayAttackMeta
+  },
+  {
+    component: FlashLoanArticle,
+    meta: FlashLoanMeta
+  },
+  {
+    component: LiquidityPoolArticle,
+    meta: LiquidityPoolMeta
+  },
+  {
+    component: VestingLinearArticle,
+    meta: VestingLinearMeta
+  },
+  {
+    component: DutchAuctionArticle,
+    meta: DutchAuctionMeta
+  },
+  {
+    component: ArbitratorEscrowArticle,
+    meta: ArbitratorEscrowMeta
+  },
+  {
+    component: EnglishAuctionArticle,
+    meta: EnglishAuctionMeta
+  },
+  {
+    component: CollateralLoanArticle,
+    meta: CollateralLoanMeta
+  },
+  {
+    component: TimeLockedSavingsArticle,
+    meta: TimeLockedSavingsMeta
+  },
+  {
+    component: TokenSaleArticle,
+    meta: TokenSaleMeta
+  },
+  {
+    component: CrowdfundingArticle,
+    meta: CrowdfundingMeta
+  },
   {
     component: RoyaltyEnforcerArticle,
     meta: RoyaltyEnforcerMeta

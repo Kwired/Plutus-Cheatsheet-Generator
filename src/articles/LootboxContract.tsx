@@ -183,7 +183,7 @@ $ cardano-cli conway transaction submit --tx-file tx-open-lootbox.signed
             />
             <br />
 
-            <h2 id="explanation">Explanation</h2>
+            <h2 id="explanation">How It Works</h2>
 
             <h3>Pseudo-randomness on a deterministic chain</h3>
 

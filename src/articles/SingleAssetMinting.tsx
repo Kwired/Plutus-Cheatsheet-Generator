@@ -133,7 +133,7 @@ $ cardano-cli conway transaction submit --tx-file tx-mint.signed
             />
             <br />
 
-            <h2 id="explanation">Breaking It Down</h2>
+            <h2 id="explanation">How It Works</h2>
 
             <h3>Strict List Matchings</h3>
 

@@ -140,7 +140,7 @@ Transaction successfully submitted.
             />
             <br />
 
-            <h2 id="explanation">Deep Dive</h2>
+            <h2 id="explanation">How It Works</h2>
 
             <h3>The One-Way Street of Cryptography</h3>
 

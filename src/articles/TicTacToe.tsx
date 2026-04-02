@@ -206,10 +206,10 @@ $ cardano-cli conway transaction submit --tx-file tx-play-x.signed
             <h2 id="introduction">Introduction</h2>
 
             <p>
-                Tic-Tac-Toe is a good test case for on-chain game logic because everyone
-                already knows the rules. The entire 3×3 board lives in the datum as a list
-                of 9 cells, and the validator checks every move for legality — right player,
-                empty cell, correct board update, correct turn switch.
+                Tic-Tac-Toe is a simple enough game that everyone knows the rules,
+                which makes it a good example for understanding how game state
+                can be fully enforced on-chain. No game server, no referee—just
+                two players and a Plutus script that validates every move.
             </p>
 
             <p>
@@ -225,7 +225,7 @@ $ cardano-cli conway transaction submit --tx-file tx-play-x.signed
             />
             <br />
 
-            <h2 id="explanation">Deep Dive</h2>
+            <h2 id="explanation">How It Works</h2>
 
             <h3>Board representation</h3>
 
@@ -258,9 +258,10 @@ data GameDatum = GameDatum
             </p>
 
             <p className="pexplaination">
-                If X tries to overwrite O's mark, <code>isEmpty</code> catches it. If they
-                try to place two marks, the <code>setCell</code> comparison catches it. If
-                they forget to switch the turn, <code>switchedTurn</code> catches it.
+                If Player X tries to overwrite Player O's mark, <code>isEmpty</code>
+                {" "}catches it. If they place a mark at the wrong position, the{" "}
+                <code>setCell</code> comparison fails. If they don't switch the turn,
+                <code>switchedTurn</code> rejects it.
             </p>
 
             <h3>Win and draw</h3>
@@ -286,7 +287,9 @@ data GameDatum = GameDatum
             <h2 id="execution">Execution</h2>
 
             <p className="pexplaination">
-                Each move is its own transaction on-chain.
+                Each move is a separate on-chain transaction. The two players take turns
+                building transactions that consume the current game state and produce an
+                updated one.
             </p>
 
             <CodeBlock
@@ -295,19 +298,7 @@ data GameDatum = GameDatum
                 filename="Tic-Tac-Toe CLI Commands"
             />
 
-            <h2 id="mental-model">Mental Model</h2>
-
-            <pre className="bg-gray-900 text-gray-100 p-4 rounded-md text-sm overflow-x-auto">
-                {`Player X tx          Player O tx          Player X tx
-   │                    │                    │
-   ▼                    ▼                    ▼
-┌─────────┐      ┌─────────┐      ┌─────────┐
-│ . . .   │      │ . . .   │      │ . . .   │
-│ . X .   │ ──►  │ . X .   │ ──►  │ X X .   │  ...
-│ . . .   │      │ . . O   │      │ . . O   │
-└─────────┘      └─────────┘      └─────────┘
- Datum v1         Datum v2         Datum v3`}
-            </pre>
+            <h3>The JSON Encoding</h3>
 
             <p className="pexplaination pt-2">
                 A note on the JSON: yes, the datum representation for 9 board cells is

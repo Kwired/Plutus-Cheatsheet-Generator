@@ -134,7 +134,7 @@ Transaction successfully submitted.
             />
             <br />
 
-            <h2 id="explanation">Walkthrough</h2>
+            <h2 id="explanation">How It Works</h2>
 
             <h3>Custom Redeemer Types</h3>
 

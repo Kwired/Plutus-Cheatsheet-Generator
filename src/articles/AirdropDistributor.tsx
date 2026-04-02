@@ -195,7 +195,7 @@ $ cardano-cli conway transaction submit --tx-file tx-claim-airdrop.signed
             />
             <br />
 
-            <h2 id="explanation">Walkthrough</h2>
+            <h2 id="explanation">How It Works</h2>
 
             <h3>Merkle proofs, briefly</h3>
 
