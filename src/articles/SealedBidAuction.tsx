@@ -11,6 +11,9 @@ export const articleMeta = {
         name: "Aman Kumar",
         avatar: "https://i.pravatar.cc/48?img=16",
     },
+    plutusVersion: "V2",
+    complexity: "Advanced",
+    useCase: "Auctions",
 };
 
 export default function SealedBidAuctionArticle() {

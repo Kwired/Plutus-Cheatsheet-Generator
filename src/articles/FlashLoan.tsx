@@ -11,6 +11,9 @@ export const articleMeta = {
         name: "Aman Kumar",
         avatar: "https://i.pravatar.cc/48?img=21",
     },
+    plutusVersion: "V2",
+    complexity: "Expert",
+    useCase: "DeFi",
 };
 
 export default function FlashLoanArticle() {
