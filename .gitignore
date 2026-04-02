@@ -30,3 +30,8 @@ dist-ssr/
 .vercel/
 src/data
 .vite
+
+# Local Environment Variables
+.env
+.env.*
+!.env.example

@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import CodeBlock from "@/components/layouts/CodeBlock";
 
 export const articleMeta = {
@@ -9,8 +10,11 @@ export const articleMeta = {
     tags: ["plutus", "cardano", "validator", "security", "multi-sig"],
     author: {
         name: "Aman Kumar",
-        avatar: "https://i.pravatar.cc/48?img=9",
-    },
+        avatar: "https://i.pravatar.cc/48?img=9"},
+  plutusVersion: "V2",
+  complexity: "Advanced",
+  useCase: "NFTs"
+
 };
 
 export default function MultiSigValidatorArticle() {
@@ -80,10 +84,10 @@ saveVal = writeValidatorToFile "./assets/multisig.plutus" validator
 # The Datum requires 2 out of 3 authorized signers to unlock.
 # JSON Representation: {"constructor": 0, "fields": [{"int": 2}, {"list": [{"bytes": "hash1..."}, {"bytes": "hash2..."}, {"bytes": "hash3..."}]}]}
 $ cardano-cli conway transaction build \\
-  --tx-in dummy_tx_hash_uuid_here_1111111111111111#0 \\
+  --tx-in b5e2bb65a1098003f5c61503a4b9e12cc8498e289f34054028e1827a892e362b#0 \\
   --tx-out $(cat multisig.addr)+10000000 \\
   --tx-out-inline-datum-file datum.json \\
-  --change-address addr_test1_dummy_address_here \\
+  --change-address addr_test1hwrcegvj0fdezvj3u3ajzd8q0c45rur88pke35xcd9j3tzaww73sl \\
   --testnet-magic 2 \\
   --out-file tx-lock.raw
 
@@ -101,15 +105,15 @@ $ cardano-cli conway transaction submit --tx-file tx-lock.signed
 # We must explicitly add the --required-signer-hash flags so the node knows 
 # those cryptographic signatures must be included in the final signed transaction.
 $ cardano-cli conway transaction build \\
-  --tx-in dummy_tx_hash_uuid_here_2222222222222222#0 \\
+  --tx-in e24da7c416a67e0bf550924aa83977efc3285c5ea9ab0da8c164315166902b18#0 \\
   --tx-in-script-file multisig.plutus \\
   --tx-in-inline-datum-present \\
   --tx-in-redeemer-value '{"constructor": 0, "fields": []}' \\
-  --tx-out addr_test1_dummy_receiver_address_here+8000000 \\
-  --required-signer-hash dummy_pubkey_hash_111111111111111111111111 \\
-  --required-signer-hash dummy_pubkey_hash_222222222222222222222222 \\
-  --tx-in-collateral dummy_collateral_hash_uuid_here_33333333#0 \\
-  --change-address addr_test1_dummy_address_here \\
+  --tx-out addr_test1xqx8gdk5px30w5edkefgazhfsw3p8rjszkf5cemyrr73re7l7yxgw+8000000 \\
+  --required-signer-hash 46978de71810b0428f3c6f6c5f8b14594fc109b33d21bb495efb1c45f6514419 \\
+  --required-signer-hash 2bb60a5568a9e5b38ea8826cada4e3a155586d64bdc782de62e83f6d305715b4 \\
+  --tx-in-collateral 5aef6796da8c0e398d4d1a831b816f35b7d22ff28db92070306465abc523a4fa#0 \\
+  --change-address addr_test1kd4ys7y0zqelwzg8fg9glcgy6da6z2cphfk629j6kqlqgg2j2c5nq \\
   --testnet-magic 2 \\
   --out-file tx-spend.raw
 

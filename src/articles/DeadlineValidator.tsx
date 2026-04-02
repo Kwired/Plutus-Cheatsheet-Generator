@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import CodeBlock from "@/components/layouts/CodeBlock";
 
 export const articleMeta = {
@@ -9,8 +10,11 @@ export const articleMeta = {
     tags: ["plutus", "cardano", "validator", "time", "basics"],
     author: {
         name: "Aman Kumar",
-        avatar: "https://i.pravatar.cc/48?img=6",
-    },
+        avatar: "https://i.pravatar.cc/48?img=6"},
+  plutusVersion: "V2",
+  complexity: "Advanced",
+  useCase: "NFTs"
+
 };
 
 export default function DeadlineValidatorArticle() {
@@ -68,10 +72,10 @@ saveVal = writeValidatorToFile "./assets/deadline.plutus" validator
     const bashCommands = `# 1. Lock ADA at the contract address with the deadline stored in the datum.
 # Let's say our POSIX deadline is 1735689600000 (Jan 1, 2025).
 $ cardano-cli conway transaction build \\
-  --tx-in dummy_tx_hash_uuid_here_1111111111111111#0 \\
+  --tx-in 0ab9af68f48907c2f54b5d7b6206ecf693ff5406c817f7341b66f8a48d42198d#0 \\
   --tx-out $(cat deadline.addr)+10000000 \\
   --tx-out-inline-datum-value '{"int": 1735689600000}' \\
-  --change-address addr_test1_dummy_address_here \\
+  --change-address addr_test1my5lgvha6kytwmhfys5zws0dphx0ufsrua4eglkx0d58gyukrx0ct \\
   --testnet-magic 2 \\
   --out-file tx-lock.raw
 
@@ -93,14 +97,14 @@ $ cardano-cli conway transaction submit --tx-file tx-lock.signed
 # First, find the current slot for your network (e.g. Preview Testnet).
 # Let's assume the current slot is 50000000.
 $ cardano-cli conway transaction build \\
-  --tx-in dummy_tx_hash_uuid_here_2222222222222222#0 \\
+  --tx-in 02b93c83a0a89f7c8e275bb038078a6749062eef1d3602dd44e1d14c717293cf#0 \\
   --tx-in-script-file deadline.plutus \\
   --tx-in-inline-datum-present \\
   --tx-in-redeemer-value '{"constructor": 0, "fields": []}' \\
-  --tx-out addr_test1_dummy_receiver_address_here+8000000 \\
+  --tx-out addr_test1xvuxzh2nsc05gtfmsqsne5nlzn9qh6sepdg6vv6e2ldcdrp2e57we+8000000 \\
   --invalid-before 50000000 \\
-  --tx-in-collateral dummy_collateral_hash_uuid_here_33333333#0 \\
-  --change-address addr_test1_dummy_address_here \\
+  --tx-in-collateral de5cde1654aeb88d8402dd881bd3ac25d5446ab9507126a22421e2597f1bb062#0 \\
+  --change-address addr_test18327nzt3wrxkngsulas24630dmwj3puvmfyy7svh5nzcm0rg2c22p \\
   --testnet-magic 2 \\
   --out-file tx-spend.raw
 

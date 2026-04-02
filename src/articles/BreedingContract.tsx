@@ -1,16 +1,21 @@
+/* eslint-disable react-refresh/only-export-components */
 import CodeBlock from "@/components/layouts/CodeBlock";
 
 export const articleMeta = {
     id: "breeding-contract",
     title: "Breeding Contract",
-    subtitle: "Combine two parent NFTs to mint a unique child — genetic alchemy on the blockchain",
-    date: "2025-02-23T11:00:00.000Z",
+    subtitle: "Combine two parent NFTs to produce a deterministic child token",
+    date: "2025-02-19T14:30:00.000Z",
     readTime: "9 min read",
     tags: ["plutus", "cardano", "nft", "minting", "intermediate"],
     author: {
         name: "Aman Kumar",
         avatar: "https://i.pravatar.cc/48?img=15",
     },
+    plutusVersion: "V2",
+    complexity: "Intermediate",
+    useCase: "NFTs",
+
 };
 
 export default function BreedingContractArticle() {
@@ -32,22 +37,18 @@ import           Plutus.V1.Ledger.Value    (flattenValue, valueOf)
 import           Prelude                   (IO)
 import           Utilities                 (wrapValidator, writeValidatorToFile)
 
----------------------------------------------------------------------------------------------------
------------------------------------ ON-CHAIN / VALIDATOR ------------------------------------------
-
--- The Datum records the breeding rules: which collection policy spawned the parents,
--- and the child minting policy that's authorized to produce offspring.
+-- | Datum stores the breeding setup: which collection the parents belong to,
+-- which policy is allowed to mint children, and the fee details.
 
 data BreedingDatum = BreedingDatum
-    { parentPolicyId   :: PlutusV2.CurrencySymbol  -- The NFT collection's policy ID
-    , childPolicyId    :: PlutusV2.CurrencySymbol  -- The authorized child minting policy
-    , breedingFee      :: Integer                  -- ADA fee in Lovelace to breed
-    , feeCollector     :: PlutusV2.PubKeyHash      -- Who receives the breeding fee
+    { parentPolicyId   :: PlutusV2.CurrencySymbol
+    , childPolicyId    :: PlutusV2.CurrencySymbol
+    , breedingFee      :: Integer          -- lovelace
+    , feeCollector     :: PlutusV2.PubKeyHash
     }
 PlutusTx.unstableMakeIsData ''BreedingDatum
 
--- The Redeemer carries the two parent token names so the validator
--- can verify both parents are actually being spent in this tx.
+-- Redeemer carries the two parent token names so we can look them up in inputs
 data BreedingRedeemer = Breed
     { parentA :: PlutusV2.TokenName
     , parentB :: PlutusV2.TokenName
@@ -57,25 +58,15 @@ PlutusTx.unstableMakeIsData ''BreedingRedeemer
 {-# INLINABLE mkBreedingValidator #-}
 mkBreedingValidator :: BreedingDatum -> BreedingRedeemer -> PlutusV2.ScriptContext -> Bool
 mkBreedingValidator dat (Breed pA pB) ctx =
-    -- Both parent NFTs must be present as inputs to the transaction.
-    -- This proves the breeder actually owns (or at least controls) both parents.
     traceIfFalse "Parent A NFT not found in inputs!" (parentInInputs pA) &&
     traceIfFalse "Parent B NFT not found in inputs!" (parentInInputs pB) &&
-
-    -- Exactly one child token must be minted under the authorized child policy.
     traceIfFalse "Exactly one child NFT must be minted!" exactlyOneChildMinted &&
-
-    -- The child's token name must be derived from the two parents (deterministic).
-    -- This prevents people from minting arbitrary child names.
     traceIfFalse "Child token name doesn't match parent hash!" childNameValid &&
-
-    -- The breeding fee must be paid to the fee collector.
     traceIfFalse "Breeding fee not paid!" feePaid
   where
     info :: PlutusV2.TxInfo
     info = PlutusV2.scriptContextTxInfo ctx
 
-    -- Check if a specific parent NFT exists somewhere in the transaction inputs
     parentInInputs :: PlutusV2.TokenName -> Bool
     parentInInputs tn =
         let inputValues = map (PlutusV2.txOutValue . PlutusV2.txInInfoResolved)
@@ -83,7 +74,6 @@ mkBreedingValidator dat (Breed pA pB) ctx =
             counts      = map (\\v -> valueOf v (parentPolicyId dat) tn) inputValues
         in length (filter (> 0) counts) > 0
 
-    -- Look at everything minted in this transaction and find child policy tokens
     childMintEntries :: [(PlutusV2.CurrencySymbol, PlutusV2.TokenName, Integer)]
     childMintEntries =
         filter (\\(cs, _, _) -> cs == childPolicyId dat) (flattenValue (PlutusV2.txInfoMint info))
@@ -93,8 +83,7 @@ mkBreedingValidator dat (Breed pA pB) ctx =
         [(_, _, amt)] -> amt == 1
         _             -> False
 
-    -- The child's name is the blake2b hash of concatenating both parent names.
-    -- This makes every breeding pair produce a unique, deterministic child.
+    -- Child name = blake2b_256(parentA ++ parentB). Deterministic.
     expectedChildName :: PlutusV2.TokenName
     expectedChildName =
         let PlutusV2.TokenName rawA = pA
@@ -106,7 +95,6 @@ mkBreedingValidator dat (Breed pA pB) ctx =
         [(_, childTn, _)] -> childTn == expectedChildName
         _                 -> False
 
-    -- Verify the fee collector gets at least the breeding fee in ADA
     feePaid :: Bool
     feePaid =
         let paidToCollector = PlutusV2.valuePaidTo info (feeCollector dat)
@@ -122,20 +110,17 @@ validator =
   PlutusV2.mkValidatorScript
     $$(PlutusTx.compile [|| wrappedMkVal ||])
 
----------------------------------------------------------------------------------------------------
-------------------------------------- HELPER FUNCTIONS --------------------------------------------
-
 saveVal :: IO ()
 saveVal = writeValidatorToFile "./assets/breeding.plutus" validator
 `;
 
-    const bashCommands = `# 1. Lock the Breeding Configuration at the Script Address
-# Datum stores: parent collection policy, child mint policy, fee (25 ADA), fee collector
+    const bashCommands = `# 1. Lock the breeding config at the script address
+# Datum: parent policy, child mint policy, 25 ADA fee, fee collector PKH
 $ cardano-cli conway transaction build \\
-  --tx-in dummy_tx_hash_uuid_here_1111111111111111#0 \\
+  --tx-in 3cf82a1d7e94b056f2c81e9da40b7365f18c2d0b49ae7153c6f80e2d91a4b3c7#0 \\
   --tx-out $(cat breeding.addr)+5000000 \\
   --tx-out-inline-datum-value '{"constructor":0,"fields":[{"bytes":"parent_policy_aaa..."},{"bytes":"child_policy_bbb..."},{"int":25000000},{"bytes":"fee_collector_pkh_ccc..."}]}' \\
-  --change-address addr_test1_dummy_admin_address \\
+  --change-address addr_test17vw9muyewnhc82c0ggpdghu9n975h8k5xkhq0agxdgmf5fa8xvdve \\
   --testnet-magic 2 \\
   --out-file tx-setup-breeding.raw
 
@@ -143,12 +128,12 @@ $ cardano-cli conway transaction build \\
 
 -------------------------------------------------------------------------
 
-# 2. Breed! Spend both parent NFTs + the breeding config, mint the child
+# 2. Breed: spend both parent NFTs + config, mint the child
 # Redeemer: Breed {parentA: "DragonA_hex", parentB: "DragonB_hex"}
 $ cardano-cli conway transaction build \\
-  --tx-in dummy_parent_a_utxo_hash_2222222222222222#0 \\
-  --tx-in dummy_parent_b_utxo_hash_3333333333333333#0 \\
-  --tx-in dummy_breeding_config_utxo_444444444444444#0 \\
+  --tx-in a91c4d2e8b37f0561c2de94a7053b186f2c8d40e9b71a35c60f8e2d3b4a7c1f9#0 \\
+  --tx-in d4e2b17c903a56f81c2e94da70b3651f8c2d40b9ea71535c6f0e82d9a14b3c7e#0 \\
+  --tx-in f8c2d40b9ea7153c6f0e82d91a4b3c7e3cf82a1d7e94b056f2c81e9da40b7365#0 \\
   --tx-in-script-file breeding.plutus \\
   --tx-in-inline-datum-present \\
   --tx-in-redeemer-value '{"constructor":0,"fields":[{"bytes":"447261676f6e41"},{"bytes":"447261676f6e42"}]}' \\
@@ -158,7 +143,7 @@ $ cardano-cli conway transaction build \\
   --tx-out addr_test1_breeder_address+"2000000 + 1 $(cat child_policy.id).child_token_name_hash_hex" \\
   --tx-out addr_test1_fee_collector_address+25000000 \\
   --required-signer-hash breeder_pkh_hash_here \\
-  --tx-in-collateral dummy_collateral_hash_uuid_here_5555#0 \\
+  --tx-in-collateral 7c903a56f81c2e94da70b3651f8c2d40b9ea7153c6f0e82d91a4b3c7e3cf82a1#0 \\
   --change-address addr_test1_breeder_address \\
   --testnet-magic 2 \\
   --out-file tx-breed.raw
@@ -177,17 +162,16 @@ $ cardano-cli conway transaction submit --tx-file tx-breed.signed
             <h2 id="introduction">Introduction</h2>
 
             <p>
-                Breeding mechanics are some of the most popular features in NFT gaming.
-                CryptoKitties, Axie Infinity — they all let you combine two assets to
-                produce a new one. On Cardano, we can enforce the <em>entire breeding
-                logic</em> on-chain, making it impossible for anyone to cheat the system.
+                Breeding mechanics are one of the most popular features in NFT-based games
+                (CryptoKitties being the obvious example). The idea is simple: take two
+                parent NFTs, combine them, and get a unique child NFT as output.
             </p>
 
             <p>
-                The <strong>Breeding Contract</strong> verifies that two parent NFTs from
-                a specific collection are being spent in the transaction, then authorizes
-                the minting of exactly one child NFT whose name is deterministically derived
-                from the parents. No server. No backend. Just math.
+                This contract enforces the entire breeding process on-chain. It verifies
+                that both parent NFTs are actually present in the transaction inputs,
+                mints exactly one child NFT with a deterministic name derived from the
+                parents, and makes sure the breeding fee gets paid.
             </p>
 
             <CodeBlock
@@ -199,14 +183,13 @@ $ cardano-cli conway transaction submit --tx-file tx-breed.signed
 
             <h2 id="explanation">How It Works</h2>
 
-            <h3>Proving Parentage</h3>
+            <h3>Proving you own the parents</h3>
 
             <p className="pexplaination">
-                Anyone can <em>claim</em> they own two NFTs. The validator doesn't take
-                their word for it — it scans every single input in the transaction and
-                checks whether the parent NFT tokens are actually being spent. If you
-                don't physically include both parent UTxOs as transaction inputs, the
-                breed fails.
+                Claiming you own two NFTs is easy. Actually proving it requires spending
+                them — on Cardano, consuming a UTxO needs the owner's signature (or the
+                script's approval). So the validator scans every input in the transaction
+                looking for the parent tokens:
             </p>
 
             <CodeBlock
@@ -216,23 +199,20 @@ $ cardano-cli conway transaction submit --tx-file tx-breed.signed
         counts      = map (\\v -> valueOf v (parentPolicyId dat) tn) inputValues
     in length (filter (> 0) counts) > 0`}
                 language="haskell"
-                filename="Scanning Inputs for Parent NFTs"
+                filename="Scanning Inputs for Parents"
             />
 
             <p className="pexplaination">
-                This is crucial because on Cardano, spending a UTxO requires the owner's
-                signature (or the script's approval). So if the parent NFTs are in the
-                inputs, the breeder must legitimately control them.
+                If both parents aren't physically in the tx inputs, breeding fails. Simple.
             </p>
 
-            <h3>Deterministic Child Names</h3>
+            <h3>How child names work</h3>
 
             <p className="pexplaination pt-2">
-                The child token name isn't random — it's the <code>blake2b_256</code> hash
-                of concatenating both parent token names. This gives every parent pair a
-                unique, predictable child. DragonA + DragonB will always produce the same
-                child name. This prevents duplicate breeding and makes lineage auditable
-                on-chain forever.
+                The child's token name is <code>blake2b_256(parentA ++ parentB)</code>. So
+                Dragon A + Dragon B always produces the same child. This has a nice side
+                effect: you can't breed the same pair twice to get different children, and
+                the whole lineage is auditable on-chain by re-hashing the names.
             </p>
 
             <CodeBlock
@@ -241,27 +221,27 @@ $ cardano-cli conway transaction submit --tx-file tx-breed.signed
         PlutusV2.TokenName rawB = pB
     in PlutusV2.TokenName (blake2b_256 (appendByteString rawA rawB))`}
                 language="haskell"
-                filename="Child Name Derivation"
+                filename="Deterministic Child Name"
             />
 
-            <h3>The Fee Mechanism</h3>
+            <h3>The fee</h3>
 
             <p className="pexplaination pt-2">
-                Breeding isn't free. The datum specifies a <code>breedingFee</code> in
-                Lovelace and a <code>feeCollector</code> address. The validator uses{" "}
-                <code>valuePaidTo</code> to confirm the fee actually arrives at the
-                collector. This is the exact same pattern used in the Escrow validator —
-                guaranteed delivery checked by the script, not by trust.
+                The datum specifies a <code>breedingFee</code> in Lovelace and a{" "}
+                <code>feeCollector</code> address. The validator uses{" "}
+                <code>valuePaidTo</code> to check the fee actually arrives. Same pattern
+                as the Escrow validator if you've seen that one.
             </p>
 
             <br />
 
-            <h2 id="execution">Execution Lifecycle</h2>
+            <h2 id="execution">Execution</h2>
 
             <p className="pexplaination">
-                A breeding transaction is more complex than most because it involves multiple
-                inputs (both parents + the breeding config), a minting operation (the child),
-                and a fee output — all in a single atomic transaction.
+                A breeding transaction involves multiple inputs (two parents + the breeding
+                config UTxO), a minting operation (the child), and a fee payment — all packed
+                into one atomic transaction. If any check fails, the whole thing is rolled
+                back.
             </p>
 
             <CodeBlock
@@ -270,14 +250,13 @@ $ cardano-cli conway transaction submit --tx-file tx-breed.signed
                 filename="Breeding CLI Commands"
             />
 
-            <h3>Atomicity Is Your Friend</h3>
+            <h3>Gotchas</h3>
 
             <p className="pexplaination pt-2">
-                The beauty of Cardano's transaction model is that all of this happens
-                atomically. Either <em>everything</em> succeeds — parents are verified,
-                child is minted, fee is paid — or <em>nothing</em> happens. There's no
-                state where the fee was paid but the child wasn't minted, or the child
-                was minted but the parents weren't checked.
+                Note that order matters for the child name hash — breeding Dragon A with
+                Dragon B gives a different name than breeding B with A. If you want
+                order-independent results, you'd need to sort the two names before hashing.
+                This contract keeps it simple and leaves order as-is.
             </p>
 
         </div>

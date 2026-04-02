@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import CodeBlock from "@/components/layouts/CodeBlock";
 
 export const articleMeta = {
@@ -9,8 +10,11 @@ export const articleMeta = {
     tags: ["plutus", "cardano", "defi", "escrow", "advanced"],
     author: {
         name: "Aman Kumar",
-        avatar: "https://i.pravatar.cc/48?img=12",
-    },
+        avatar: "https://i.pravatar.cc/48?img=12"},
+  plutusVersion: "V2",
+  complexity: "Advanced",
+  useCase: "NFTs"
+
 };
 
 export default function EscrowValidatorArticle() {
@@ -98,10 +102,10 @@ saveVal = writeValidatorToFile "./assets/escrow.plutus" validator
 # JSON Datum: {"constructor": 0, "fields": [{"bytes": "buyer_hash_111..."}, {"bytes": "seller_hash_222..."}, {"int": 100000000}]}
 
 $ cardano-cli conway transaction build \\
-  --tx-in dummy_tx_hash_uuid_here_1111111111111111#0 \\
+  --tx-in 22b83ac12a952e2574b9ad517484429ef092c40c0895d9d5d168607da86c72b5#0 \\
   --tx-out $(cat escrow.addr)+100000000 \\
   --tx-out-inline-datum-value '{"constructor": 0, "fields": [{"bytes": "buyer_hash_111111111111111111111111"}, {"bytes": "seller_hash_222222222222222222222222"}, {"int": 100000000}]}' \\
-  --change-address addr_test1_dummy_buyer_address \\
+  --change-address addr_test19jc3wvcthaw3t5tzlvac45t6swfsg5aa2f29nk98c5exa2vnsr0h9 \\
   --testnet-magic 2 \\
   --out-file tx-lock-escrow.raw
 
@@ -114,14 +118,14 @@ $ cardano-cli conway transaction build \\
 # Redeemer: Payout (Constructor 1) -> {"constructor": 1, "fields": []}
 
 $ cardano-cli conway transaction build \\
-  --tx-in dummy_tx_hash_uuid_here_escrow_holding_123#0 \\
+  --tx-in 33d1f680b677980b20c5347eea30dd9a3569c02550c9e0d85d3035617de5a419#0 \\
   --tx-in-script-file escrow.plutus \\
   --tx-in-inline-datum-present \\
   --tx-in-redeemer-value '{"constructor": 1, "fields": []}' \\
-  --tx-out addr_test1_dummy_seller_address+100000000 \\
+  --tx-out addr_test1qvhxrllzpwwp8slrpuma68ray6rgdujnu74eh635wzxqrxzvhwvw9+100000000 \\
   --required-signer-hash seller_hash_222222222222222222222222 \\
-  --tx-in-collateral dummy_collateral_hash_uuid_here_4444#0 \\
-  --change-address addr_test1_dummy_buyer_address \\
+  --tx-in-collateral 7252627d482ac0be89b20fbad0384eaff20f6844882e710f70fbd05c8aae405f#0 \\
+  --change-address addr_test1kmwj2dntwvgkd492hpwnv26vh9njzlekqsg3kkva7fwkfehlak7d6 \\
   --testnet-magic 2 \\
   --out-file tx-payout.raw
 

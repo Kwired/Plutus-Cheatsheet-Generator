@@ -1,3 +1,5 @@
+/* eslint-disable react-refresh/only-export-components */
+/* eslint-disable no-useless-escape */
 import CodeBlock from "@/components/layouts/CodeBlock";
 // import React from "react";
 
@@ -11,8 +13,12 @@ export const articleMeta = {
   tags: ["plutus", "cardano", "minting-policy", "signature", "security"],
   author: {
     name: "Aman Kumar",
-    avatar: "https://i.pravatar.cc/48?img=6"
-  }
+    avatar: "https://i.pravatar.cc/48?img=7"
+  },
+  plutusVersion: "V2",
+  complexity: "Beginner",
+  useCase: "NFTs"
+
 };
 
 export default function SignedMintArticle() {
@@ -219,9 +225,9 @@ Transaction successfully submitted.
       </p>
 
 
-        <br />
+      <br />
 
-            <p className="pexplaination">
+      <p className="pexplaination">
         You can verify the transaction and UTxO details on{" "}
         <a
           href="https://preview.cardanoscan.io/transaction/9b9444cb999a51bfee1a8969ce3858d1b5d2f5793d839f27022b61677d86cc59?tab=utxo"

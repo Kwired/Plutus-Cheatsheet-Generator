@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import CodeBlock from "@/components/layouts/CodeBlock";
 // import React from "react";
 
@@ -19,12 +20,16 @@ export const articleMeta = {
   author: {
     name: "Aman Kumar",
     avatar: "https://i.pravatar.cc/48?img=7"
-  }
+  },
+  plutusVersion: "V1",
+  complexity: "Beginner",
+  useCase: "NFTs"
+
 };
 
 export default function OneShotMintingPolicyArticle() {
 
-const haskellCode = `{-# LANGUAGE DataKinds                  #-}
+  const haskellCode = `{-# LANGUAGE DataKinds                  #-}
 {-# LANGUAGE DerivingStrategies         #-}
 {-# LANGUAGE DeriveGeneric              #-}
 {-# LANGUAGE DeriveAnyClass             #-}
@@ -164,85 +169,85 @@ oneShotMintingPolicyScript params =
     \`unsafeApplyCode\` liftCode plcVersion110 params
 `;
 
-return (
-  <div className="article-content">
+  return (
+    <div className="article-content">
 
-    <h2>Introduction</h2>
-    <p>
-      The <strong>One-Shot Minting Policy</strong> is a secure and widely used
-      pattern in Cardano smart contracts. It guarantees that a token can be
-      minted exactly once by requiring the consumption of a specific UTxO.
-      This approach is commonly used for NFTs, protocol identifiers, and
-      governance tokens.
-    </p>
+      <h2>Introduction</h2>
+      <p>
+        The <strong>One-Shot Minting Policy</strong> is a secure and widely used
+        pattern in Cardano smart contracts. It guarantees that a token can be
+        minted exactly once by requiring the consumption of a specific UTxO.
+        This approach is commonly used for NFTs, protocol identifiers, and
+        governance tokens.
+      </p>
 
-    <CodeBlock
-      code={haskellCode}
-      language="haskell"
-      filename="OneShotMintingPolicy.hs"
-    />
+      <CodeBlock
+        code={haskellCode}
+        language="haskell"
+        filename="OneShotMintingPolicy.hs"
+      />
 
-    <h2>Key Idea: UTxO-Anchored Minting</h2>
-    <p className="pexplaination">
-      The policy is parameterized by a <strong>TxOutRef</strong>. The token
-      can only be minted if that exact UTxO is consumed in the transaction.
-      Since UTxOs can only be spent once, minting becomes provably one-time.
-    </p>
+      <h2>Key Idea: UTxO-Anchored Minting</h2>
+      <p className="pexplaination">
+        The policy is parameterized by a <strong>TxOutRef</strong>. The token
+        can only be minted if that exact UTxO is consumed in the transaction.
+        Since UTxOs can only be spent once, minting becomes provably one-time.
+      </p>
 
-    <h2>Mint vs Burn via Redeemer</h2>
-    <CodeBlock
-      code={`data OneShotMintingRedeemer
+      <h2>Mint vs Burn via Redeemer</h2>
+      <CodeBlock
+        code={`data OneShotMintingRedeemer
   = MintToken TokenName
   | BurnToken TokenName`}
-      language="haskell"
-      filename="Redeemer"
-    />
+        language="haskell"
+        filename="Redeemer"
+      />
 
-    <p className="pexplaination">
-      The redeemer explicitly distinguishes between minting and burning. This
-      allows the policy to strictly control both token creation and destruction.
-    </p>
+      <p className="pexplaination">
+        The redeemer explicitly distinguishes between minting and burning. This
+        allows the policy to strictly control both token creation and destruction.
+      </p>
 
-    <h2>Minting Rules</h2>
-    <p className="pexplaination">
-      When minting:
-    </p>
-    <ul className="list-disc pl-6">
-      <li>The specified UTxO <strong>must</strong> be consumed</li>
-      <li>At least one token of the given name must be minted</li>
-      <li>The currency symbol is derived from the policy itself</li>
-    </ul>
+      <h2>Minting Rules</h2>
+      <p className="pexplaination">
+        When minting:
+      </p>
+      <ul className="list-disc pl-6">
+        <li>The specified UTxO <strong>must</strong> be consumed</li>
+        <li>At least one token of the given name must be minted</li>
+        <li>The currency symbol is derived from the policy itself</li>
+      </ul>
 
-    <h2>Burning Rules</h2>
-    <p className="pexplaination">
-      Burning is allowed without the UTxO constraint, but only if the amount
-      burned is valid (negative mint value).
-    </p>
+      <h2>Burning Rules</h2>
+      <p className="pexplaination">
+        Burning is allowed without the UTxO constraint, but only if the amount
+        burned is valid (negative mint value).
+      </p>
 
-    <h2>Why This Design Is Secure</h2>
-    <ul className="list-disc pl-6">
-      <li>UTxO uniqueness enforces one-time minting</li>
-      <li>Currency symbol is policy-scoped</li>
-      <li>Explicit redeemer prevents ambiguity</li>
-      <li>Mint and burn paths are clearly separated</li>
-    </ul>
+      <h2>Why This Design Is Secure</h2>
+      <ul className="list-disc pl-6">
+        <li>UTxO uniqueness enforces one-time minting</li>
+        <li>Currency symbol is policy-scoped</li>
+        <li>Explicit redeemer prevents ambiguity</li>
+        <li>Mint and burn paths are clearly separated</li>
+      </ul>
 
-    <h2>Real-World Use Cases</h2>
-    <ul className="list-disc pl-6">
-      <li>NFT minting</li>
-      <li>DAO identity tokens</li>
-      <li>Protocol bootstrapping assets</li>
-      <li>Oracle identity tokens</li>
-    </ul>
+      <h2>Real-World Use Cases</h2>
+      <ul className="list-disc pl-6">
+        <li>NFT minting</li>
+        <li>DAO identity tokens</li>
+        <li>Protocol bootstrapping assets</li>
+        <li>Oracle identity tokens</li>
+      </ul>
 
-    <h2>Key Takeaway</h2>
-    <p>
-      One-shot minting is the gold standard for secure token creation on
-      Cardano. By anchoring minting rights to a specific UTxO and separating
-      mint and burn logic, this policy eliminates entire classes of exploits
-      related to inflation and replay attacks.
-    </p>
+      <h2>Key Takeaway</h2>
+      <p>
+        One-shot minting is the gold standard for secure token creation on
+        Cardano. By anchoring minting rights to a specific UTxO and separating
+        mint and burn logic, this policy eliminates entire classes of exploits
+        related to inflation and replay attacks.
+      </p>
 
-  </div>
-);
+    </div>
+  );
 }

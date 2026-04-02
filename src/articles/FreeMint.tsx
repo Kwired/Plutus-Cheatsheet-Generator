@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import CodeBlock from "@/components/layouts/CodeBlock";
 // import React from "react";
 
@@ -11,8 +12,12 @@ export const articleMeta = {
   tags: ["plutus", "cardano", "minting-policy", "tokens", "free-mint"],
   author: {
     name: "Aman Kumar",
-    avatar: "https://i.pravatar.cc/48?img=5"
-  }
+    avatar: "https://i.pravatar.cc/48?img=7"
+  },
+  plutusVersion: "V2",
+  complexity: "Beginner",
+  useCase: "NFTs"
+
 };
 
 export default function FreeMintArticle() {

@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import CodeBlock from "@/components/layouts/CodeBlock";
 
 export const articleMeta = {
@@ -7,6 +8,10 @@ export const articleMeta = {
   tags: ["plutus", "nft", "utxo", "failure"],
     date: "2025-12-15T10:00:00.000Z",
   readTime: "9 min read",
+  plutusVersion: "V2",
+  complexity: "Advanced",
+  useCase: "NFTs"
+
 };
 
 export default function NFTMintAgainFails() {

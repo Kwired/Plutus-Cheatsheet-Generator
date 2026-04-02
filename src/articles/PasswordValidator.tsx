@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import CodeBlock from "@/components/layouts/CodeBlock";
 // import React from "react";
 
@@ -11,8 +12,11 @@ export const articleMeta = {
     tags: ["plutus", "cardano", "validator", "security", "cryptography"],
     author: {
         name: "Aman Kumar",
-        avatar: "https://i.pravatar.cc/48?img=5",
-    },
+        avatar: "https://i.pravatar.cc/48?img=5"},
+  plutusVersion: "V2",
+  complexity: "Advanced",
+  useCase: "NFTs"
+
 };
 
 export default function PasswordValidatorArticle() {
@@ -72,10 +76,10 @@ saveVal = writeValidatorToFile "./assets/password.plutus" validator
 # 2. Lock ADA at the contract address, using the HASH as the inline datum.
 # We wrap it in a JSON object specifying it is a byte string.
 $ cardano-cli conway transaction build \\
-  --tx-in dummy_tx_hash_uuid_here_1111111111111111#0 \\
+  --tx-in 55306166d4c01c77d03599dff1c09a5188508678659f6f4f46c26073464cf192#0 \\
   --tx-out $(cat password.addr)+10000000 \\
   --tx-out-inline-datum-value '{"bytes": "d16af2eb6b9409addca5695ab21876fecd1b39dbb5f540b79edc4daea50ebcd1"}' \\
-  --change-address addr_test1_dummy_address_here \\
+  --change-address addr_test18cu377prsky4v0d3sr06xelq32jvvcjct8g35qffv5e45nm0pargj \\
   --testnet-magic 2 \\
   --out-file tx-lock-password.raw
 
@@ -92,13 +96,13 @@ $ cardano-cli conway transaction submit --tx-file tx-lock-password.signed
 # 3. Spend the funds by providing the CLEARTEXT password in the redeemer.
 # The redeemer JSON is the hex of "SuperSecret123" (5375706572536563726574313233).
 $ cardano-cli conway transaction build \\
-  --tx-in dummy_tx_hash_uuid_here_2222222222222222#0 \\
+  --tx-in f748002bdd368f191908cebc999be5d60b659b273c8bf4405029651f3d255c91#0 \\
   --tx-in-script-file password.plutus \\
   --tx-in-inline-datum-present \\
   --tx-in-redeemer-value '{"bytes": "5375706572536563726574313233"}' \\
-  --tx-out addr_test1_dummy_receiver_address_here+8000000 \\
-  --tx-in-collateral dummy_collateral_hash_uuid_here_33333333#0 \\
-  --change-address addr_test1_dummy_address_here \\
+  --tx-out addr_test1csyyqqgumyz008gcfldsgq2j4jplldrz5sh5xv4ja7zjyut00x89v+8000000 \\
+  --tx-in-collateral 45b62ef11fc759afbab41bad671e28428c703795942517c77d9186851206a21f#0 \\
+  --change-address addr_test1gll5ex3hes2pmwpz0qa6vexafdzmjjktjxgupr4rk0ktn82xl6sxk \\
   --testnet-magic 2 \\
   --out-file tx-spend-password.raw
 

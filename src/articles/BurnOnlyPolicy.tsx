@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import CodeBlock from "@/components/layouts/CodeBlock";
 
 export const articleMeta = {
@@ -9,8 +10,12 @@ export const articleMeta = {
     tags: ["plutus", "cardano", "minting", "tokens", "basics"],
     author: {
         name: "Aman Kumar",
-        avatar: "https://i.pravatar.cc/48?img=10",
+        avatar: "https://i.pravatar.cc/48?img=10"
     },
+    plutusVersion: "V2",
+    complexity: "Beginner",
+    useCase: "NFTs"
+
 };
 
 export default function BurnOnlyPolicyArticle() {
@@ -46,7 +51,7 @@ mkBurnOnlyPolicy () ctx =
     -- We must verify that for *every single token* associated with this policy's 
     -- CurrencySymbol in the transaction, the quantity being "minted" is less than 0.
     isBurning :: Bool
-    isBurning = all (\(_, _, amt) -> amt < 0) (flattenValue (PlutusV2.txInfoMint info))
+    isBurning = all (\\\\(_, _, amt) -> amt < 0) (flattenValue (PlutusV2.txInfoMint info))
 
 {-# INLINABLE wrappedPolicy #-}
 wrappedPolicy :: BuiltinData -> BuiltinData -> ()
@@ -78,13 +83,13 @@ $ cardano-cli conway transaction policyid \\
 # To burn tokens on Cardano, you "mint" them with a negative quantity (-100).
 # In order to burn tokens, they must actually exist in the UTxO you are consuming!
 $ cardano-cli conway transaction build \\
-  --tx-in dummy_tx_hash_uuid_here_2222222222222222#0 \\
+  --tx-in c0becb206eb4eba846f8298b04eacced16b3dba887ac2237849f002e4fac5ef9#0 \\
   --mint "-100 $(cat policy.id).4d79546f6b656e" \\
   --mint-script-file burn_only.plutus \\
   --mint-redeemer-value '{"constructor": 0, "fields": []}' \\
-  --tx-out addr_test1_dummy_receiver_address_here+"2000000 + 400 $(cat policy.id).4d79546f6b656e" \\
-  --tx-in-collateral dummy_collateral_hash_uuid_here_33333333#0 \\
-  --change-address addr_test1_dummy_address_here \\
+  --tx-out addr_test1yj2vsq8pf4szpkwx9gg6h30t0e5h7sh2fy40xf2hd4u3qzfgwrk4p+"2000000 + 400 $(cat policy.id).4d79546f6b656e" \\
+  --tx-in-collateral d77ab4f1d064178c7cb6e630919f567ff8e3cd44b2b966e714aabfc5af476f87#0 \\
+  --change-address addr_test1nxkdnx35gc77g9s2zauvfhhxu6k430ervhwkecwnjk7k0m864r0hj \\
   --testnet-magic 2 \\
   --out-file tx-burn.raw
 

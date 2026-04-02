@@ -1,3 +1,5 @@
+/* eslint-disable react-refresh/only-export-components */
+/* eslint-disable no-useless-escape */
 import CodeBlock from "@/components/layouts/CodeBlock";
 // import React from "react";
 
@@ -11,8 +13,11 @@ export const articleMeta = {
   tags: ["plutus", "cardano", "time", "posix", "validator"],
   author: {
     name: "Aman Kumar",
-    avatar: "https://i.pravatar.cc/48?img=3",
-  },
+    avatar: "https://i.pravatar.cc/48?img=3"},
+  plutusVersion: "V2",
+  complexity: "Advanced",
+  useCase: "Security"
+
 };
 
 export default function NegativeRTimedArticle() {

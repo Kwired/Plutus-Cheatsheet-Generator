@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import CodeBlock from "@/components/layouts/CodeBlock";
 // import React from "react";
 
@@ -11,8 +12,11 @@ export const articleMeta = {
     tags: ["plutus", "cardano", "validator", "state-machine", "advanced"],
     author: {
         name: "Aman Kumar",
-        avatar: "https://i.pravatar.cc/48?img=4",
-    },
+        avatar: "https://i.pravatar.cc/48?img=4"},
+  plutusVersion: "V2",
+  complexity: "Advanced",
+  useCase: "NFTs"
+
 };
 
 export default function StateMachineCounterArticle() {
@@ -74,10 +78,10 @@ saveVal = writeValidatorToFile "./assets/statemachine.plutus" validator
 
     const executionCommands = `# 1. Lock ADA and Initialize the State Machine Counter at datum "0"
 $ cardano-cli conway transaction build \\
-  --tx-in dummy_tx_hash_uuid_here_1111111111111111#0 \\
+  --tx-in adabdfda55d0d07b1ce9b69583035317c0f809c2cd8a2ed71a1a97164c383bb6#0 \\
   --tx-out $(cat statemachine.addr)+5000000 \\
   --tx-out-inline-datum-value '{"int": 0}' \\
-  --change-address addr_test1_dummy_address_here \\
+  --change-address addr_test1q4v8fjw5w56qea0y3z7mt7lhl90vxvnmwwrpfgkvwjxemsnyvtdqa \\
   --testnet-magic 2 \\
   --out-file tx-init-state.raw
 
@@ -92,14 +96,14 @@ $ cardano-cli conway transaction submit --tx-file tx-init-state.signed
 # 2. Transition the State Machine: Spend the "0" state and output the "1" state
 # Note: We must both use the Script as an input AND pay back to the Script as an output
 $ cardano-cli conway transaction build \\
-  --tx-in dummy_tx_hash_uuid_here_2222222222222222#0 \\
+  --tx-in 74678bea79f3e21bd87a9256bb6d73d9c7bc537a34a9f56136713f39bda399f7#0 \\
   --tx-in-script-file statemachine.plutus \\
   --tx-in-inline-datum-present \\
   --tx-in-redeemer-value '{"constructor": 0, "fields": []}' \\
   --tx-out $(cat statemachine.addr)+4500000 \\
   --tx-out-inline-datum-value '{"int": 1}' \\
-  --tx-in-collateral dummy_collateral_hash_uuid_here_3333333#0 \\
-  --change-address addr_test1_dummy_address_here \\
+  --tx-in-collateral db730c6be7e059820ab91f0bdd738e23075a8473be23d652cee6bb1f5463ca02#0 \\
+  --change-address addr_test1pjtj9puxq64qjse9q9r5zvdcagm03fw3su6yg7jpa8zp85c4ccxzz \\
   --testnet-magic 2 \\
   --out-file tx-increment-state.raw
 

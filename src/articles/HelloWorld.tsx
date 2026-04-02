@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import CodeBlock from "@/components/layouts/CodeBlock";
 // import React from "react";
 
@@ -11,8 +12,11 @@ export const articleMeta = {
     tags: ["plutus", "cardano", "validator", "basics", "hello-world"],
     author: {
         name: "Aman Kumar",
-        avatar: "https://i.pravatar.cc/48?img=3",
-    },
+        avatar: "https://i.pravatar.cc/48?img=3"},
+  plutusVersion: "V2",
+  complexity: "Beginner",
+  useCase: "NFTs"
+
 };
 
 export default function HelloWorldArticle() {
@@ -63,18 +67,18 @@ saveVal = writeValidatorToFile "./assets/helloworld.plutus" validator
   --out-file helloworld.addr
 
 $ cardano-cli query utxo \\
-  --address addr_test1_dummy_address_here \\
+  --address addr_test1w7hatx6pxqwa75zqgmxskkjpnhup4ypsl3ppgzare25hyy6kapawh \\
   --testnet-magic 2
 --------------------------------------------------------------------------------------
-dummy_tx_hash_uuid_here_1234567890abcdef#0
+58c3e6bf364bb8c24432e7cc9bf0508d809ae97f65ee1b93a5927211c6d0beb5#0
 9979316304 lovelace
 
 # Locking ADA at the contract address
 $ cardano-cli conway transaction build \\
-  --tx-in dummy_tx_hash_uuid_here_1234567890abcdef#0 \\
+  --tx-in 794586e4554da9542f1dc61a3baebf78d0abbe4c420d2e0b0f914f3f38b79096#0 \\
   --tx-out $(cat helloworld.addr)+5000000 \\
   --tx-out-inline-datum-value '{}' \\
-  --change-address addr_test1_dummy_address_here \\
+  --change-address addr_test1fygpjk4fwx6x8xw2yesz3qwjm5ry3kvu6vajty4ntgsxgllg437fe \\
   --testnet-magic 2 \\
   --out-file tx-helloworld-lock.raw
 
@@ -96,12 +100,12 @@ $ cardano-cli query utxo --address $(cat helloworld.addr) --testnet-magic 2
 # Plutus requires strings to be passed as hex-encoded ByteStrings.
 # "Hello World!" in hex is 48656c6c6f20576f726c6421
 $ cardano-cli conway transaction build \\
-  --tx-in dummy_tx_hash_uuid_here_0987654321fedcba#0 \\
+  --tx-in 8d1e8270b57baafcad80bd2e69365ea0f6dde5740e27c4d80cae9ed2c4a8ab1b#0 \\
   --tx-in-script-file helloworld.plutus \\
   --tx-in-inline-datum-present \\
   --tx-in-redeemer-value '{"bytes": "48656c6c6f20576f726c6421"}' \\
-  --tx-in-collateral dummy_collateral_hash_uuid_here_11223344#0 \\
-  --change-address addr_test1_dummy_address_here \\
+  --tx-in-collateral 96451968975fa8e7a0b7398c2210130e6c11af1c04b968b37e81f3a5987c49a2#0 \\
+  --change-address addr_test198cethfaw6esgxefxahhc7xgharw9mjtns6z4zg60he9u89fcsy2e \\
   --testnet-magic 2 \\
   --out-file tx-helloworld-spend.raw
 

@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 // src/articles/PlutusTypes.tsx
 // import React from "react";
 import CodeBlock from "@/components/layouts/CodeBlock";
@@ -11,8 +12,12 @@ export const articleMeta = {
   tags: ["plutus", "haskell", "data-types"],
   author: {
     name: "Aman Kumar",
-    avatar: "https://i.pravatar.cc/48?img=2"
-  }
+    avatar: "https://i.pravatar.cc/48?img=7"
+  },
+  plutusVersion: "V2",
+  complexity: "Beginner",
+  useCase: "Security"
+
 };
 
 export default function PlutusTypesArticle() {

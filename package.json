@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "node generate-sitemap.js && tsc -b && vite build && node postbuild.js",
     "lint": "eslint .",
     "preview": "vite preview"
   },
@@ -14,9 +14,12 @@
     "@radix-ui/react-dropdown-menu": "^2.1.16",
     "@radix-ui/react-slot": "^1.2.4",
     "@tailwindcss/vite": "^4.1.17",
+    "@vercel/analytics": "^1.6.1",
+    "axios": "^1.13.5",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "copy-to-clipboard": "^3.3.3",
+    "discord.js": "^14.25.1",
     "html2pdf.js": "^0.12.1",
     "jspdf": "^3.0.4",
     "lucide-react": "^0.555.0",

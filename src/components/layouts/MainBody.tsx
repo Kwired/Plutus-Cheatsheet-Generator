@@ -7,8 +7,13 @@ import { getAllArticles } from "../../articles";
 
 function MainBody() {
   const [page, setPage] = useState(1);
-  const [query, setQuery] = useState("");
   const perPage = 12;
+  const [filters, setFilters] = useState({
+    query: "",
+    version: "",
+    complexity: "",
+    useCase: "",
+  });
 
   const allArticles = useMemo(() => {
     return getAllArticles().map(meta => ({
@@ -21,19 +26,27 @@ function MainBody() {
       timeLabel: new Date(meta.date).toLocaleDateString(),
       views: "1.5k",
       readtime: meta.readTime,
-
+      plutusVersion: meta.plutusVersion,
+      complexity: meta.complexity,
+      useCase: meta.useCase,
     }));
   }, []);
 
   const filtered = useMemo(() => {
-    if (!query.trim()) return allArticles;
-    const q = query.toLowerCase();
-    return allArticles.filter(
-      a =>
-        a.title.toLowerCase().includes(q) ||
-        a.description.toLowerCase().includes(q)
-    );
-  }, [allArticles, query]);
+    return allArticles.filter(a => {
+      if (filters.version && a.plutusVersion !== filters.version) return false;
+      if (filters.complexity && a.complexity !== filters.complexity) return false;
+      if (filters.useCase && a.useCase !== filters.useCase) return false;
+
+      if (filters.query.trim()) {
+        const q = filters.query.toLowerCase();
+        if (!a.title.toLowerCase().includes(q) && !a.description.toLowerCase().includes(q)) {
+          return false;
+        }
+      }
+      return true;
+    });
+  }, [allArticles, filters]);
 
   const total = filtered.length;
 
@@ -42,8 +55,8 @@ function MainBody() {
     return filtered.slice(start, start + perPage);
   }, [filtered, page]);
 
-  function handleSearch(value: string) {
-    setQuery(value);
+  function handleSearch(newFilters: typeof filters) {
+    setFilters(newFilters);
     setPage(1);
   }
 
@@ -55,15 +68,15 @@ function MainBody() {
       </p>
 
       <div className="mt-4">
-        <Search value={query} onChange={handleSearch} />
+        <Search filters={filters} onChange={handleSearch} />
       </div>
 
       <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 min-h-[220px]">
         {visible.length === 0 ? (
           // <div className="  text-slate-500">
-            <p className="min-w-[300px]">
-              No articles found. 
-            </p>
+          <p className="min-w-[300px]">
+            No articles found.
+          </p>
           // </div>
         ) : (
           visible.map(card => (
