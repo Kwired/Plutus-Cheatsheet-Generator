@@ -3,7 +3,7 @@ import CodeBlock from "@/components/layouts/CodeBlock";
 export const articleMeta = {
     id: "crowdfunding",
     title: "Crowdfunding Validator",
-    subtitle: "A trustless Kickstarter-style contract where backers only part with their ADA if the campaign hits its goal",
+    subtitle: "A trustless crowdfunding contract where backers only lose their ADA if the campaign hits its goal",
     date: "2025-02-23T17:00:00.000Z",
     readTime: "9 min read",
     tags: ["plutus", "cardano", "defi", "crowdfunding", "advanced"],
@@ -37,15 +37,15 @@ import           Utilities            (wrapValidator, writeValidatorToFile)
 -- The datum is the campaign configuration. It dictates who gets the money,
 -- what the minimum funding goal is in ADA, and when the campaign officially ends.
 data CampaignDatum = CampaignDatum
-    { projectOwner :: PlutusV2.PubKeyHash   -- The visionary building the project
+    { projectOwner :: PlutusV2.PubKeyHash   -- The project creator
     , fundingGoal  :: Integer               -- Target ADA amount (in Lovelace)
     , deadlineSlot :: PlutusV2.POSIXTime    -- The cutoff time
     }
 PlutusTx.unstableMakeIsData ''CampaignDatum
 
 -- The contract allows two outcomes:
--- 1. The campaign succeeds, and the owner pulls out all the cash.
--- 2. The campaign fails, or someone changes their mind early, and a backer takes their refund.
+-- 1. The campaign succeeds and the owner withdraws the funds.
+-- 2. The campaign fails (or a backer wants out early) and a backer withdraws their pledge.
 data CampaignAction = ClaimFunds | Refund BackerPkh
 type BackerPkh = PlutusV2.PubKeyHash
 
@@ -158,7 +158,7 @@ $ cardano-cli conway transaction build \\
   --testnet-magic 2 \\
   --out-file tx-refund.raw
 
-# Sign and get that ADA back!
+# Sign and submit the refund
 $ cardano-cli conway transaction sign --tx-body-file tx-refund.raw --signing-key-file backer_a.skey --testnet-magic 2 --out-file tx-refund.signed
 $ cardano-cli conway transaction submit --tx-file tx-refund.signed
 `;
@@ -168,11 +168,11 @@ $ cardano-cli conway transaction submit --tx-file tx-refund.signed
             <h2 id="introduction">Introduction</h2>
 
             <p>
-                Crowdfunding on centralized platforms like Kickstarter has a massive flaw: you have to trust the platform to hold the money, and you have to pay them a hefty 5-10% cut just for processing payments. If the project creators run away, or if the campaign fails and refunds get chaotic, you're at the mercy of customer support.
+                Centralized crowdfunding platforms like Kickstarter require trust in the platform itself and charge a significant fee. If the project fails, refund logistics can be messy.
             </p>
 
             <p>
-                With Cardano, we can build a <strong>trustless crowdfunding vault</strong>. Backers lock their ADA directly into a smart contract that explicitly defines the funding goal and the deadline. If the goal isn't met, the creator cannot touch a single Lovelace, and backers can safely withdraw their pledges. It's decentralized escrow for ideas.
+                This contract implements a <strong>trustless crowdfunding vault</strong> on Cardano. Backers lock ADA into a script that enforces the funding goal and deadline. If the goal isn't met, the creator can't touch the funds and backers withdraw on their own.
             </p>
 
             <CodeBlock
@@ -182,12 +182,12 @@ $ cardano-cli conway transaction submit --tx-file tx-refund.signed
             />
             <br />
 
-            <h2 id="explanation">How It Really Works</h2>
+            <h2 id="explanation">How It Works</h2>
 
             <h3>The Two Exit Doors</h3>
 
             <p className="pexplaination">
-                This contract is beautifully simple because it only offers two ways out: <code>ClaimFunds</code> and <code>Refund</code>. There are no backdoor admin keys, no "emergency pause" mechanics, and no way for the creator to sneak out early.
+                The contract has two redeemer paths: <code>ClaimFunds</code> and <code>Refund</code>. There are no admin keys or emergency overrides.
             </p>
 
             <CodeBlock
@@ -201,25 +201,25 @@ $ cardano-cli conway transaction submit --tx-file tx-refund.signed
             />
 
             <p className="pexplaination pt-2">
-                Notice how the <code>Refund</code> path doesn't actually check the deadline or the goal. It only checks if the person asking for the refund is the one who actually funded that specific UTxO. This is incredibly consumer-friendly: if you back a project, but change your mind three days later (before the campaign even finishes), you can just pull your money out. No questions asked.
+                The <code>Refund</code> path doesn't check the deadline or the goal. It only verifies that the person requesting the refund signed the transaction. This means backers can pull their ADA back at any time before the funds are claimed—even if the campaign is still running.
             </p>
 
             <h3>Proving the Goal was Met</h3>
 
             <p className="pexplaination pt-2">
-                The most fascinating part of this validator is the <code>goalReached</code> check. When the project owner feels like they've hit the target, they build a massive transaction that spans dozens (or hundreds) of individual backer UTxOs as inputs.
+                The interesting part of this validator is the <code>goalReached</code> check. When the project owner wants to claim, they build a transaction that consumes all the backer UTxOs as inputs.
             </p>
 
             <p className="pexplaination">
-                The script wakes up, scans every input in the transaction that belongs to the crowdfunding address, and adds up all the ADA. If that mathematical sum is {'>='} the <code>fundingGoal</code> in the datum, the transaction succeeds. If it's even a single Lovelace short, the ledger rejects the entire transaction and the owner walks away empty-handed.
+                The script looks at every input from the crowdfunding address and sums the ADA. If the total is <code>&gt;=</code> the <code>fundingGoal</code> in the datum, the transaction goes through. If it's short by even one Lovelace, the transaction fails.
             </p>
 
             <br />
 
-            <h2 id="execution">Execution Lifecycle</h2>
+            <h2 id="execution">Running the Code</h2>
 
             <p className="pexplaination">
-                Let's walk through how this looks on the command line. We'll use real-world hash structures so you can see what actual tx execution feels like.
+                Here's how the transactions look on the command line, using realistic hash structures.
             </p>
 
             <CodeBlock
@@ -231,11 +231,11 @@ $ cardano-cli conway transaction submit --tx-file tx-refund.signed
             <h3>The "Invalid Before" Trick</h3>
 
             <p className="pexplaination pt-2">
-                Pay close attention to the <code>--invalid-before</code> flag in the refund transaction. Plutus scripts don't inherently know what time it is right now. They only know the "validity bounds" of the transaction trying to execute them. By setting <code>--invalid-before</code>, we are swearing to the blockchain: "Do not put this transaction in a block unless the current slot is past this point."
+                Note the <code>--invalid-before</code> flag in the refund transaction. Plutus scripts don't have access to the current time directly—they only see the validity bounds of the transaction. By setting <code>--invalid-before</code>, you're telling the network not to include this transaction in a block until the specified slot has passed.
             </p>
 
             <p className="pexplaination">
-                This satisfies the <code>contains (from deadlineSlot)</code> check in our Haskell code, proving cryptographically that the deadline has passed.
+                This is how the <code>contains (from deadlineSlot)</code> check in the Haskell code gets satisfied—the validity range proves the deadline has passed.
             </p>
 
         </div>

@@ -134,7 +134,7 @@ $ cardano-cli conway transaction submit --tx-file tx-spend.signed
             />
             <br />
 
-            <h2 id="explanation">How It Really Works</h2>
+            <h2 id="explanation">How It Works</h2>
 
             <h3>The Interval Check</h3>
 

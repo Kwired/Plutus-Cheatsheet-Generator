@@ -3,7 +3,7 @@ import CodeBlock from "@/components/layouts/CodeBlock";
 export const articleMeta = {
     id: "collateralloan",
     title: "Overcollateralized Loan",
-    subtitle: "A DeFi primitive: lock your precious NFTs or tokens to borrow ADA. If you don't pay it back in time, you lose the collateral.",
+    subtitle: "A DeFi lending contract: lock NFTs or tokens as collateral to borrow ADA, with automatic liquidation on default",
     date: "2025-02-23T20:00:00.000Z",
     readTime: "12 min read",
     tags: ["plutus", "cardano", "defi", "lending", "intermediate"],
@@ -36,8 +36,8 @@ import           Utilities            (wrapValidator, writeValidatorToFile)
 -- The datum holds the terms of the loan contract.
 -- It records who lent the ADA, who borrowed it, the repayment price, and the deadline.
 data LoanDatum = LoanDatum
-    { lender         :: PlutusV2.PubKeyHash -- The guy who holds the debt (and gets paid)
-    , borrower       :: PlutusV2.PubKeyHash -- The guy who locked collateral here
+    { lender         :: PlutusV2.PubKeyHash -- The entity who provided the loan
+    , borrower       :: PlutusV2.PubKeyHash -- The entity who locked collateral here
     , repaymentAmt   :: Integer             -- How much ADA must be paid back to unlock the collateral
     , deadlineSlot   :: PlutusV2.POSIXTime  -- The point of no return for liquidation
     }
@@ -162,11 +162,11 @@ $ cardano-cli conway transaction submit --tx-file tx-liquidate.signed
             <h2 id="introduction">Introduction</h2>
 
             <p>
-                In the legacy financial system, if you want a loan, you walk into a bank, fill out thirty pages of paperwork, let them run your credit score, and hand over the deed to your house. If you don't pay them back, lawyers get involved.
+                Traditional lending requires credit checks, paperwork, and legal enforcement mechanisms. DeFi removes all of that by using smart contracts to enforce loan terms directly.
             </p>
 
             <p>
-                In decentralized finance (DeFi), trust is replaced by mathematics. If you want a loan, you take a highly valuable digital asset (like an NFT or a massive stack of native tokens) and you lock it inside a transparent, impartial smart contract. You set the terms in stone: <i>"I owe you X amount of ADA by Y date. If I don't pay you back in time, the contract will automatically let you seize my asset."</i>
+                In this contract, the borrower locks a valuable asset (like an NFT or native tokens) inside a script. The loan terms are encoded in the datum: repayment amount, lender address, and deadline. If the borrower repays on time, they get the collateral back. If they don't, the lender can claim it.
             </p>
 
             <CodeBlock
@@ -178,17 +178,17 @@ $ cardano-cli conway transaction submit --tx-file tx-liquidate.signed
 
             <h2 id="explanation">The Logic of Lending</h2>
 
-            <h3>The Golden Rule of Smart Contracts</h3>
+            <h3>Validators Are Passive</h3>
 
             <p className="pexplaination">
-                This contract illustrates one of the golden rules of writing Plutus code: <strong>Validators don't force actions to happen; they only prevent illegal actions from happening.</strong>
+                This contract demonstrates a core Plutus concept: <strong>validators don't initiate actions — they only block invalid ones.</strong>
             </p>
 
             <p className="pexplaination pt-2">
-                When the deadline hits, the contract doesn't suddenly wake up, pull the NFT out of the UTxO, and airdrop it into the lender's wallet. The blockchain is entirely passive. Instead, the contract merely unlocks a new *theoretical possibility*. Once the <code>deadlineSlot</code> passes, the <code>Liquidate</code> branch of code evaluates to <code>True</code>. It is now up to the lender to actively construct a transaction claiming that NFT.
+                When the deadline passes, nothing happens automatically. The blockchain doesn't move assets on its own. What changes is that the <code>Liquidate</code> redeemer path now evaluates to <code>True</code>. The lender still has to build and submit a transaction to actually claim the collateral.
             </p>
 
-            <h3>The Asymmetry of Time bounds</h3>
+            <h3>Opposing Time Constraints</h3>
 
             <p className="pexplaination pt-2">
                 Look closely at the two completely opposing time constraints used in this loan.
@@ -209,7 +209,7 @@ afterDeadline = contains (from $ deadlineSlot dat) (PlutusV2.txInfoValidRange in
             </p>
 
             <p className="pexplaination">
-                Conversely, when the lender comes to aggressively liquidate the collateral, they must use <code>--invalid-before</code>. They have to cryptographically prove that the deadline is sitting in their rearview mirror. Without these overlapping but completely mutually exclusive checks, the lender could arbitrarily liquidate the borrower on day one, stealing the collateral without giving them a chance to pay it back.
+                Conversely, when the lender liquidates the collateral, they use <code>--invalid-before</code> to prove the deadline has already passed. Without these mutually exclusive time checks, the lender could liquidate on day one before the borrower has a chance to repay.
             </p>
 
             <br />
@@ -217,7 +217,7 @@ afterDeadline = contains (from $ deadlineSlot dat) (PlutusV2.txInfoValidRange in
             <h2 id="execution">Execution Lifecycle</h2>
 
             <p className="pexplaination">
-                Here are the two vastly different transaction structures. The first is the borrower returning to claim their prized SpaceBudz NFT. The second is the savage reality of DeFi liquidations when the borrower misses the deadline.
+                Below are the two transaction paths. The first is a successful repayment where the borrower reclaims their SpaceBudz NFT. The second is a liquidation after the borrower misses the deadline.
             </p>
 
             <CodeBlock

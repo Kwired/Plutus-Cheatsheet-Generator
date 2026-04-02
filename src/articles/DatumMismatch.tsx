@@ -158,11 +158,11 @@ $ cardano-cli conway transaction submit --tx-file tx-attack.signed
             <h2 id="introduction">Introduction</h2>
 
             <p>
-                In the Cardano eUTxO model, "State" is not stored in a centralized server memory bank. It is carried physically by the UTxOs themselves in the form of a <strong>Datum</strong>. When a smart contract forces you to update its state (like an AMM adjusting its reserves, or a vesting schedule updating how much you've withdrawn), it does so by forcing you to create a "Continuing Output".
+                In Cardano, "State" isn't stored in a centralized database; it lives directly on UTxOs as a <strong>Datum</strong>. When updating state (e.g., tweaking an AMM pool or vesting schedule), the contract forces a "Continuing Output" to carry the new data.
             </p>
 
             <p>
-                A <strong>Datum Mismatch Exploit</strong> occurs when a developer writes a brilliant mechanism to ensure the tokens go back to the correct smart contract address, but completely forgets to audit the Datum attached to those tokens. This allows an attacker to silently rewrite the rules of the contract for all future transactions.
+                A <strong>Datum Mismatch</strong> bug happens when an otherwise solid contract verifies that tokens return to the script, but forgets to check the attached Datum. An attacker can just slip in corrupted data to hijack the contract's future.
             </p>
 
             <CodeBlock
@@ -177,15 +177,15 @@ $ cardano-cli conway transaction submit --tx-file tx-attack.signed
             <h3>The Trojan Horse</h3>
 
             <p className="pexplaination">
-                Look closely at the <code>hasContinuingOutput</code> logic in the vulnerable code. It mathematically filters the transaction outputs, explicitly looking for an output whose <code>Address</code> identically matches the script's own <code>Address</code>. Once it finds one, it evaluates to <code>True</code>.
+                In the vulnerable <code>hasContinuingOutput</code> logic, the script filters outputs to find one matching its own <code>Address</code>. If it finds one, it blindly returns <code>True</code>.
             </p>
 
             <p className="pexplaination pt-2">
-                This behaves exactly like a bank guard who checks that you put a sealed envelope into the deposit box, but never opens the envelope to see if you actually put cash inside or just Monopoly money.
+                It's like a bank guard ensuring you put an envelope into the safe, without checking if it contains real cash or Monopoly money.
             </p>
 
             <p className="pexplaination pt-2">
-                The attacker has satisfied the cryptographic <i>location</i> requirement of the funds, but they have hijacked the <i>state</i>. In our example vault, Alice alters her own withdrawal limits. But in a more complex DeFi protocol, an attacker could alter the <code>ownerPkh</code> of an entire DEX liquidity pool, effectively transferring ownership of millions of ADA to their own wallet simply by interacting with it.
+                The attacker beats the <i>location</i> check but hijacks the <i>state</i>. Here, Alice bumps her withdrawal limit. In a DEX context, an attacker might overwrite the <code>ownerPkh</code> of the liquidity pool to steal the reserves.
             </p>
 
             <h3>The Fix: Deep State Inspection</h3>
@@ -199,7 +199,7 @@ $ cardano-cli conway transaction submit --tx-file tx-attack.signed
             />
 
             <p className="pexplaination pt-2">
-                The fix is to aggressively audit the continuing output's payload. The secure validator physically unpacks the <code>txOutDatum</code> of the continuing output. By checking that it cryptographically matches the original input <code>dat</code> (or a heavily constrained, calculated mutation of it), the script permanently locks the state. The attacker's transaction is instantly rejected by the ledger the moment their tampered Datum fails the equality check.
+                The fix: explicitly audit the output payload. The secure validator unpacks the <code>txOutDatum</code> and enforces that it exactly matches the input <code>dat</code> (or a strictly calculated mutation). Now, tampered datums fail the equality check immediately.
             </p>
 
             <br />
@@ -207,7 +207,7 @@ $ cardano-cli conway transaction submit --tx-file tx-attack.signed
             <h2 id="execution">The Attacker's CLI Lifecycle</h2>
 
             <p className="pexplaination">
-                This attack is beautifully simple on the command line because it requires zero complex Haskell compilation. The attacker simply modifies the JSON representation of the Datum in the <code>--tx-out-inline-datum-value</code> flag. As long as the JSON structure matches the Data types expected by the Plutus decoding functions, the script will swallow the poisoned data whole.
+                This exploit is trivial to execute via CLI without touching Haskell. Just alter the JSON Datum in the <code>--tx-out-inline-datum-value</code> flag. As long as the type structure is valid, the script happily swallows the poisoned data.
             </p>
 
             <CodeBlock

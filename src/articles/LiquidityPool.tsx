@@ -3,7 +3,7 @@ import CodeBlock from "@/components/layouts/CodeBlock";
 export const articleMeta = {
     id: "liquiditypool",
     title: "Liquidity Pool (xy=k) AMM",
-    subtitle: "The mathematical heart of modern decentralized exchanges, allowing seamless trustless token swapping",
+    subtitle: "The core pricing formula behind decentralized exchanges, enabling trustless token swapping",
     date: "2025-02-24T18:00:00.000Z",
     readTime: "16 min read",
     tags: ["plutus", "cardano", "defi", "amm", "expert"],
@@ -166,7 +166,7 @@ saveVal = writeValidatorToFile "./assets/liquiditypool.plutus" validator
 # The user constructs a single transaction that sucks the entire pool UTxO in,
 # adds their 500 ADA to their output, subtracts 474,830 SNEK for themselves, 
 # and locks the resulting balance closely back into the script UTxO.
-# If the math is wrong by even 1 SNEK, the script violently fails.
+# If the math is wrong by even 1 SNEK, the script rejects the transaction.
 
 $ cardano-cli conway transaction build \\
   --tx-in f29c7d41ef993...#0 \\
@@ -194,7 +194,7 @@ $ cardano-cli conway transaction submit --tx-file tx-swap.signed
             </p>
 
             <p>
-                DeFi radically redefined this with the invention of the <strong>Automated Market Maker (AMM)</strong>. Instead of order books, a gigantic pool of tokens sits unowned inside a smart contract. Whenever someone wants to trade, they trade <i>against the pool itself</i>. The pool relies on a mercilessly simple mathematical formula—drawn directly from high-school algebra—to price the tokens dynamically depending on supply and demand.
+                DeFi changed this with the <strong>Automated Market Maker (AMM)</strong>. Instead of order books, a pool of tokens sits in a smart contract. When someone wants to trade, they trade against the pool itself. The pool uses a simple mathematical formula to price tokens dynamically based on supply and demand.
             </p>
 
             <p>
@@ -208,7 +208,7 @@ $ cardano-cli conway transaction submit --tx-file tx-swap.signed
             />
             <br />
 
-            <h2 id="explanation">The Math of the Gods: x * y = k</h2>
+            <h2 id="explanation">Understanding x * y = k</h2>
 
             <h3>Understanding Constant Product</h3>
 
@@ -224,7 +224,7 @@ $ cardano-cli conway transaction submit --tx-file tx-swap.signed
             </p>
 
             <p className="pexplaination">
-                Since the pool originally had 100 Oranges and now demands 111.11 Oranges to satisfy its math, I am forced to deposit exactly 11.11 Oranges to "buy" my 10 Apples. The pool algorithmically quotes me a price on the fly. And as more people buy Apples, Apples become incredibly scarce, pushing their mathematical price to the moon.
+                Since the pool originally had 100 Oranges and now requires 111.11 Oranges, I need to deposit 11.11 Oranges to buy my 10 Apples. The pool calculates the price dynamically. As more people buy Apples, they become scarcer in the pool, which pushes the price up.
             </p>
 
             <h3>The Fee scaling Trick in Plutus</h3>
@@ -241,11 +241,11 @@ newK = adjustedOutA * adjustedOutB`}
             />
 
             <p className="pexplaination pt-2">
-                If the pool charges a 0.3% fee (meaning you only effectively deposit 99.7% of your funds while the remaining 0.3% is taxed to grow the pool), Plutus requires some extreme mathematical acrobatics. <strong>Haskell smart contracts do not support decimals.</strong> If you try to multiply your deposit by <code>0.997</code>, the compiler will literally crash.
+                Charging a 0.3% fee (where only 99.7% of the deposit is effective) requires some workarounds in Plutus. <strong>Plutus doesn't support decimal numbers.</strong> If you try to multiply by <code>0.997</code>, the compiler won't accept it.
             </p>
 
             <p className="pexplaination">
-                To solve this, we scale the entire universe of the equation by 1000. By doing so, we essentially emulate floating-point precision linearly. We multiply the old $k$ (which is $x \times y$) by $1000 \times 1000$ to maintain the balanced integrity of both sides of the inequality. If you look under the hood of MinSwap or SundaeSwap on Cardano, you will see highly optimized, hyper-dense variations of this exact scaling trick.
+                The solution is to scale everything by 1000. This avoids decimals entirely. We multiply the original <code>k</code> (which is <code>x × y</code>) by <code>1000 × 1000</code> so both sides of the inequality are scaled equally. If you look at MinSwap or SundaeSwap on Cardano, you'll find optimized versions of this same technique.
             </p>
 
             <br />
@@ -257,7 +257,7 @@ newK = adjustedOutA * adjustedOutB`}
             </p>
             
             <p className="pexplaination pt-2">
-                The Plutus validator acts as a bouncer at a club. It doesn't care how the user figured out the numbers. It simply multiplies the outputs, compares them to the inputs multiplied by the fee coefficients, checks if <code>newK &gt;= oldK</code>, and firmly rejects the transaction if the user tried to shave off a single Lovelace in profit.
+                The Plutus validator doesn't care how the user calculated the swap. It reads the pool balances before and after, applies the fee coefficients, checks that <code>newK &gt;= oldK</code>, and rejects the transaction if the constant product invariant is violated.
             </p>
 
             <CodeBlock

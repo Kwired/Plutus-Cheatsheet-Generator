@@ -160,11 +160,11 @@ $ cardano-cli conway transaction submit --tx-file tx-attack.signed
             <h2 id="introduction">Introduction</h2>
 
             <p>
-                In Ethereum, smart contracts execute sequentially. Contract A finishes, and then Contract B executes. In Cardano's eUTxO model, all smart contracts involved in a transaction execute simultaneously. They don't talk to each other. They just look at the list of inputs and the list of outputs, run their internal logic independently, and return <code>True</code> or <code>False</code>.
+                Unlike account-based models where contracts execute sequentially, Cardano eUTxO scripts evaluate independently in parallel. They just read inputs and outputs to return <code>True</code> or <code>False</code>.
             </p>
 
             <p>
-                If two different scripts look at the exact same output and say, "Wow, that output perfectly fulfills my requirement!", they both return <code>True</code>, even though they were only satisfied <em>once</em>. This is the fabled <strong>Double Satisfaction Exploit</strong>.
+                If two separate scripts observe the exact same output and consider their conditions met, they both return <code>True</code> despite only one output existing. This is the <strong>Double Satisfaction Exploit</strong>.
             </p>
 
             <CodeBlock
@@ -179,15 +179,15 @@ $ cardano-cli conway transaction submit --tx-file tx-attack.signed
             <h3>The Blind Spots of Scripts</h3>
 
             <p className="pexplaination">
-                Imagine two bounties are posted by two different people. Bounty A requires you to chop down a tree. Bounty B requires you to chop down a tree. 
+                Imagine Bounty A and Bounty B both pay for a photo of a chopped tree. 
             </p>
 
             <p className="pexplaination pt-2">
-                You chop down <strong>one</strong> tree. You take a photo of it. You show the photo to the person running Bounty A, and they pay you 50 ADA. You walk over to the person running Bounty B, show them the exact same photo, and they also pay you 50 ADA. 
+                You chop <strong>one</strong> tree, take a photo, show it to Bounty A for 50 ADA, then show the exact same photo to Bounty B for another 50 ADA. 
             </p>
 
             <p className="pexplaination pt-2">
-                This is exactly how a naive Plutus script operates. <code>mkVulnerableEscrow</code> simply spins through the <code>txInfoOutputs</code> and checks if there is an output to John's address containing 50 ADA. It has absolutely no idea that Alice's UTxO script and Bob's UTxO script are running at the exact same time, staring at the exact same output. The math checks out. The transaction succeeds. 
+                Naive Plutus scripts act the same. <code>mkVulnerableEscrow</code> spins through <code>txInfoOutputs</code> to spot a 50 ADA John output. Alice's UTxO and Bob's UTxO script both see the output and validate, ignorant of each other. The attacker pockets the rest.
             </p>
 
             <h3>The Fix: Singular Focus</h3>
@@ -203,11 +203,11 @@ length ownInputs == 1`}
             />
 
             <p className="pexplaination pt-2">
-                There are multiple ways to defeat a Double Satisfaction attack. The most robust method is assigning fiercely unique datum tags to every single output, forcing the script to only accept outputs that perfectly mirror the input's state.
+                You can defeat this by attaching strict, unique tags/identifiers to outputs.
             </p>
 
             <p className="pexplaination">
-                The simpler method, demonstrated in <code>mkSecureEscrow</code>, is to simply forbid the script from sharing a transaction with itself. By demanding that <code>length ownInputs == 1</code>, the script violently crashes if an attacker attempts to bundle Alice's UTxO and Bob's UTxO into the same execution. John must execute Alice's escrow payload, taking his 50 ADA, and then execute an entirely separate transaction for Bob's 50 ADA, resulting in 100 ADA total payouts instead of him pocketing the difference.
+                A simpler, hacky fix is limiting the script scope: <code>length ownInputs == 1</code>. This blocks bundling. The attacker must execute Alice's escrow, then execute Bob's escrow separately, forcing 100 ADA total payout.
             </p>
 
             <br />
@@ -215,7 +215,7 @@ length ownInputs == 1`}
             <h2 id="execution">The Attacker's CLI Lifecycle</h2>
 
             <p className="pexplaination">
-                This CLI transaction is the holy grail of eUTxO exploits. By intentionally consuming two separate script UTxOs, but only providing one payout output, the attacker creates a massive imbalance. Because Cardano must balance all inputs to all outputs, the "leftover" 50 ADA natively cascades into the attacker's <code>--change-address</code>. The scripts are entirely oblivious to this theft.
+                By intentionally consuming two separate script UTxOs but providing only one specific payout output, you create artificial imbalance. Cardano handles the "leftover" ADA by natively routing it into your <code>--change-address</code>, effectively stealing the funds while the scripts remain oblivious.
             </p>
 
             <CodeBlock

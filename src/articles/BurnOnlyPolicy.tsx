@@ -103,15 +103,11 @@ Transaction successfully submitted.
             <h2 id="introduction">Introduction</h2>
 
             <p>
-                Minting Policies are a special type of Plutus script. Instead of controlling
-                how funds are spent from a UTxO address, they control the creation and
-                destruction of Native Tokens across the entire Cardano blockchain.
+                Minting Policies are a different type of Plutus script compared to validators. Instead of guarding a specific UTxO, they control the creation and destruction of Native Tokens across the entire network.
             </p>
 
             <p>
-                The <strong>Burn Only Policy</strong> is exactly what it sounds like: a policy
-                that unconditionally rejects any attempt to mint new tokens, but always allows
-                users to burn existing ones.
+                The <strong>Burn Only Policy</strong> does what the name suggests: it rejects any attempt to mint new tokens but allows burning existing ones out of circulation.
             </p>
 
             <CodeBlock
@@ -121,14 +117,12 @@ Transaction successfully submitted.
             />
             <br />
 
-            <h2 id="explanation">How It Really Works</h2>
+            <h2 id="explanation">How It Works</h2>
 
             <h3>Minting vs. Spending</h3>
 
             <p className="pexplaination">
-                Minting scripts only take two arguments: <code>Redeemer</code> and <code>ScriptContext</code>.
-                There is no Datum because minting policies exist globally to enforce the supply
-                of a token, not locally to protect a specific UTxO.
+                Unlike Validator scripts, Minting scripts only ever take two arguments: the <code>Redeemer</code> and the <code>ScriptContext</code>. Because minting policies exist to globally enforce the supply rules of a token (rather than locally protecting a UTxO), they don't use a Datum at all.
             </p>
 
             <CodeBlock
@@ -138,19 +132,15 @@ Transaction successfully submitted.
             />
 
             <p className="pexplaination">
-                In Cardano, "Burning" is simply defined as "Minting a negative quantity."
-                The <code>txInfoMint</code> function extracts a map of all tokens being minted
-                in the current transaction. We flatten that map into a list, and enforce that
-                for <strong>all</strong> of them, the amount <code>amt</code> must be less than 0.
+                On Cardano, there's no separate "burn" function. Burning is just minting with a negative quantity. The <code>txInfoMint</code> field contains all tokens being minted or burned in the transaction. We flatten it into a list and check that every token amount is less than 0.
             </p>
 
             <br />
 
-            <h2 id="execution">Execution Lifecycle</h2>
+            <h2 id="execution">Running the Code</h2>
 
             <p className="pexplaination">
-                When executing a transaction with a minting script, you don't interact with
-                a locking address. Instead, you use the script directly in the <code>--mint</code> flag.
+                When you execute a transaction involving a minting script, you don't send funds to a locking address. Instead, you directly attach the script to the <code>--mint</code> flag itself.
             </p>
 
             <CodeBlock
@@ -159,15 +149,11 @@ Transaction successfully submitted.
                 filename="Burn Only CLI Commands"
             />
 
-            <h3>The Paradox of Genesis</h3>
+            <h3>A Note on Genesis</h3>
 
             <p className="pexplaination pt-2">
-                You might realize an obvious problem: If this policy only allows burning,
-                how did the tokens get created in the first place? <br /><br />
-                In reality, a strict Burn Only policy is useless on its own. It is typically
-                paired with advanced parameterized scripts where the script logic changes based
-                on UTxO inputs, or it is used as an educational stepping stone to understand
-                that Minting and Burning are governed by the exact same logic structure on Cardano.
+                There's an obvious question: if this policy only allows burning, how were the tokens minted in the first place? <br /><br />
+                A hardcoded burn-only policy isn't useful on its own. In practice, it would be paired with parameterized or dynamic scripts where the minting logic changes based on transaction context. This example exists to demonstrate that minting and burning use the exact same mechanism on Cardano—the sign of the quantity is all that differs.
             </p>
 
         </div>

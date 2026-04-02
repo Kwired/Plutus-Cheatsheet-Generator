@@ -3,7 +3,7 @@ import CodeBlock from "@/components/layouts/CodeBlock";
 export const articleMeta = {
     id: "tokensale",
     title: "Token Sale / ICO Contract",
-    subtitle: "A decentralized vending machine — send ADA, receive tokens instantly based on a hardcoded price",
+    subtitle: "A contract that sells tokens at a fixed price — send ADA, receive tokens, with automatic change handling",
     date: "2025-02-23T18:00:00.000Z",
     readTime: "11 min read",
     tags: ["plutus", "cardano", "defi", "ico", "intermediate"],
@@ -168,11 +168,7 @@ $ cardano-cli conway transaction submit --tx-file tx-buy.signed
             <h2 id="introduction">Introduction</h2>
 
             <p>
-                Imagine a vending machine sitting in the middle of the desert. There's no owner standing nearby, no security cameras, and no internet connection. Yet, if you slide exactly 50 ADA into the slot, it perfectly dispenses 1,000 ShinyTokens. If you slide in 49 ADA, it jams and returns your money immediately. Furthermore, if you try to kick the machine to steal the remaining tokens, its reinforced steel deflects your attack entirely.
-            </p>
-
-            <p>
-                That is what a <strong>Token Sale Smart Contract</strong> is on Cardano. It's a completely trustless, decentralized mechanism where a seller locks their token inventory into an address, defines a rigid price per token inside a datum, and lets anyone in the world walk up and execute trades programmatically.
+                A <strong>Token Sale Smart Contract</strong> holds a supply of tokens at a script address and sells them at a fixed price defined in the datum. Anyone can buy by sending the correct amount of ADA. The contract validates the payment, distributes the tokens, and returns unsold inventory to the script.
             </p>
 
             <CodeBlock
@@ -191,7 +187,7 @@ $ cardano-cli conway transaction submit --tx-file tx-buy.signed
             </p>
 
             <p className="pexplaination pt-2">
-                The first thing it checks is whether the seller is getting paid. The redeemer clearly states how many tokens the buyer <i>claims</i> to be buying (e.g., <code>Buy 1000</code>). The script takes that amount, multiplies it by the <code>pricePerTok</code> stored in the datum, and then brutally audits the transaction outputs. It scans every single output going to the <code>seller</code> address and sums the ADA. If the math doesn't check out, the transaction fails with <i>"Seller wasn't paid the correct amount of ADA!"</i>.
+                The first check is whether the seller gets paid correctly. The redeemer states how many tokens the buyer wants (e.g., <code>Buy 1000</code>). The script multiplies that by the <code>pricePerTok</code> from the datum, then checks the transaction outputs going to the <code>seller</code> address. If the total ADA paid doesn't match, the transaction fails with <i>"Seller wasn't paid the correct amount of ADA!"</i>.
             </p>
 
             <h3>The Change Mechanic (Continuing Outputs)</h3>

@@ -173,18 +173,17 @@ $ cardano-cli conway transaction submit --tx-file tx-sell-nft.signed
             <h2 id="introduction">Introduction</h2>
 
             <p>
-                On platforms like OpenSea, creators set royalty percentages on their NFTs.
-                But here's the dirty secret: those royalties are enforced by the <em>marketplace</em>,
-                not by the blockchain. If someone sells the NFT on a different platform
-                that ignores royalties, the creator gets nothing.
+                On platforms like OpenSea, royalties are enforced by the marketplace,
+                not the blockchain. If someone sells the NFT on a different platform
+                that doesn't respect royalties, the creator gets nothing.
             </p>
 
             <p>
-                On Cardano, we can do better. The <strong>Royalty Enforcer</strong> locks
-                the NFT inside a validator that <em>mathematically guarantees</em> the
-                creator receives their cut on every single sale. The NFT can never leave
-                the script without the royalty being paid. It's not a suggestion — it's
-                cryptographic law.
+                On Cardano, the <strong>Royalty Enforcer</strong> locks
+                the NFT inside a validator that guarantees the
+                creator receives their cut on every sale. The NFT can't leave
+                the script without the royalty being paid — it's enforced at the
+                protocol level.
             </p>
 
             <CodeBlock
@@ -194,7 +193,7 @@ $ cardano-cli conway transaction submit --tx-file tx-sell-nft.signed
             />
             <br />
 
-            <h2 id="explanation">How It Really Works</h2>
+            <h2 id="explanation">How It Works</h2>
 
             <h3>Basis Points for Precision</h3>
 
@@ -214,7 +213,7 @@ $ cardano-cli conway transaction submit --tx-file tx-sell-nft.signed
                 filename="Royalty Calculation"
             />
 
-            <h3>The NFT Prison Pattern</h3>
+            <h3>The Lock Pattern</h3>
 
             <p className="pexplaination pt-2">
                 The key insight is that the NFT <em>never leaves the script</em>. Every

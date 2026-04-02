@@ -3,7 +3,7 @@ import CodeBlock from "@/components/layouts/CodeBlock";
 export const articleMeta = {
     id: "refinputmisuse",
     title: "Reference Input Misuse (Fake Oracle)",
-    subtitle: "A massive oversight where a smart contract blindly trusts read-only data without cryptographically authenticating the source",
+    subtitle: "A vulnerability where a smart contract reads external data without verifying the source",
     date: "2025-02-25T15:00:00.000Z",
     readTime: "9 min read",
     tags: ["plutus", "cardano", "security", "exploit", "expert"],
@@ -159,7 +159,7 @@ $ cardano-cli conway transaction submit --tx-file tx-attack.signed
 # Result:
 # The vulnerable contract looks at the list of reference inputs.
 # It finds "fake_oracle_f29c...#0". It extracts the datum. It parses the Integer "10".
-# It verifies 10 < 50. The vault is violently liquidated and drained by the hacker.
+# It verifies 10 < 50. The vault is liquidated and drained by the attacker.
 `;
 
     return (
@@ -167,11 +167,11 @@ $ cardano-cli conway transaction submit --tx-file tx-attack.signed
             <h2 id="introduction">Introduction</h2>
 
             <p>
-                In Cardano's Vasil (Plutus V2) Hard Fork, <strong>Reference Inputs (CIP-31)</strong> were introduced. This groundbreaking feature allowed smart contracts to "look at" data sitting on the blockchain without having to physically consume the UTxO. 
+                Cardano's Vasil (Plutus V2) Hard Fork introduced <strong>Reference Inputs (CIP-31)</strong>. This feature lets smart contracts read data from a UTxO without consuming it. 
             </p>
 
             <p>
-                Before CIP-31, if you wanted to read an Oracle price feed, you had to spend the Oracle UTxO and immediately recreate it. This caused massive congestion as multiple dApps furiously fought to spend the exact same oracle UTxO in the exact same block.
+                Before CIP-31, reading an Oracle price feed required spending the Oracle UTxO and immediately recreating it. This caused congestion because multiple dApps competed to spend the same oracle UTxO in the same block.
             </p>
 
             <CodeBlock
@@ -186,7 +186,7 @@ $ cardano-cli conway transaction submit --tx-file tx-attack.signed
             <h3>The Blind Oracle</h3>
 
             <p className="pexplaination">
-                While Reference Inputs solved congestion overnight, they introduced one of the most devastating logical vulnerabilities in Cardano: <strong>Trusting the Sender</strong>. 
+                While Reference Inputs solved congestion, they introduced a significant logical vulnerability: <strong>Trusting the Sender</strong>. 
             </p>
 
             <p className="pexplaination pt-2">
@@ -194,7 +194,7 @@ $ cardano-cli conway transaction submit --tx-file tx-attack.signed
             </p>
 
             <p className="pexplaination pt-2">
-                If your smart contract simply reads <code>PlutusV2.txInfoReferenceInputs</code> and extracts the datum from whichever UTxO happens to be sitting there, you are handing the keys to the kingdom to a hacker. A hacker doesn't need to break the real Charli3 or Orcfax Oracle. The hacker simply sends an ADA transaction to themselves, attaching an inline datum claiming ADA is worth $0.0001. They inject this completely valid—but utterly fake—UTxO into the transaction as the reference input.
+                If your smart contract reads <code>PlutusV2.txInfoReferenceInputs</code> and extracts the datum from whichever UTxO is there, you've opened the door to exploitation. An attacker doesn't need to compromise the real Charli3 or Orcfax Oracle. They just send an ADA transaction to themselves with an inline datum claiming ADA is worth $0.0001, then pass that UTxO as the reference input.
             </p>
 
             <h3>The Fix: Cryptographic Badges</h3>
@@ -209,11 +209,11 @@ hasValidOracle = length validOracleUTxO == 1`}
             />
 
             <p className="pexplaination pt-2">
-                A smart contract must behave like a border guard. Before it reads the data on the passport (the Datum), it must thoroughly examine the cryptographic watermark proving the passport is real. On Cardano, this watermark is usually an <strong>NFT</strong> (Non-Fungible Token). 
+                The fix is straightforward: before reading the datum, the contract must verify the UTxO's authenticity. On Cardano, this is typically done by requiring a specific <strong>NFT</strong> (Non-Fungible Token) to be present in the reference input. 
             </p>
 
             <p className="pexplaination">
-                Real Oracle protocols lock their accurate data inside a UTxO that also contains a unique, unforgeable Authentication Token. The secure validator demands that the reference input not only contains a Datum, but explicitly contains at least 1 token matching the hardcoded `oracleNFT` Policy ID. Since the hacker cannot mathematically forge the Oracle's policy, they cannot ever trick the script. 
+                Real Oracle protocols lock their data inside a UTxO that also contains a unique Authentication Token. The secure validator requires the reference input to contain at least 1 token matching the hardcoded `oracleNFT` Policy ID. Since an attacker can't forge the Oracle's minting policy, they can't produce a valid fake.
             </p>
 
             <br />

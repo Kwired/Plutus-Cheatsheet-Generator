@@ -3,7 +3,7 @@ import CodeBlock from "@/components/layouts/CodeBlock";
 export const articleMeta = {
     id: "timelockedsavings",
     title: "Time-Locked Savings Vault",
-    subtitle: "A digital piggy bank that forcefully prevents you from spending your ADA until a specific date",
+    subtitle: "A contract that locks ADA until a specific date, preventing early withdrawal even by the owner",
     date: "2025-02-23T19:00:00.000Z",
     readTime: "7 min read",
     tags: ["plutus", "cardano", "defi", "time-lock", "savings", "beginner"],
@@ -125,15 +125,15 @@ $ cardano-cli conway transaction submit --tx-file tx-withdraw.signed
             <h2 id="introduction">Introduction</h2>
 
             <p>
-                We've all been there: you promise yourself you're going to hold onto your crypto for the long term. You move it to cold storage. You hide the seed phrase. But then the market dips, panic sets in, and suddenly you're digging through your closet at 3 AM looking for that hardware wallet.
+                Holding crypto long-term is hard when you can access it at any time. Cold storage and hidden seed phrases don't actually prevent you from panic-selling during a downturn.
             </p>
 
             <p>
-                What if you could mathematically restrict your own ability to spend your money? 
+                This contract solves that by making early access impossible at the protocol level.
             </p>
 
             <p>
-                The <strong>Time-Locked Savings Vault</strong> does exactly this. It's a Plutus smart contract that acts as an unbreakable digital piggy bank. You lock your ADA into it, and you set an exact timestamp in the Datum. Until that specific second arrives, the Cardano network will flat-out reject any transaction trying to move those funds — even if you are the one signing it with your own private keys.
+                The <strong>Time-Locked Savings Vault</strong> is a Plutus smart contract that holds your ADA until a specified timestamp. You lock funds, set the unlock date in the Datum, and the Cardano network rejects any withdrawal transaction until that date — regardless of who signs it.
             </p>
 
             <CodeBlock
@@ -148,7 +148,7 @@ $ cardano-cli conway transaction submit --tx-file tx-withdraw.signed
             <h3>The Valid Range Dilemma</h3>
 
             <p className="pexplaination">
-                One of the most mind-bending concepts for new Plutus developers is how time works on-chain. Plutus scripts are inherently <strong>deterministic</strong>. If you run a script with the exact same inputs tomorrow, it must return the exact same output as it did today.
+                Time handling in Plutus is unintuitive at first. Plutus scripts are <strong>deterministic</strong> — running a script with the same inputs must always produce the same output.
             </p>
 
             <p className="pexplaination pt-2">

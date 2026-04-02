@@ -148,7 +148,7 @@ $ cardano-cli conway transaction submit --tx-file tx-arbitrate.signed
             </p>
 
             <p>
-                The solution is a <strong>3-party Escrow</strong>. The buyer locks the ADA into the smart contract and physically assigns an impartial Arbitrator (like an escrow company) in the Datum. The Arbitrator has zero power to steal the money for themselves, but they possess the ultimate keys to break a tie if the buyer and seller start fighting.
+                The solution is a <strong>3-party Escrow</strong>. The buyer locks the ADA into the smart contract and designates an impartial Arbitrator (like an escrow company) in the Datum. The Arbitrator can't take the money for themselves — they can only direct it to one of the two parties.
             </p>
 
             <CodeBlock
@@ -163,7 +163,7 @@ $ cardano-cli conway transaction submit --tx-file tx-arbitrate.signed
             <h3>The Happy Paths</h3>
 
             <p className="pexplaination">
-                Most of the time, humans are honest. Plutus accommodates this beautifully. If the transaction goes perfectly, the buyer simply submits a transaction with the <code>ReleaseToSeller</code> redeemer. The contract sees the buyer's cryptographic signature and lets the ADA flow to the seller. The Arbitrator never even has to look at the blockchain.
+                Most of the time, transactions go smoothly. If so, the buyer submits a transaction with the <code>ReleaseToSeller</code> redeemer. The contract verifies the buyer's signature and releases the ADA to the seller. The arbitrator never needs to get involved.
             </p>
 
             <p className="pexplaination pt-2">
@@ -185,7 +185,7 @@ $ cardano-cli conway transaction submit --tx-file tx-arbitrate.signed
             />
 
             <p className="pexplaination pt-2">
-                This validation logic is critical. While the Arbitrator has the power to break the deadlock, <strong>the smart contract explicitly forbids the Arbitrator from sending the money to their own wallet</strong> (unless the Arbitrator happens to also be the buyer or seller, which defeats the point). The Arbitrator is a judge, not a vault robber. Their power is absolute, but strictly confined to choosing between the two preset participants.
+                The validation logic here is important. The Arbitrator can break a deadlock, but <strong>the smart contract prevents the Arbitrator from sending the money to their own wallet</strong>. The Arbitrator can only choose between the two participants defined in the datum.
             </p>
 
             <br />
@@ -193,7 +193,7 @@ $ cardano-cli conway transaction submit --tx-file tx-arbitrate.signed
             <h2 id="execution">Execution Lifecycle</h2>
 
             <p className="pexplaination">
-                Let's look at how this plays out on the command line. In the first instance, the transaction goes smoothly and the buyer releases the funds. In the second, disaster strikes, and the Arbitrator steps in to manually force a refund back to the buyer over the objections of the seller.
+                Below are two scenarios on the command line. In the first, the buyer is satisfied and releases the funds. In the second, the Arbitrator steps in and forces a refund to the buyer.
             </p>
 
             <CodeBlock

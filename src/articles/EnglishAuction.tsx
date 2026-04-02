@@ -3,7 +3,7 @@ import CodeBlock from "@/components/layouts/CodeBlock";
 export const articleMeta = {
     id: "englishauction",
     title: "English Auction",
-    subtitle: "A brutal ascending-price bidding war where the highest bidder walks away with the NFT — and losers get fully refunded",
+    subtitle: "An ascending-price auction where the highest bidder wins the NFT and all other bidders are refunded",
     date: "2025-02-23T21:00:00.000Z",
     readTime: "14 min read",
     tags: ["plutus", "cardano", "defi", "auction", "advanced"],
@@ -34,15 +34,15 @@ import           Utilities            (wrapValidator, writeValidatorToFile)
 ----------------------------------- ON-CHAIN / VALIDATOR ------------------------------------------
 
 -- The datum holds the active state of the auction.
--- It tells us who is holding the gavel, what they are selling, when it ends,
--- and most importantly: who is currently winning.
+-- It tracks who the seller is, what is being sold, when the auction ends,
+-- and who currently has the highest bid.
 data AuctionDatum = AuctionDatum
     { seller       :: PlutusV2.PubKeyHash -- The wallet auctioning the item
     , assetPolicy  :: PlutusV2.CurrencySymbol
     , assetName    :: PlutusV2.TokenName
     , highestBid   :: Integer             -- The current highest bid in Lovelace (starts at the reserve price)
     , highestBidder:: Maybe PlutusV2.PubKeyHash -- Who is winning right now? (Nothing if no bids yet)
-    , endSlot      :: PlutusV2.POSIXTime  -- When the gavel drops
+    , endSlot      :: PlutusV2.POSIXTime  -- When the auction closes
     }
 PlutusTx.unstableMakeIsData ''AuctionDatum
 
@@ -118,7 +118,7 @@ mkAuctionValidator dat action ctx = case action of
                     in holdsAsset && holdsNewAda
                 _ -> False
 
-    -- When the gavel drops, where does the money go? Where does the asset go?
+    -- When the auction closes, where does the money go? Where does the asset go?
     payoutCorrect :: Bool
     payoutCorrect = case highestBidder dat of
         Nothing -> 
@@ -187,8 +187,8 @@ $ cardano-cli conway transaction submit --tx-file tx-outbid.signed
 
 # -------------------------------------------------------------------------
 # 2. The Gavel Drops (Closing the Auction)
-# 5 minutes later, the deadline hits. ANYONE can submit this transaction, 
-# but they are forced to deal the cards fairly: Seller gets my 1,500 ADA, I get the Clay Nation.
+# The deadline passes. ANYONE can submit this transaction, 
+# but the distribution is hardcoded: Seller gets my 1,500 ADA, I get the Clay Nation.
 
 $ cardano-cli conway transaction build \\
   --tx-in e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855#0 \\
@@ -212,11 +212,11 @@ $ cardano-cli conway transaction submit --tx-file tx-close.signed
             <h2 id="introduction">Introduction</h2>
 
             <p>
-                Sotheby's and Christie's have run high-end auctions identically for hundreds of years. An item sits at the front of a room, a minimum starting price is declared, and rich people frantically yell out increasingly higher numbers until everyone else gives up and the gavel physically slams onto a wooden podium.
+                An <strong>English Auction</strong> is a timed, ascending-price bidding mechanism. On a blockchain, implementing one requires handling real funds: each bid locks ADA at the script address, and the contract must automatically refund the previous bidder whenever a higher bid comes in.
             </p>
 
             <p>
-                This exact mechanic — a timed, escalating bidding war — is known as an <strong>English Auction</strong>. Executing one trustlessly on a blockchain requires an incredibly clever design. You aren't just taking someone's bid; you're taking their actual money, holding it hostage at the script address, and dynamically firing refunds back across the network the instant someone else outbids them. 
+                This contract implements the full lifecycle — bidding, refunding, and final settlement — using Cardano's eUTxO model.
             </p>
 
             <CodeBlock
@@ -226,16 +226,16 @@ $ cardano-cli conway transaction submit --tx-file tx-close.signed
             />
             <br />
 
-            <h2 id="explanation">The Logic of the Bidding War</h2>
+            <h2 id="explanation">How It Works</h2>
 
             <h3>The Mechanics of Outbidding</h3>
 
             <p className="pexplaination">
-                If you bid on an item, your ADA becomes trapped inside the auction contract's UTxO alongside the NFT being sold. If another buyer wants to step into the ring and outbid you, they cannot simply "add to the pile". The contract violently rejects that.
+                When you bid, your ADA gets locked in the auction contract's UTxO alongside the NFT. If someone wants to outbid you, they can't just add more ADA to the existing UTxO.
             </p>
 
             <p className="pexplaination pt-2">
-                Instead, the new buyer must construct a transaction that consumes the entire UTxO holding your ADA and the NFT. They must actively orchestrate a payout back to your wallet (refunding you completely), explicitly park the NFT back into the contract, and lock their significantly larger stack of ADA in its place.
+                Instead, the new bidder builds a transaction that consumes the entire UTxO, refunds the previous bidder, re-locks the NFT at the script address, and deposits their higher bid amount alongside it.
             </p>
 
             <CodeBlock
@@ -244,21 +244,21 @@ $ cardano-cli conway transaction submit --tx-file tx-close.signed
     previousBidderRefunded &&
     stateUpdated bidAmt bidderHash`}
                 language="haskell"
-                filename="The Holy Trinity of Bidding"
+                filename="Bid Validation Rules"
             />
 
             <p className="pexplaination pt-2">
-                This is a brilliant use of the eUTxO model. The Plutus script doesn't actually execute the refund itself; it mathematically audits the new buyer's transaction to guarantee they facilitated the refund. If they missed it by a single Lovelace, the network drops the transaction on the floor.
+                The Plutus script doesn't execute the refund itself — it validates that the bidder's transaction includes the refund as an output. If the refund is short by even one Lovelace, the transaction fails.
             </p>
 
-            <h3>The Gavel Drop</h3>
+            <h3>Closing the Auction</h3>
 
             <p className="pexplaination pt-2">
-                When the <code>endSlot</code> officially passes, bidding is permanently halted. But the money and the NFT don't instantly teleport to their rightful owners. Someone, somewhere in the world, must submit a <code>Close</code> transaction.
+                Once the <code>endSlot</code> passes, bidding is permanently blocked. The funds and NFT don't move automatically though — someone has to submit a <code>Close</code> transaction.
             </p>
 
             <p className="pexplaination">
-                The beautiful thing about the <code>Close</code> redeemer branch is that it is completely stateless and heavily audited. Because the distribution logic (Seller gets ADA, Winner gets NFT) is hardcoded into the validator, the person triggering the Close transaction cannot alter the payouts. In many decentralised marketplaces, they incentivize bots with tiny ADA bounties to run around closing expired auctions for users automatically.
+                The <code>Close</code> branch is permissionless — anyone can submit it. But the distribution logic (seller gets the ADA, winner gets the NFT) is hardcoded in the validator, so the caller can't alter the payouts. Some marketplaces incentivize bots to close expired auctions automatically.
             </p>
 
             <br />
@@ -266,7 +266,7 @@ $ cardano-cli conway transaction submit --tx-file tx-close.signed
             <h2 id="execution">Execution Lifecycle</h2>
 
             <p className="pexplaination">
-                This CLI execution demonstrates the brutal reality of a late-stage bidding war. Bidder B is swooping in right before the deadline, forcibly ripping Bidder A's claim off the NFT and refunding them. Then, we see the resulting Close transaction executing the final payouts.
+                The CLI commands below show a late-stage outbid: Bidder B replaces Bidder A's bid right before the deadline, then the auction is closed to distribute the final payouts.
             </p>
 
             <CodeBlock

@@ -231,10 +231,10 @@ $ cardano-cli conway transaction submit --tx-file tx-play-x.signed
             <h2 id="introduction">Introduction</h2>
 
             <p>
-                Tic-Tac-Toe is the "Hello World" of game theory. Everyone knows the rules,
-                so it's the perfect sandbox for understanding how <em>complex game state</em>
-                {" "}can be fully enforced on a blockchain. No game server needed. No referee.
-                Just two players and a Plutus script that knows the rules better than both of them.
+                Tic-Tac-Toe is a simple enough game that everyone knows the rules,
+                which makes it a good example for understanding how game state
+                can be fully enforced on-chain. No game server, no referee—just
+                two players and a Plutus script that validates every move.
             </p>
 
             <p>
@@ -252,7 +252,7 @@ $ cardano-cli conway transaction submit --tx-file tx-play-x.signed
             />
             <br />
 
-            <h2 id="explanation">How It Really Works</h2>
+            <h2 id="explanation">How It Works</h2>
 
             <h3>The Board as Data</h3>
 
@@ -288,10 +288,10 @@ data GameDatum = GameDatum
             </p>
 
             <p className="pexplaination">
-                If Player X tries to overwrite Player O's mark, the <code>isEmpty</code>
-                {" "}check catches it. If they try to place two marks in one move, the{" "}
-                <code>setCell</code> comparison catches it. If they don't switch the turn,
-                the <code>switchedTurn</code> check catches it. Every angle is covered.
+                If Player X tries to overwrite Player O's mark, <code>isEmpty</code>
+                {" "}catches it. If they place a mark at the wrong position, the{" "}
+                <code>setCell</code> comparison fails. If they don't switch the turn,
+                <code>switchedTurn</code> rejects it.
             </p>
 
             <h3>Win & Draw Detection</h3>
@@ -320,8 +320,7 @@ data GameDatum = GameDatum
             <p className="pexplaination">
                 Each move is a separate on-chain transaction. The two players take turns
                 building transactions that consume the current game state and produce an
-                updated one. Think of it as passing a note back and forth, except the
-                blockchain remembers every single note forever.
+                updated one.
             </p>
 
             <CodeBlock
@@ -330,7 +329,7 @@ data GameDatum = GameDatum
                 filename="Tic-Tac-Toe CLI Commands"
             />
 
-            <h3>The JSON Gets Wild</h3>
+            <h3>The JSON Encoding</h3>
 
             <p className="pexplaination pt-2">
                 Yes, that JSON datum is enormous. Each of the 9 board cells is an algebraic

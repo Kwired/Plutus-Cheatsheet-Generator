@@ -155,11 +155,11 @@ $ cardano-cli conway transaction submit --tx-file tx-attack.signed
             <h2 id="introduction">Introduction</h2>
 
             <p>
-                In traditional Web2 programming, <strong>Authentication</strong> (Who are you?) and <strong>Authorization</strong> (Are you allowed to do this?) are deeply intertwined. Usually, you log in, and the database automatically checks your permissions against your session cookie. 
+                In Web2, <strong>Authentication</strong> and <strong>Authorization</strong> are tightly coupled via session cookies. On Cardano, contracts are totally blind to who is submitting the transaction.
             </p>
 
             <p>
-                But in Cardano, a smart contract is totally blind. It is a lifeless formula that only examines the mathematical inputs and outputs of a transaction. If you write 100 lines of incredibly robust validation logic enforcing <em>how</em> the funds should be routed, but forget to explicitly write 1 line verifying <em>who</em> is submitting the transaction, you have left the front door wide open.
+                If you write complex validation logic for <em>routing</em> funds, but miss the one line verifying <em>who</em> is driving the transaction, you've created a massive vulnerability.
             </p>
 
             <CodeBlock
@@ -174,15 +174,15 @@ $ cardano-cli conway transaction submit --tx-file tx-attack.signed
             <h3>The Fallacy of Implicit Owners</h3>
 
             <p className="pexplaination">
-                A common misconception for beginner Plutus developers is believing that because a <code>PubKeyHash</code> is physically hardcoded into a Datum, the contract automatically "belongs" to that person. This is entirely false.
+                A common beginner gotcha is assuming a hardcoded <code>PubKeyHash</code> in the Datum infers ownership. It doesn't.
             </p>
 
             <p className="pexplaination pt-2">
-                The Datum is just a piece of passive JSON data floating on the ledger. It has exactly zero cryptographic authority. The vulnerable proxy contract above successfully reads the Datum, and successfully verifies that the transaction physically creates an output going to that <code>PubKeyHash</code>. The developer thinks, "Only Alice could make an output to Alice, so it's safe." 
+                The Datum provides data, not cryptographic authority. The vulnerable proxy ensures the output routes to the specified <code>PubKeyHash</code>. The dev thinks, "Only Alice sends money to Alice, so it's safe." 
             </p>
 
             <p className="pexplaination pt-2">
-                This is the massive logical oversight. <strong>Anyone can send money to Alice.</strong>
+                That's the flaw: <strong>anyone can send money to Alice.</strong>
             </p>
 
             <h3>The Fix: Cryptographic Proof of Will</h3>
@@ -194,11 +194,11 @@ $ cardano-cli conway transaction submit --tx-file tx-attack.signed
             />
 
             <p className="pexplaination pt-2">
-                The secure version of the proxy contract fixes this by aggressively enforcing a <code>txSignedBy</code> check. When <code>txSignedBy</code> is compiled, the Cardano node physically rips open the transaction's signature array and uses Elliptic Curve Cryptography to verify that the private key matching the <code>owner dat</code> public key hash explicitly signed off on the payload.
+                The fix: enforce <code>txSignedBy</code>. The Cardano node will verify the signature array using Elliptic Curve Cryptography to ensure the private key for <code>owner dat</code> actually signed the payload.
             </p>
 
             <p className="pexplaination">
-                If an attacker tries to execute a withdrawal, they fundamentally cannot produce the cryptographic signature of the owner. The <code>txSignedBy</code> function evaluates to <code>False</code>, instantly preventing them from moving the funds, regardless of whether they perfectly matched every other operational rule in the contract.
+                Without the private key, the attacker cannot produce a valid signature. <code>txSignedBy</code> evaluates to <code>False</code> and the transaction fails immediately.
             </p>
 
             <br />
@@ -206,7 +206,7 @@ $ cardano-cli conway transaction submit --tx-file tx-attack.signed
             <h2 id="execution">The Attacker's CLI Lifecycle</h2>
 
             <p className="pexplaination">
-                This is one of the most brutal exploits in blockchain because the attacker achieves complete capitulation by simply playing by the contract's weak rules. The attacker pays the bare minimum required to satisfy the script's output condition (in this case, sending Alice the min-ADA of 2 ADA), and intercepts the remaining colossal balance by routing it to their own change address. 
+                The attack is clean: just play by the contract's incomplete rules. Submit the minimum required to satisfy the script output condition (e.g., sending Alice 2 ADA), and sweep the giant remainder into a change address.
             </p>
 
             <CodeBlock

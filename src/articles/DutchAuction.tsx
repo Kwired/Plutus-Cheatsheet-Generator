@@ -3,7 +3,7 @@ import CodeBlock from "@/components/layouts/CodeBlock";
 export const articleMeta = {
     id: "dutchauction",
     title: "Dutch Auction",
-    subtitle: "A brutal game of chicken where the price of an asset drops every second until someone finally buys it",
+    subtitle: "A descending-price auction where the price drops over time until someone buys",
     date: "2025-02-23T23:00:00.000Z",
     readTime: "11 min read",
     tags: ["plutus", "cardano", "defi", "auction", "advanced"],
@@ -163,7 +163,7 @@ saveVal = writeValidatorToFile "./assets/dutchauction.plutus" validator
 # Duration: Starts Jan 1st, Ends Jan 10th. (Price drops 1,000 ADA every single day).
 
 # Today is Jan 5th. The price should mathematically be 5,000 ADA right now.
-# I (the bold buyer) am stepping in to buy it before anyone else does.
+# I (the buyer) am stepping in to buy it now.
 
 # -------------------------------------------------------------------------
 # 1. The Dynamic Buy Transaction
@@ -193,11 +193,11 @@ $ cardano-cli conway transaction submit --tx-file tx-buy.signed
             <h2 id="introduction">Introduction</h2>
 
             <p>
-                In a standard English Auction, the price goes up as buyers yell at each other. A <strong>Dutch Auction</strong> flips this on its head. The seller lists the item at a wildly inflated price (e.g., 10,000 ADA). Every single second that ticks by, the price slowly drops. Eventually, it hits the absolute floor price (e.g., 1,000 ADA).
+                In a standard English Auction, the price goes up. A <strong>Dutch Auction</strong> works in reverse: the seller lists the item at a high starting price (e.g., 10,000 ADA), and the price decreases over time until it hits a floor price (e.g., 1,000 ADA).
             </p>
 
             <p>
-                The catch? The first person to click "Buy" instantly wins the item. You are playing a brutal game of chicken against the rest of the world. Do you buy it now for 5,000 ADA? Or do you wait until tomorrow to try and get it for 4,000 ADA, risking that someone else scoops it up tonight while you sleep?
+                The tradeoff is timing. The first person to submit a "Buy" transaction wins. If you buy now at 5,000 ADA, you're safe. If you wait until tomorrow hoping for 4,000 ADA, someone else might buy it tonight.
             </p>
 
             <CodeBlock
@@ -216,7 +216,7 @@ $ cardano-cli conway transaction submit --tx-file tx-buy.signed
             </p>
 
             <p className="pexplaination pt-2">
-                We take the total ADA drop amount and multiply it by how much time has passed. Notice that in the Plutus Haskell code, we explicitly multiply <strong>before</strong> we divide: <code>(elapsedTime * totalDrop) / totalDuration</code>. If you reversed this to <code>totalDrop * (elapsedTime / totalDuration)</code>, you would introduce catastrophic integer truncation bugs. Plutus does not natively handle floating-point decimals. If <code>elapsedTime / totalDuration</code> evaluates to 0.75, Plutus would violently truncate it to <code>0</code>, completely destroying your price curve.
+                We take the total ADA drop amount and multiply it by how much time has passed. In the Plutus code, we multiply <strong>before</strong> dividing: <code>(elapsedTime * totalDrop) / totalDuration</code>. If you reversed this to <code>totalDrop * (elapsedTime / totalDuration)</code>, you'd hit integer truncation bugs. Plutus doesn't handle floating-point. If <code>elapsedTime / totalDuration</code> evaluates to 0.75, Plutus truncates it to <code>0</code>, which would break the price curve.
             </p>
 
             <h3>The Upper Bound Trap</h3>
@@ -234,7 +234,7 @@ elapsedTime = max 0 (txUpperBound - tStart)`}
             />
 
             <p className="pexplaination pt-2">
-                This is the crown jewel of the Dutch Auction validator. When a buyer submits a transaction, they define a time range in which the transaction is valid (e.g., between 1:00 PM and 1:05 PM). The Plutus script doesn't look at the beginning of that range. It looks at the <strong>latest possible millisecond</strong> the transaction could mathematically execute (the <code>txUpperBound</code>).
+                This is the key mechanism of the Dutch Auction validator. When a buyer submits a transaction, they define a time range in which the transaction is valid (e.g., between 1:00 PM and 1:05 PM). The Plutus script calculates the price using the <strong>latest possible millisecond</strong> the transaction could execute (the <code>txUpperBound</code>).
             </p>
 
             <p className="pexplaination">

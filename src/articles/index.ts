@@ -52,7 +52,29 @@ import DatumMismatchArticle, { articleMeta as DatumMismatchMeta } from "./DatumM
 import RefInputMisuseArticle, { articleMeta as RefInputMisuseMeta } from "./RefInputMisuse";
 import MissingSignaturesArticle, { articleMeta as MissingSignaturesMeta } from "./MissingSignatures";
 
+// NEW ARTICLES
+import SealedBidAuctionArticle, { articleMeta as SealedBidAuctionMeta } from "./SealedBidAuction";
+import LiquidationContractArticle, { articleMeta as LiquidationContractMeta } from "./LiquidationContract";
+import StatefulMarketplaceArticle, { articleMeta as StatefulMarketplaceMeta } from "./StatefulMarketplace";
+import BountyBoardArticle, { articleMeta as BountyBoardMeta } from "./BountyBoard";
+
 export const articles = [
+  {
+    component: SealedBidAuctionArticle,
+    meta: SealedBidAuctionMeta
+  },
+  {
+    component: LiquidationContractArticle,
+    meta: LiquidationContractMeta
+  },
+  {
+    component: StatefulMarketplaceArticle,
+    meta: StatefulMarketplaceMeta
+  },
+  {
+    component: BountyBoardArticle,
+    meta: BountyBoardMeta
+  },
   {
     component: MissingSignaturesArticle,
     meta: MissingSignaturesMeta

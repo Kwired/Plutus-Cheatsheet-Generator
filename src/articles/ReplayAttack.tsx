@@ -3,7 +3,7 @@ import CodeBlock from "@/components/layouts/CodeBlock";
 export const articleMeta = {
     id: "replayattack",
     title: "Replay Attack Vulnerability",
-    subtitle: "A catastrophic failure where an attacker resubmits the exact same transaction to repeatedly drain funds or mint infinite tokens",
+    subtitle: "A vulnerability where an attacker resubmits the same transaction to repeatedly drain funds or mint extra tokens",
     date: "2025-02-25T09:00:00.000Z",
     readTime: "8 min read",
     tags: ["plutus", "cardano", "security", "exploit", "advanced"],
@@ -153,7 +153,7 @@ $ cardano-cli conway transaction submit --tx-file tx-attack.signed
             </p>
 
             <p className="pexplaination pt-2">
-                However, this architecture suffers from a catastrophic flaw. Because the <code>adminPkh</code> is hardcoded into the script parameters, the resulting <strong>Policy ID</strong> (the hash of the script + parameters) is permanently fixed. As long as the admin signs the transaction, the script will <strong>always</strong> return <code>True</code>. The admin can spam the network with 50,000 transactions, repeatedly minting "limited edition" NFTs or inflating a 10M token supply to 50 Billion. If the admin's wallet is compromised, the hacker can natively forge the entire collection endlessly.
+                However, this architecture has a serious flaw. Because the <code>adminPkh</code> is hardcoded into the script parameters, the resulting <strong>Policy ID</strong> (the hash of the script + parameters) is fixed. As long as the admin signs the transaction, the script returns <code>True</code>. The admin (or an attacker who compromises the admin's keys) can submit unlimited minting transactions, inflating the supply arbitrarily.
             </p>
 
             <h3>The Fix: Forcing Uniqueness</h3>
@@ -169,7 +169,7 @@ $ cardano-cli conway transaction submit --tx-file tx-attack.signed
             </p>
 
             <p className="pexplaination">
-                If you pass a specific <code>TxOutRef</code> (e.g., <code>f29c7d...#0</code>) into your validator as a parameter, and write logic demanding that that specific UTxO is present in the transaction inputs, you have created a physical impossibility of a replay attack. When the first transaction executes, <code>f29c7d...#0</code> is destroyed. If the attacker tries to replay the mathematical payload 5 minutes later, the ledger itself halts them with a <code>ValueNotConserved</code> or <code>BadInputs</code> error because the UTxO no longer exists in reality. 
+                If you pass a specific <code>TxOutRef</code> (e.g., <code>f29c7d...#0</code>) into your validator as a parameter, and require that UTxO to be present in the transaction inputs, replay becomes impossible. When the first transaction executes, <code>f29c7d...#0</code> is consumed and gone. If an attacker tries to replay the same transaction later, the ledger rejects it with a <code>ValueNotConserved</code> or <code>BadInputs</code> error because the UTxO no longer exists. 
             </p>
 
             <br />
@@ -177,7 +177,7 @@ $ cardano-cli conway transaction submit --tx-file tx-attack.signed
             <h2 id="execution">The Attacker's CLI Lifecycle</h2>
 
             <p className="pexplaination">
-                In this execution trace, the Admin (or a hacker holding the Admin's keys) executes the terrifyingly easy replay attack. Because the token's Policy ID is derived purely from the script code + the Admin's PubKeyHash (both of which are static), the attacker can just fund a brand new transaction using a different fee UTxO, sign it, and print infinite money.
+                In this execution trace, the Admin (or someone with the Admin's keys) executes the replay attack. Because the token's Policy ID is derived purely from the script code + the Admin's PubKeyHash (both static), the attacker can fund a new transaction using a different fee UTxO, sign it, and mint tokens again.
             </p>
 
             <CodeBlock

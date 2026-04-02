@@ -140,17 +140,11 @@ $ cardano-cli conway transaction submit --tx-file tx-payout.signed
             <h2 id="introduction">Introduction</h2>
 
             <p>
-                In centralized finance, an escrow is an independent third party that holds assets
-                safely while two other parties complete a transaction. On Cardano, we completely
-                eliminate the need for a trusted third party. The Smart Contract itself serves
-                as the unbreakable, mathematical escrow.
+                Traditional escrows rely on trusted middlemen. On Cardano, the Smart Contract itself handles the logic trustlessly.
             </p>
 
             <p>
-                The <strong>Trustless Escrow Validator</strong> protects both a Buyer and a Seller.
-                It ensures that locked funds can only be released to the seller if the exact
-                agreed-upon price is met, while preserving the buyer's right to refund the
-                transaction if the deal falls through.
+                The <strong>Trustless Escrow</strong> protects both sides: funds only release to the Seller if the price requirement is met, and the Buyer can always trigger a refund if the deal falls through.
             </p>
 
             <CodeBlock
@@ -160,14 +154,12 @@ $ cardano-cli conway transaction submit --tx-file tx-payout.signed
             />
             <br />
 
-            <h2 id="explanation">How It Really Works</h2>
+            <h2 id="explanation">How It Works</h2>
 
             <h3>Action Based Redeemers</h3>
 
             <p className="pexplaination">
-                This is an excellent example of using the Redeemer as a router for complex
-                conditional logic. In this contract, the user decides which "path" to take
-                by submitting either <code>Refund</code> or <code>Payout</code>.
+                Redeemers act as a router for conditional logic. The user defines the execution path by passing either <code>Refund</code> or <code>Payout</code>.
             </p>
 
             <CodeBlock
@@ -179,20 +171,13 @@ $ cardano-cli conway transaction submit --tx-file tx-payout.signed
             />
 
             <p className="pexplaination">
-                By utilizing a <code>case</code> statement over algebraic data types, we ensure
-                that the Plutus logic cleanly isolates the business rules. It's impossible for
-                the seller to randomly trigger the refund path, or the buyer to trigger the payout
-                path without signatures!
+                A <code>case</code> statement over algebraic data types enforces strict rules. Neither party can maliciously trigger the other's execution path without the correct signature.
             </p>
 
             <h3>Guaranteed Delivery (valuePaidTo)</h3>
 
             <p className="pexplaination pt-2">
-                The core mechanism of an escrow is securely distributing the money. In the Payout
-                branch, the Plutus script leverages <code>PlutusV2.valuePaidTo</code>. This function
-                scans the entire transaction that the user just submitted, counts up all outputs sending ADA
-                specifically to the Seller's PubKeyHash, and calculates the total. If that total is
-                less than the agreed <code>adaPrice</code> stored in the Datum, the transaction is burned!
+                The Payout branch uses <code>PlutusV2.valuePaidTo</code> to scan the transaction and sum up all ADA routed to the Seller's address. If the total is less than the <code>adaPrice</code> from the Datum, the script fails.
             </p>
 
             <br />
@@ -200,8 +185,7 @@ $ cardano-cli conway transaction submit --tx-file tx-payout.signed
             <h2 id="execution">Execution Lifecycle</h2>
 
             <p className="pexplaination">
-                Setting up the escrow is straightforward. The buyer creates a transaction locking
-                their ADA into the script and creating an explicit contract with their Datum.
+                The buyer initiates by locking their ADA into the script and passing their custom Datum configuration.
             </p>
 
             <CodeBlock
@@ -213,12 +197,7 @@ $ cardano-cli conway transaction submit --tx-file tx-payout.signed
             <h3>Asymmetric Logic in the CLI</h3>
 
             <p className="pexplaination pt-2">
-                Notice how during the <code>tx-payout</code> CLI build phase, the transaction
-                must heavily leverage <code>--required-signer-hash</code> for the Seller, but
-                also must physically route an explicit <code>--tx-out</code> of 100 ADA to the
-                Seller's address. If the person building the transaction attempts to route the
-                100 ADA back to themselves instead, the Plutus script evaluation fails before the
-                block is propagated. It forces honest behavior.
+                In the <code>tx-payout</code> CLI build, we pass <code>--required-signer-hash</code> for the Seller and explicitly route a <code>--tx-out</code> of 100 ADA to the Seller's address. Attempts to route the funds elsewhere will fail evaluation.
             </p>
 
         </div>

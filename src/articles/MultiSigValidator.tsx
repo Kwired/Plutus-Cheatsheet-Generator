@@ -129,17 +129,11 @@ $ cardano-cli conway transaction submit --tx-file tx-spend.signed
             <h2 id="introduction">Introduction</h2>
 
             <p>
-                Multi-signature (Multi-Sig) wallets are a foundation of corporate treasury
-                management and decentralized autonomous organizations (DAOs). While Cardano
-                supports simple multi-sig natively via Native Scripts, implementing it in
-                Plutus allows for far more dynamic logic.
+                Cardano supports simple multi-sig natively, but building it in Plutus unlocks dynamic logic formatting for complex DAO or treasury vaults.
             </p>
 
             <p>
-                The <strong>M of N Multi-Sig Validator</strong> locks funds and requires that
-                a sub-committee of authorized users sign off before the funds can move. For
-                example, a corporate board might authorize 5 signers, but any 3 of them are
-                sufficient to execute a transaction.
+                The <strong>M of N Multi-Sig</strong> script locks funds until a subset of authorized actors provides their signatures (e.g. 3-out-of-5 board members).
             </p>
 
             <CodeBlock
@@ -149,14 +143,12 @@ $ cardano-cli conway transaction submit --tx-file tx-spend.signed
             />
             <br />
 
-            <h2 id="explanation">How It Really Works</h2>
+            <h2 id="explanation">How It Works</h2>
 
             <h3>The Datum as Configuration</h3>
 
             <p className="pexplaination">
-                Instead of hardcoding the authorized public keys directly into the Haskell
-                contract (which would require recompiling and deploying a new script every
-                time a board member changed), we define the configuration in the Datum!
+                Hardcoding public keys into the Haskell file is a bad idea because it requires recompiling the script per change. We offload configuration strictly into the Datum.
             </p>
 
             <CodeBlock
@@ -169,21 +161,14 @@ $ cardano-cli conway transaction submit --tx-file tx-spend.signed
             />
 
             <p className="pexplaination">
-                This makes the contract highly reusable. Anyone can use the exact same compiled
-                Plutus script to create their own 2-of-3, 5-of-9, or 99-of-100 multisig vault
-                simply by changing the JSON datum when they lock the funds.
+                This approach makes the contract stateless and reusable. Users can define arbitrary M-of-N rules dynamically during the lock transaction.
             </p>
 
             <h3>Counting the Signatures</h3>
 
             <p className="pexplaination">
-                In Plutus, we can't easily iterate using <code>for</code> loops like in Java.
-                Instead, we use functional mapping and filtering:
-                <code>length (filter hasSigned authorizedSigners)</code>. <br /><br />
-                This line filters the authorized list down to only those whose
-                <code>txSignedBy</code> check evaluates to True, and then counts the final
-                number of elements in that remaining list. If the count is greater than or
-                equal to the <code>requiredSignatures</code>, the contract unlocks.
+                Plutus iterates functionally: <code>length (filter hasSigned authorizedSigners)</code>. <br /><br />
+                We filter the authorized list down to actors returning True on <code>txSignedBy</code>, and check if the total length meets the threshold.
             </p>
 
             <br />
@@ -191,8 +176,7 @@ $ cardano-cli conway transaction submit --tx-file tx-spend.signed
             <h2 id="execution">Execution Lifecycle</h2>
 
             <p className="pexplaination">
-                When running this via the `cardano-cli`, the most critical step is ensuring
-                the node asks for the signatures when building the transaction.
+                When interacting via CLI, the critical step is manually appending signature hashes.
             </p>
 
             <CodeBlock
@@ -204,11 +188,7 @@ $ cardano-cli conway transaction submit --tx-file tx-spend.signed
             <h3>Required Signer Hashes</h3>
 
             <p className="pexplaination pt-2">
-                Plutus scripts do not automatically know who signed a transaction. You must
-                explicitly declare your intent to sign the transaction when building it by using
-                the <code>--required-signer-hash</code> flags. If you omit those flags, the
-                Plutus script's <code>txSignedBy</code> function will immediately return False
-                for everyone, even if you try to attach the signatures later!
+                Plutus scripts don't automatically sniff out signatures. If you omit the <code>--required-signer-hash</code> flag, <code>txSignedBy</code> defaults to False and the script fails, even if you tack on signatures during signing later.
             </p>
 
         </div>

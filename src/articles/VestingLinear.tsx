@@ -90,7 +90,7 @@ mkVestingValidator dat () ctx =
             elapsedTime = max 0 $ min totalDuration (tMin - tStart)
 
             -- Linear interpolation: unlocked = (elapsedTime / totalDuration) * total amount
-            -- Remember to multiply before dividing to avoid devastating decimal truncation!
+            -- Remember to multiply before dividing to avoid integer truncation!
         in
             (elapsedTime * totalVestAmt dat) / totalDuration
 
