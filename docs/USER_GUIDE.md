@@ -10,11 +10,15 @@ This guide covers the features and tools available in the Plutus Cheatsheet Gene
 
 The platform provides several ways to find smart contract examples.
 
+![Homepage Interface](./assets/img/homepage.png)
+
 ### 🔍 Search
 The search bar at the top of the homepage filters snippets by:
 - **Title**: e.g., "Vesting", "Auction".
 - **Identifier**: e.g., "fortytwo", "doublesatisfaction".
 - **Keywords**: Search through descriptions and content.
+
+![Search & Filtering](./assets/img/search_results.png)
 
 ### 🎭 Filters
 Refine results using these filters:
@@ -27,6 +31,8 @@ Refine results using these filters:
 ## 2. Tutorials
 
 Security articles are structured as tutorials to help with debugging and identifying vulnerabilities.
+
+![Tutorial Page](./assets/img/tutorial_page.png)
 
 ### Article Structure
 - **Meta Info**: Version, complexity, and use-case tags.
