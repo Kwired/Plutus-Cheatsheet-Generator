@@ -10,10 +10,11 @@ The project is fully open-source and licensed under the MIT License.
 
 ## Features
 
-- Browse curated Plutus smart contract snippets
-- Search snippets by title or identifier
-- Export snippets as PDF or Markdown
-- Simple, fast React-based web interface
+- Browse 66+ curated Plutus smart contract snippets
+- Advanced Search: Filter by Plutus version (V1, V2, V3), complexity, and use-case
+- Security Tutorials: Interactive guides for debugging common Plutus vulnerabilities
+- Export: Download snippets as PDF or Markdown
+- SEO Optimized: Static page generation for every article
 
 ---
 ### [video demo](https://youtu.be/zhrQRF5fVn0)
@@ -34,12 +35,16 @@ npm install
 npm run dev
 ```
 ---
-### Detailed Documentation
+---
+### Documentation Portal
 
-Additional documentation for running Plutus snippets on Cardano testnet
-using community templates is available here:
+The full documentation and interactive tutorial portal is available at:
+**[plutus-cheatsheet.vercel.app](https://plutus-cheatsheet.vercel.app/)**
 
-- [Running Plutus Snippets on Cardano Testnet](./docs/running-plutus-snippets.md)
+#### Interactive Debugging Tutorials
+- [Double Satisfaction Exploit](https://plutus-cheatsheet.vercel.app/article/doublesatisfaction)
+- [Replay Attack Prevention](https://plutus-cheatsheet.vercel.app/article/replayattack)
+- [Datum Mismatch Resolution](https://plutus-cheatsheet.vercel.app/article/datummismatch)
 
--User interface usage and export instructions are documented in
-[`docs/ui-user-guide.md`](./docs/ui-user-guide.md).
+#### Advanced Search Features
+The platform supports deep filtering to help you find exactly what you need for your Plutus version.

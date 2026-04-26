@@ -1,55 +1,47 @@
-# Running Plutus Snippets on Cardano Testnet
+# Compiling and Running Snippets
 
-This document explains how Plutus smart contract snippets from the
-**Plutus Cheatsheet Generator** can be compiled and executed on
-Cardano test networks using commonly adopted developer templates.
+How to compile and execute Plutus snippets from this project on Cardano testnets.
 
-This guide assumes basic familiarity with Cardano and Plutus development.
+Assumes basic familiarity with Cardano and Plutus development.
 
 ---
 
 ## Supported Environments
 
-The snippets in this project are compatible with:
-
+Snippets are compatible with:
 - **Plutus V1**
 - **Plutus V2**
 
-They have been validated using standard community templates, including:
+Validated using:
 - `plinth-template`
-- `Plutus Pioneer Program (PPP)`
-repositories
+- `Plutus Pioneer Program (PPP)` repositories
 
 ---
 
 ## Prerequisites
 
-Before running any snippet, ensure you have:
-
-- A Linux or macOS environment
-- `cardano-cli` available in `PATH`
-- Access to a Cardano test network (preview or preprod)
+- Linux or macOS
+- `cardano-cli` in `PATH`
+- Access to a test network (preview or preprod)
 - A funded testnet wallet
 
 ---
 
-## Option 1: Using plinth-template
+## Option 1: plinth-template
 
-### 1. Clone the template
-
+### 1. Clone
 ```bash
 git clone https://github.com/IntersectMBO/plinth-template.git
 cd plinth-template 
-
 ```
-### 2. Build the project
+
+### 2. Build
 ```bash
 cabal build
 ```
 
-### 3. Add a snippet
-Copy the Plutus snippet into the src/ directory and ensure:
-
+### 3. Add Snippet
+Copy the snippet into the `src/` directory. Ensure:
 - Correct Plutus version imports (V1 or V2)
 - Required language pragmas are present
 
@@ -58,43 +50,39 @@ Example:
 import PlutusLedgerApi.V2
 ```
 
-### 4. Compile the script
+### 4. Compile
 ```bash
 cabal run <executable-name>
 ```
-This produces a serialized `.plutus` script file.
+Produces a serialized `.plutus` script.
 
 ---
-## Option 2: Using Plutus Pioneer Program (PPP) Repositories
 
-PPP repositories typically follow this workflow:
+## Option 2: PPP Repositories
 
-### 1. Build the project
-
+### 1. Build
 ```bash
 cabal build
 ```
-### 2. Generate the validator
 
+### 2. Generate Validator
 ```bash
 cabal run <script-generator>
 ```
-This command outputs a serialized Plutus script.
 
 ---
 
-## Submitting the Script on Testnet
+## On-Chain Submission
 
 Once the script is generated:
+1. Create a transaction using `cardano-cli`.
+2. Attach the compiled Plutus script.
+3. Provide datum and redeemer.
+4. Submit to testnet.
 
-- Create a transaction using `cardano-cli`
-- Attach the compiled Plutus script
-- Provide datum and redeemer as required
-- Submit the transaction to the testnet
-
-### Example (simplified)
-
+### Example
 ```bash
 cardano-cli transaction submit \
   --tx-file tx.signed \
   --testnet-magic 2
+```
